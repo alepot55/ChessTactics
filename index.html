@@ -3,7 +3,9 @@
 
 <head>
     <title>Puzzle di Scacchi</title>
-    <link rel="stylesheet" type="text/css" href="stile.css">
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <link rel="stylesheet" type="text/css" href="css/stile.css">
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboard2@0.5.0/dist/chessboard2.min.css"
         integrity="sha384-47VeTDpmy4yT21gKPXQcLQYQZwlmz27gEH5NTrOmTk3G/SGvMyltclOW/Q8uE+sL" crossorigin="anonymous">
 </head>
@@ -11,18 +13,65 @@
 <body>
     <header>
         <h1>Bentornato al sito di Puzzle di Scacchi!</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#problemi">Problemi</a></li>
+                <li><a href="#gioca">Gioca</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
-        <div id="scacchiera" class="scacchiera"></div>
+
+        <section id="home">
+            <h2>Benvenuto!</h2>
+            <p>Benvenuto nel nostro sito di puzzle di scacchi. Speriamo che ti diverta!</p>
+        </section>
+
+        <section id="problemi">
+            <h2>Problemi di Scacchi</h2>
+            <p>Qui troverai una serie di problemi di scacchi da risolvere. Buona fortuna!</p>
+            <div class=container>
+                <div class="problema">
+                    <div id="problema_0" class="scacchiera"></div>
+                    <p id="descrizione_0">Matto in 2</p>
+                    <button id="richiedi_problema_0">Aggiorna</button>
+                </div>
+                <div class="problema">
+                    <div id="problema_1" class="scacchiera"></div>
+                    <p id="descrizione_1">Matto in 2</p>
+                    <button id="richiedi_problema_1">Aggiorna</button>
+                </div>
+                <div class="problema">
+                    <div id="problema_2" class="scacchiera"></div>
+                    <p id="descrizione_2">Matto in 2</p>
+                    <button id="richiedi_problema_2">Aggiorna</button>
+                </div>
+                <div class="problema">
+                    <div id="problema_3" class="scacchiera"></div>
+                    <p id="descrizione_3">Matto in 2</p>
+                    <button id="richiedi_problema_3">Aggiorna</button>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="gioca">
+            <h2>La tua Scacchiera</h2>
+            <div id="scacchiera1" class="scacchiera"></div>
+        </section>
 
     </main>
-    <footer>
-        <p>© 2024 Puzzle di Scacchi. Tutti i diritti riservati.</p>
-    </footer>
+
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
 <script src="https://unpkg.com/@chrisoakman/chessboard2@0.5.0/dist/chessboard2.min.js"
     integrity="sha384-/KwQCjA1GWovZNV3QDVtvSMDzO4reGgarF/RqHipr7hIUElH3r5zNl9WEPPOBRIF"
     crossorigin="anonymous"></script>
-<script src="script.js"></script>
+<script src="js/gioca.js"></script>
+<script src="js/scacchiera.js"></script>
+<script src="js/problemi.js"></script>
+<script src="js/client.js"></script>
 
 </html>
