@@ -1,5 +1,8 @@
-var num_problemi = 4;
-var indici = Array(num_problemi).fill(0);
+// Qui gli id dei bottoni "aggiorna"
+var bottoni_aggiorna = ['aggiorna0', 'aggiorna1', 'aggiorna2', 'aggiorna3'];
+
+
+var indici = Array(length(bottoni_aggiorna)).fill(0);
 
 // Funzione per impostare un problema_i con un fen
 function aggiornaScacchiera(i, fen) {
@@ -34,16 +37,17 @@ function setProblema(index, num_problema) {
 }
 
 // per ogni bottone "Problema i" imposta il problema i
-for (var i = 0; i <= num_problemi-1; i++) {
+for (var i = 0; i <= length(bottoni_aggiorna); i++) {
     (function (i) {
         // Imposta il problema iniziale
         setProblema(indici[i], i);
         indici[i]++;
 
         // Aggiorna il problema quando il bottone viene premuto
-        document.getElementById('richiedi_problema_' + i).addEventListener('click', function () {
+        document.getElementById(bottoni_aggiorna[i]).addEventListener('click', function () {
             setProblema(indici[i], i);
             indici[i]++;
+            console.log("Scacchiera " + i + "aggiornata con problema " + indici[i])
         });
     })(i);
 }
