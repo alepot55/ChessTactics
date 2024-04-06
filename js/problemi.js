@@ -15,7 +15,7 @@ function faiMossa() {
         to: mossa.slice(2, 4),
         promotion: 'q'
     });
-    board.position(game.fen());
+    board.position(game.fen(), 'slow');
 }
 
 function prossimaMossa(aggiorna = true) {
@@ -34,6 +34,7 @@ function aggiornaScacchiera(problema) {
         onDrop: checkMossa,
         orientation: game.turn() === 'w' ? 'black' : 'white',
         onMouseenterSquare: mostraOmbre,
+        trashSpeed: 'slow',
     }
     window.setTimeout(faiMossa, velocita);
     board = Chessboard2('problema', config);
@@ -43,15 +44,16 @@ function aggiornaScacchiera(problema) {
 
 // Funzione per mostrare i marker sulle caselle
 function mostraOmbre(args) {
-    let moves = game.moves({
-        square: args.square,
-        verbose: true
-    });
     if (togliMarker) {
         document.querySelectorAll('[data-square-coord]').forEach(square => {
             square.style.backgroundColor = '';
         });
     }
+    if (sol.length === 0) return;
+    let moves = game.moves({
+        square: args.square,
+        verbose: true
+    });
     if (moves.length === 0) return;
     togliMarker = true;
     moves.forEach(move => {
@@ -100,7 +102,13 @@ async function caricaProblema() {
 
 function checkMossa(args) {
     mossa = prossimaMossa(aggiorna = false).slice(0, 4);
-    if (args['source'] + args['target'] === mossa) {
+    legali = game.moves({
+        square: args['source'],
+        verbose: true
+    });
+    if (!legali.some(legale => legale.to === args['target'])) {
+        return 'snapback';
+    } else if (args['source'] + args['target'] === mossa) {
         risolvi()
         mossaCorretta()
     } else {
