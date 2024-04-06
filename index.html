@@ -18,6 +18,7 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#problemi">Problemi</a></li>
                 <li><a href="#gioca">Gioca</a></li>
+                <li><a href="#login">Login</a></li>
             </ul>
         </nav>
     </header>
@@ -48,6 +49,18 @@
             <div id="scacchiera1" style="width: 400px"></div>
         </section>
 
+        <section id="login">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="username">Nome utente:</label><br>
+                <input type="text" id="username" name="username"><br>
+                <label for="password">Password:</label><br>
+                <input type="password" id="password" name="password"><br>
+                <input type="submit" id="loginButton" value="Accedi">
+                <input type="submit" id="registerButton" value="Registrati">
+                <p id="loginMessage"></p>
+            </form>
+
     </main>
 
 </body>
@@ -58,7 +71,7 @@
     crossorigin="anonymous"></script>
 <script src="js/problemi.js"></script>
 <script src="js/gioca.js"></script>
-<script src="js/client.js"></script>
+<script src="js/login.js"></script>
 <script src="js/script.js"></script>
 
 </html>

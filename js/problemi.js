@@ -48,7 +48,6 @@ function mostraOmbre(args) {
         verbose: true
     });
     if (togliMarker) {
-        console.log('rimuoviMarker')
         document.querySelectorAll('[data-square-coord]').forEach(square => {
             square.style.backgroundColor = '';
         });
@@ -79,38 +78,25 @@ function bloccaMosse(args) {
 function isWhitePiece(piece) { return /^w/.test(piece) }
 function isBlackPiece(piece) { return /^b/.test(piece) }
 
-
-// Funzione per creare una nuova richiesta AJAX
-function creaRichiestaAjax(url, metodo) {
-    var xhr = new XMLHttpRequest();
-    xhr.open(metodo, url, true);
-    xhr.setRequestHeader('Accept', 'application/json');
-    return xhr;
-}
-
-// Funzione per gestire la risposta di una richiesta di caricamento problema
-function gestisciRispostaProblema(xhr) {
-    if (xhr.status === 200) {
-        var problema = JSON.parse(xhr.responseText);
+// Funzione per gestire la risposta del problema
+async function gestisciRispostaProblema(response) {
+    if (response.ok) {
+        const problema = await response.json();
         aggiornaScacchiera(problema);
     }
 }
 
 // Funzione per caricare un problema
-function caricaProblema() {
-    
-    var xhr = creaRichiestaAjax('http://localhost:3000/server.php?indice=' + indice, 'GET');
-
-    xhr.onload = function () {
-        gestisciRispostaProblema(xhr);
-    };
-
-    xhr.send();
+async function caricaProblema() {
+    const url = `http://localhost:3000/server.php?indice=${indice}`;
+    const response = await fetch(url);
+    await gestisciRispostaProblema(response);
 
     indice++;
     document.getElementById('risolvi').disabled = false;
     document.getElementById('descrizione').textContent = 'Risolvi il problema!';
 }
+
 
 function checkMossa(args) {
     mossa = prossimaMossa(aggiorna = false).slice(0, 4);
