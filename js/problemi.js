@@ -33,7 +33,7 @@ function aggiornaScacchiera(problema) {
         onDragStart: bloccaMosse,
         onDrop: checkMossa,
         orientation: game.turn() === 'w' ? 'black' : 'white',
-        onMouseenterSquare: mostraMarker,
+        onMouseenterSquare: mostraOmbre,
     }
     window.setTimeout(faiMossa, velocita);
     board = Chessboard2('problema', config);
@@ -42,7 +42,7 @@ function aggiornaScacchiera(problema) {
 }
 
 // Funzione per mostrare i marker sulle caselle
-function mostraMarker(args) {
+function mostraOmbre(args) {
     let moves = game.moves({
         square: args.square,
         verbose: true
@@ -98,6 +98,7 @@ function gestisciRispostaProblema(xhr) {
 
 // Funzione per caricare un problema
 function caricaProblema() {
+    
     var xhr = creaRichiestaAjax('http://localhost:3000/server.php?indice=' + indice, 'GET');
 
     xhr.onload = function () {
