@@ -47,9 +47,8 @@ function aggiornaScacchiera(problema) {
 }
 
 function clicca(args) {
-    console.log(args);
     if (sol.length === 0 || args['square'] == null) return;
-    console.log(args);
+    console.log(cliccato);
     if (cliccato !== null) {
         let source = cliccato;
         cliccato = null;
@@ -59,7 +58,7 @@ function clicca(args) {
             'target': args['square']
         });
     } else {
-        let pezzoGiusto = game.get(args['square']) !== null && game.get(args['square'])['color'] === 'w';
+        let pezzoGiusto = game.get(args['square']) !== null && game.get(args['square'])['color'] === board.orientation().slice(0, 1);
         cliccato = pezzoGiusto ? args['square'] : null;
         mostraOmbre(args);
     }
