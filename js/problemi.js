@@ -1,10 +1,12 @@
 // Colonne problemi: PuzzleId,FEN,Moves,Rating,RatingDeviation,Popularity,NbPlays,Themes,GameUrl,OpeningTags
 var indice = 0;
 var sol = null;
-const velocita = 700;
+const velocita = 500;
 const whiteSquareGrey = '#a9a9a9'
 const blackSquareGrey = '#696969'
-togliMarker = false;
+var cliccato = null;
+var board = Chessboard2('problema', 'start');;
+var game = null;
 
 
 // Funzione per fare mosse sulla scacchiera
@@ -27,38 +29,66 @@ function prossimaMossa(aggiorna = true) {
 // Funzione per aggiornare la scacchiera con una nuova FEN
 function aggiornaScacchiera(problema) {
     game = new Chess(problema[1]);
-    const config = {
+    let config = {
         draggable: true,
         position: game.fen(),
         onDragStart: bloccaMosse,
         onDrop: checkMossa,
         orientation: game.turn() === 'w' ? 'black' : 'white',
-        onMouseenterSquare: mostraOmbre,
+        onMouseenterSquare: mostraOmbreTemp,
         trashSpeed: 'slow',
+        onMousedownSquare: clicca,
     }
     window.setTimeout(faiMossa, velocita);
     board = Chessboard2('problema', config);
+    cliccato = null;
     sol = problema[2];
     document.getElementById('soluzione').textContent = sol;
 }
 
-// Funzione per mostrare i marker sulle caselle
-function mostraOmbre(args) {
-    if (togliMarker) {
-        document.querySelectorAll('[data-square-coord]').forEach(square => {
-            square.style.backgroundColor = '';
+function clicca(args) {
+    console.log(args);
+    if (sol.length === 0 || args['square'] == null) return;
+    console.log(args);
+    if (cliccato !== null) {
+        let source = cliccato;
+        cliccato = null;
+        togliOmbre();
+        checkMossa({
+            'source': source,
+            'target': args['square']
         });
+    } else {
+        let pezzoGiusto = game.get(args['square']) !== null && game.get(args['square'])['color'] === 'w';
+        cliccato = pezzoGiusto ? args['square'] : null;
+        mostraOmbre(args);
     }
+}
+
+function mostraOmbre(args) {
     if (sol.length === 0) return;
     let moves = game.moves({
         square: args.square,
         verbose: true
     });
     if (moves.length === 0) return;
-    togliMarker = true;
     moves.forEach(move => {
         greySquare(move.to);
     });
+
+}
+
+function togliOmbre() {
+    document.querySelectorAll('[data-square-coord]').forEach(square => {
+        square.style.backgroundColor = '';
+    });
+}
+
+// Funzione per mostrare i marker sulle caselle
+function mostraOmbreTemp(args) {
+    if (cliccato) return;
+    togliOmbre();
+    mostraOmbre(args);
 }
 
 function greySquare(square) {
@@ -68,6 +98,11 @@ function greySquare(square) {
     if ($square.classList.contains('black-b7cb6')) background = blackSquareGrey;
 
     $square.style.backgroundColor = background;
+}
+
+function isGreySquare(square) {
+    const $square = document.querySelector('[data-square-coord="' + square + '"]')
+    return $square.style.backgroundColor === whiteSquareGrey || $square.style.backgroundColor === blackSquareGrey;
 }
 
 function bloccaMosse(args) {
