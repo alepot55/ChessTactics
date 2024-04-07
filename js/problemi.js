@@ -48,7 +48,6 @@ function aggiornaScacchiera(problema) {
 
 function clicca(args) {
     if (sol.length === 0 || args['square'] == null) return;
-    console.log(cliccato);
     if (cliccato !== null) {
         checkMossa({
             'source': cliccato,
@@ -159,6 +158,8 @@ function vittoria() {
 }
 
 function mossaCorretta() {
+    punteggio = punteggio + 1;
+    ricaricaProfilo()
     if (sol.length === 0) {
         return vittoria()
     }

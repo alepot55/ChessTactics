@@ -23,7 +23,7 @@ async function accediProfilo(tipoOperazione, event) {
     if (dati['messaggio'] == 'Login riuscito' || dati['messaggio'] == 'Registrazione riuscita') {
         loggato = true;
         username = user;
-        ricarica();
+        ricaricaProfilo();
     } else {
         document.getElementById('rispostaAccedi').innerHTML = dati['messaggio'];
     }
@@ -40,7 +40,7 @@ async function logout(event) {
 
     if (dati['messaggio'] == 'Logout riuscito') {
         loggato = false;
-        ricarica();
+        ricaricaProfilo();
     }
 }
 
@@ -57,20 +57,28 @@ async function eliminaProfilo(event) {
     if (dati['messaggio'] == 'Account eliminato') {
         loggato = false;
         username = '';
-        ricarica();
+        ricaricaProfilo();
     }
 }
 
 async function modificaProfilo(event) {
 
+    nuovoUsername = document.getElementById('nuovoUsername').value;
+    nuovaPassword = document.getElementById('nuovaPassword').value;
+
     let data = {
         username: username,
-        nuovoUsername: document.getElementById('nuovoUsername').value,
-        nuovaPassword: document.getElementById('nuovaPassword').value,
+        nuovoUsername: nuovoUsername,
+        nuovaPassword: nuovaPassword,
         operazione: 'modifica'
     };
 
     let dati = await inviaDati(data, event);
+
+    if (dati['messaggio'] == 'Modifica effettuata') {
+        username = nuovoUsername;
+        ricaricaProfilo();
+    }
 
     document.getElementById('rispostaModifica').innerHTML = dati['messaggio'];
 }
@@ -84,16 +92,12 @@ async function inviaDati(data, event) {
         body: new URLSearchParams(data).toString()
     });
 
-    return await contenuto(response);
-}
-
-async function contenuto(response) {
     if (response.ok) {
         return await response.json();
     }
 }
 
-function ricarica() {
+function ricaricaProfilo() {
     document.getElementById('accediProfilo').style.display = loggato ? 'none' : 'block';
     document.getElementById('profiloUtente').style.display = loggato ? 'block' : 'none';
     document.getElementById('modificaProfilo').style.display = loggato ? 'block' : 'none';
@@ -109,4 +113,4 @@ document.getElementById('logoutButton').addEventListener('click', (event) => log
 document.getElementById('eliminaButton').addEventListener('click', (event) => eliminaProfilo(event));
 document.getElementById('modificaButton').addEventListener('click', (event) => modificaProfilo(event));
 
-ricarica();
+ricaricaProfilo();

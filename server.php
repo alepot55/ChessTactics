@@ -14,11 +14,27 @@ $problemi = array_map('str_getcsv', file('data\problemi\puzzles.csv'));
 $utenti = json_decode(file_get_contents('data\utenti.json'), true);
 
 // Funzione per verificare che la password abbia almeno 8 caratteri e contenga almeno un numero
-function verificaPassword($password)
+function passwordValida($password)
 {
+    return true; // poi da togliere
     return strlen($password) >= 8 && preg_match('/[0-9]/', $password);
 }
 
+// Funzione per sommare un punteggio a un utente
+function sommaPunteggio($utenti, $username, $punteggio)
+{
+    foreach ($utenti as $key => $utente) {
+        if ($utente['username'] === $username) {
+            $utenti[$key]['punteggio'] += $punteggio;
+            $punteggio = $utenti[$key]['punteggio'];
+        }
+    }
+
+    // Salva l'array di utenti nel file
+    file_put_contents('data\utenti.json', json_encode($utenti));
+
+    return $punteggio;
+}
 
 // Funzione per calcolare la password dato un username
 function password($utenti, $username)
@@ -50,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else if ($passwordTrovata === $password) {
             //$_SESSION['username'] = $username;
             $dati['messaggio'] = "Login riuscito";
+            $dati['punteggio'] = sommaPunteggio($utenti, $username, $_POST['punteggio']);
         } else {
             $dati['messaggio'] = "Password errata";
         }
@@ -60,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $passwordTrovata = password($utenti, $username);
 
-        if (!verificaPassword($password)) {
+        if (!passwordValida($password)) {
             $dati['messaggio'] = ("La password deve contenere almeno 8 caratteri e un numero");
         } else if ($passwordTrovata === null) {
             $nuovoUtente = array(
@@ -70,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             array_push($utenti, $nuovoUtente);
             $dati['messaggio'] = "Registrazione riuscita";
+            $dati['punteggio'] = $_POST['punteggio'];
 
             // Salva l'array di utenti nel file
             file_put_contents('data\utenti.json', json_encode($utenti));
@@ -108,14 +126,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     
     } else if ($azione === 'modifica') {
+
         // Gestisci la modifica della password
         $username = $_POST['username'];
-        
         $nuovoUsername = $_POST['nuovoUsername'];
         $nuovaPassword = $_POST['nuovaPassword'];
 
+        $passwordTrovata = password($utenti, $nuovoUsername);
+
         // Modifica l'utente e la password
-        if (!verificaPassword($nuovaPassword)) {
+        if ($passwordTrovata !== null && $nuovoUsername !== $username) {
+            $dati['messaggio'] = "Username già esistente";
+        } else if (!passwordValida($nuovaPassword)) {
             $dati['messaggio'] = "La password deve contenere almeno 8 caratteri e un numero";
         } else {
             foreach ($utenti as $key => $utente) {
