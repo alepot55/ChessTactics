@@ -3,21 +3,59 @@
 
 var sezioneCorrente = "giocaComputer";
 var scacchieraCorrente = "scacchieraComputer";
+var casellaCliccata = null;
 DEFAULT_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+var scacchieraGioca = null;
+var partitaGioca = null;
 
-function iniziaScacchieraGioca(scacchiera) {
-    gameGioca = new Chess(DEFAULT_POSITION);
-    boardGioca = Chessboard2(scacchiera, {
-        position: gameGioca.fen(),
+function setCasellaCliccata(casella) {
+    casellaCliccata = casella;
+}
+
+function getCasellaCliccata() {
+    return casellaCliccata;
+}
+
+function aggiornaScacchieraGioca(scacchiera, posizione = DEFAULT_POSITION) {
+    partitaGioca = new Chess(posizione);
+    scacchieraGioca = new Chessboard2(scacchiera, {
+        position: partitaGioca.fen(),
         draggable: true,
         trashSpeed: 'slow',
-        orientation: gameGioca.turn() === 'w' ? 'white' : 'black',
-        // onDragStart: bloccaMosse,
-        // onDrop: onDropSolo,
-        // onMouseenterSquare: mostraOmbreGioca,
-        // onMousedownSquare: clicca,
+        orientation: partitaGioca.turn() === 'w' ? 'white' : 'black',
+        onDragStart: onDragStartGioca,
+        onMouseenterSquare: onMouseEnterSquareGioca,
+        onMousedownSquare: onMousedownSquareGioca,
+        onDrop: onDropGioca,
+
     });
-}    
+}
+
+function onDragStartGioca(args) {
+    return bloccaMossa(args['piece'], partitaGioca);
+}
+
+function onMouseEnterSquareGioca(args) {
+    
+    mostraSuggerimenti(args, partitaGioca, getCasellaCliccata, scacchieraCorrente);
+}
+
+function onMousedownSquareGioca(args) {
+    gestisciClick(args, partitaGioca, scacchieraGioca, getCasellaCliccata, onDropGioca, setCasellaCliccata, scacchieraCorrente);
+}
+
+function onDropGioca(args) {
+    let mosseLegali = partitaGioca.moves({
+        square: args['source'],
+        verbose: true
+    });
+    if (!mosseLegali.some(mossaLegale => mossaLegale.to === args['target'])) {
+        return 'snapback';
+    } else {
+        rimuoviSuggerimenti()
+        eseguiMossa(args['source'] + args['target'], partitaGioca, scacchieraGioca);
+    }
+}
 
 function mostraGioca(sezione) {
     document.getElementById("giocaComputer").style.display = "none";
@@ -27,7 +65,7 @@ function mostraGioca(sezione) {
     document.getElementById(sezione).style.display = "block";
     scacchieraCorrente = sezione === "giocaComputer" ? "scacchieraComputer" : sezione === "giocaSolo" ? "scacchieraSolo" : "scacchieraRandom";
     sezioneCorrente = sezione;
-    iniziaScacchieraGioca(scacchieraCorrente)
+    aggiornaScacchieraGioca(scacchieraCorrente)
 }
 
 mostraGioca("giocaComputer");

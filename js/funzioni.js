@@ -3,26 +3,26 @@ function bloccaMossa(pezzo, partita) {
     return true;
 }
 
-function mostraSuggerimenti(args, partita, getCasellaCliccata) {
+function mostraSuggerimenti(args, partita, getCasellaCliccata, idScacchiera) {
     if (getCasellaCliccata()) return;
     rimuoviSuggerimenti()
     let mosse = getMossePossibili(partita, args['square']);
     if (mosse.length === 0) return;
     mosse.forEach(mossa => {
-        coloraCasella(mossa.to);
+        coloraCasella(mossa.to, idScacchiera);
     });
 }
 
-function gestisciClick(args, partita, scacchiera, getCasellaCliccata, onDrop, setCasellaCliccata) {
+function gestisciClick(args, partita, scacchiera, getCasellaCliccata, onDrop, setCasellaCliccata, idScacchiera) {
     if (args['square'] == null) return null;
-    let pezzoPosseduto = partita.get(args['square']) !== null && partita.get(args['square'])['color'] === scacchiera.orientation().slice(0, 1);
+    let pezzoPosseduto = partita.get(args['square']) !== null && partita.get(args['square'])['color'] === partita.turn();
     rimuoviSuggerimenti();
     if (getCasellaCliccata() !== null && !pezzoPosseduto) {
         onDrop({ 'source': getCasellaCliccata(), 'target': args['square'] });
         setCasellaCliccata(null);
     } else {
         if (pezzoPosseduto) setCasellaCliccata(null);
-        mostraSuggerimenti(args, partita, getCasellaCliccata);
+        mostraSuggerimenti(args, partita, getCasellaCliccata, idScacchiera);
         mosse = getMossePossibili(partita, args['square']);
         setCasellaCliccata(pezzoPosseduto && mosse.length > 0 ? args['square'] : null);
     }
@@ -50,8 +50,8 @@ function rimuoviSuggerimenti() {
     });
 }
 
-function coloraCasella(casella) {
-    const $casella = document.querySelector('[data-square-coord="' + casella + '"]')
+function coloraCasella(casella, idScacchiera) {
+    const $casella = document.querySelector('#' + idScacchiera + ' [data-square-coord="' + casella + '"]')
 
     let colore = '#a9a9a9'
     if ($casella.classList.contains('black-b7cb6')) colore = '#696969';
@@ -59,10 +59,10 @@ function coloraCasella(casella) {
     $casella.style.backgroundColor = colore;
 }
 
-function isCasellaColorata(casella) {
-    const $casella = document.querySelector('[data-square-coord="' + casella + '"]')
-    return $casella.style.backgroundColor === coloreCasellaBianca || $casella.style.backgroundColor === coloreCasellaNera;
-}
+// function isCasellaColorata(casella, idScacchiera) {
+//     const $casella = document.querySelector('#' + idScacchiera + ' [data-square-coord="' + casella + '"]');
+//     return $casella.style.backgroundColor === '#a9a9a9' || $casella.style.backgroundColor === '#696969';
+// }
 
 function isPezzoBianco(pezzo) { return /^w/.test(pezzo) }
 function isPezzoNero(pezzo) { return /^b/.test(pezzo) }

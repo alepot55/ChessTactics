@@ -1,11 +1,11 @@
-let indice = 0;
-let soluzione = null;
+var indice = 0;
+var soluzione = null;
 const velocita = 500;
-let casellaCliccata = null;
-let scacchiera = Chessboard2('problema', 'start');
-let partita = null;
+var casellaCliccata = null;
+var scacchiera = Chessboard2('problema', 'start');
+var partita = null;
 
-function aggiornaScacchiera(problema) {
+function aggiornaScacchieraProblema(problema) {
     partita = new Chess(problema[1]);
     let configurazione = {
         draggable: true,
@@ -38,12 +38,12 @@ function onDragStartProblemi(args) {
 }
 
 function onMouseEnterSquareProblemi(args) {
-    mostraSuggerimenti(args, partita, getCasellaCliccata);
+    mostraSuggerimenti(args, partita, getCasellaCliccata, 'problema');
 }
 
 function onMousedownSquareProblemi(args) {
     if (soluzione.length === 0) return;
-    gestisciClick(args, partita, scacchiera, getCasellaCliccata, verificaMossa, setCasellaCliccata);
+    gestisciClick(args, partita, scacchiera, getCasellaCliccata, verificaMossa, setCasellaCliccata, 'problema');
 }
 
 function ottieniProssimaMossa(aggiorna = true) {
@@ -58,7 +58,7 @@ async function caricaProblema() {
     
     if (response.ok) {
         const problema = await response.json();
-        aggiornaScacchiera(problema);
+        aggiornaScacchieraProblema(problema);
     }
 
     indice++;
