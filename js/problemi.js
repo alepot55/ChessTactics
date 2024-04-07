@@ -1,20 +1,49 @@
 let indice = 0;
 let soluzione = null;
 const velocita = 500;
-const coloreCasellaBianca = '#a9a9a9'
-const coloreCasellaNera = '#696969'
 let casellaCliccata = null;
 let scacchiera = Chessboard2('problema', 'start');
 let partita = null;
 
-function eseguiMossa() {
+function aggiornaScacchiera(problema) {
+    partita = new Chess(problema[1]);
+    let configurazione = {
+        draggable: true,
+        position: partita.fen(),
+        orientation: partita.turn() === 'w' ? 'black' : 'white',
+        trashSpeed: 'slow',
+        onDragStart: onDragStartProblemi,
+        onMouseenterSquare: onMouseEnterSquareProblemi,
+        onMousedownSquare: onMousedownSquareProblemi,
+        onDrop: verificaMossa,
+    }
+    soluzione = problema[2];
+    setCasellaCliccata(null)
     let mossa = ottieniProssimaMossa();
-    partita.move({
-        from: mossa.slice(0, 2),
-        to: mossa.slice(2, 4),
-        promotion: 'q'
-    });
-    scacchiera.position(partita.fen(), 'slow');
+    window.setTimeout(() => eseguiMossa(mossa, partita, scacchiera), velocita);
+    scacchiera = new Chessboard2('problema', configurazione);
+    document.getElementById('soluzione').textContent = soluzione;
+}
+
+function setCasellaCliccata(casella) {
+    casellaCliccata = casella;
+}
+
+function getCasellaCliccata() {
+    return casellaCliccata;
+}
+
+function onDragStartProblemi(args) {
+    return bloccaMossa(args['piece'], partita);
+}
+
+function onMouseEnterSquareProblemi(args) {
+    mostraSuggerimenti(args, partita, getCasellaCliccata);
+}
+
+function onMousedownSquareProblemi(args) {
+    if (soluzione.length === 0) return;
+    gestisciClick(args, partita, scacchiera, getCasellaCliccata, verificaMossa, setCasellaCliccata);
 }
 
 function ottieniProssimaMossa(aggiorna = true) {
@@ -23,105 +52,14 @@ function ottieniProssimaMossa(aggiorna = true) {
     return mossa;
 }
 
-function aggiornaScacchiera(problema) {
-    partita = new Chess(problema[1]);
-    let configurazione = {
-        draggable: true,
-        position: partita.fen(),
-        onDragStart: bloccaMovimento,
-        onDrop: verificaMossa,
-        orientation: partita.turn() === 'w' ? 'black' : 'white',
-        onMouseenterSquare: mostraSuggerimentiTemp,
-        trashSpeed: 'slow',
-        onMousedownSquare: gestisciClick,
-    }
-    window.setTimeout(eseguiMossa, velocita);
-    scacchiera = Chessboard2('problema', configurazione);
-    casellaCliccata = null;
-    soluzione = problema[2];
-    document.getElementById('soluzione').textContent = soluzione;
-}
-
-function gestisciClick(args) {
-    if (soluzione.length === 0) return;
-    let mossa = clickMossa(args);
-    if (mossa !== null) verificaMossa(mossa);
-}
-
-function clickMossa(args) {
-    if (args['square'] == null) return null;
-    let mossa = null;
-    if (casellaCliccata !== null) {
-        if (casellaCliccata !== args['square']) rimuoviSuggerimenti();
-        mossa = {'source': casellaCliccata, 'target': args['square']};
-        casellaCliccata = null;
-    } else {
-        let pezzoCorretto = partita.get(args['square']) !== null && partita.get(args['square'])['color'] === scacchiera.orientation().slice(0, 1);
-        casellaCliccata = pezzoCorretto ? args['square'] : null;
-        mostraSuggerimenti(args);
-    }
-    return mossa;
-}
-
-function mostraSuggerimenti(args) {
-    if (soluzione.length === 0) return;
-    let mosse = partita.moves({
-        square: args.square,
-        verbose: true
-    });
-    if (mosse.length === 0) return;
-    mosse.forEach(mossa => {
-        coloraCasella(mossa.to);
-    });
-}
-
-function rimuoviSuggerimenti() {
-    document.querySelectorAll('[data-square-coord]').forEach(casella => {
-        casella.style.backgroundColor = '';
-    });
-}
-
-function mostraSuggerimentiTemp(args) {
-    if (casellaCliccata) return;
-    rimuoviSuggerimenti();
-    mostraSuggerimenti(args);
-}
-
-function coloraCasella(casella) {
-    const $casella = document.querySelector('[data-square-coord="' + casella + '"]')
-
-    let colore = coloreCasellaBianca
-    if ($casella.classList.contains('black-b7cb6')) colore = coloreCasellaNera;
-
-    $casella.style.backgroundColor = colore;
-}
-
-function isCasellaColorata(casella) {
-    const $casella = document.querySelector('[data-square-coord="' + casella + '"]')
-    return $casella.style.backgroundColor === coloreCasellaBianca || $casella.style.backgroundColor === coloreCasellaNera;
-}
-
-function bloccaMovimento(args) {
-    if ((partita.turn() === 'w' && args['piece'].search(/^b/) !== -1) ||
-        (partita.turn() === 'b' && args['piece'].search(/^w/) !== -1)) {
-        return false
-    }
-}
-
-function isPezzoBianco(pezzo) { return /^w/.test(pezzo) }
-function isPezzoNero(pezzo) { return /^b/.test(pezzo) }
-
-async function gestisciRispostaProblema(response) {
+async function caricaProblema() {
+    const url = `http://localhost:3000/server.php?indice=${indice}`;
+    const response = await fetch(url);
+    
     if (response.ok) {
         const problema = await response.json();
         aggiornaScacchiera(problema);
     }
-}
-
-async function caricaProblema() {
-    const url = `http://localhost:3000/server.php?indice=${indice}`;
-    const response = await fetch(url);
-    await gestisciRispostaProblema(response);
 
     indice++;
     document.getElementById('risolvi').disabled = false;
@@ -155,8 +93,8 @@ function vittoria() {
 }
 
 function mossaGiusta() {
-    punteggio = punteggio + 1;
-    ricaricaProfilo()
+    punteggioUtente = punteggioUtente + 1;
+    aggiornaProfilo()
     if (soluzione.length === 0) {
         return vittoria()
     }
@@ -165,13 +103,15 @@ function mossaGiusta() {
 }
 
 function risolvi() {
-    eseguiMossa();
+    let mossa = ottieniProssimaMossa();
+    eseguiMossa(mossa, partita, scacchiera);
     if (soluzione.length === 0) {
         document.getElementById('descrizione').textContent = 'Prova il prossimo problema!';
         document.getElementById('risolvi').disabled = true;
         return
     }
-    window.setTimeout(eseguiMossa, velocita);
+    mossa = ottieniProssimaMossa();
+    window.setTimeout(() => eseguiMossa(mossa, partita, scacchiera), velocita);
 }
 
 caricaProblema();
