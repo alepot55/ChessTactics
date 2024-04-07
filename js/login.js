@@ -1,42 +1,112 @@
+loggato = false;
+url = `http://localhost:3000/server.php`;
+username = '';
+punteggio = 0;
+
 // Funzione per gestire l'invio dei dati al server
-async function inviaDatiAlServer(tipoOperazione, event) {
-
-    // Previene il comportamento predefinito del form
-    event.preventDefault();
-
+async function accediProfilo(tipoOperazione, event) {
 
     // Ottiene il nome utente e la password
-    let username = document.getElementById('username').value;
-    let password = document.getElementById('password').value;
-
-    // Costruisce l'URL per l'operazione
-    let url = `http://localhost:3000/server.php`;
+    let user = document.getElementById('usernameAccedi').value;
+    let pass = document.getElementById('passwordAccedi').value;
 
     // Crea un oggetto con i dati da inviare
     let data = {
-        username: username,
-        password: password,
+        username: user,
+        password: pass,
+        punteggio: punteggio,
         operazione: tipoOperazione
     };
 
-    const response = await fetch(url, {
+    let dati = await inviaDati(data, event);
+
+    if (dati['messaggio'] == 'Login riuscito' || dati['messaggio'] == 'Registrazione riuscita') {
+        loggato = true;
+        username = user;
+        ricarica();
+    } else {
+        document.getElementById('rispostaAccedi').innerHTML = dati['messaggio'];
+    }
+}
+
+// Funzione per gestire il logout
+async function logout(event) {
+
+    let data = {
+        operazione: 'logout'
+    };
+
+    let dati = await inviaDati(data, event);
+
+    if (dati['messaggio'] == 'Logout riuscito') {
+        loggato = false;
+        ricarica();
+    }
+}
+
+async function eliminaProfilo(event) {
+
+    let data = {
+        username: username,
+        password: document.getElementById('passwordElimina').value,
+        operazione: 'elimina'
+    };
+
+    let dati = await inviaDati(data, event);
+
+    if (dati['messaggio'] == 'Account eliminato') {
+        loggato = false;
+        username = '';
+        ricarica();
+    }
+}
+
+async function modificaProfilo(event) {
+
+    let data = {
+        username: username,
+        nuovoUsername: document.getElementById('nuovoUsername').value,
+        nuovaPassword: document.getElementById('nuovaPassword').value,
+        operazione: 'modifica'
+    };
+
+    let dati = await inviaDati(data, event);
+
+    document.getElementById('rispostaModifica').innerHTML = dati['messaggio'];
+}
+
+// Funzione per inviare e ricevere la risposta dal server
+async function inviaDati(data, event) {
+    event.preventDefault();
+    let response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data).toString()
     });
 
-    await risOperazione(response);
+    return await contenuto(response);
 }
 
-async function risOperazione(response) {
-    console.log(response);
+async function contenuto(response) {
     if (response.ok) {
-        const testo = await response.json();
-        document.getElementById('loginMessage').innerHTML = testo;
+        return await response.json();
     }
 }
 
-// Aggiunge gli event listener ai pulsanti
-document.getElementById('loginButton').addEventListener('click', (event) => inviaDatiAlServer('login', event));
-document.getElementById('registerButton').addEventListener('click', (event) => inviaDatiAlServer('registrazione', event));
+function ricarica() {
+    document.getElementById('accediProfilo').style.display = loggato ? 'none' : 'block';
+    document.getElementById('profiloUtente').style.display = loggato ? 'block' : 'none';
+    document.getElementById('modificaProfilo').style.display = loggato ? 'block' : 'none';
+    document.getElementById('eliminaProfilo').style.display = loggato ? 'block' : 'none';
+    document.getElementById('usernameProfilo').innerHTML = username;
+    document.getElementById('punteggioProfilo').innerHTML = punteggio;
+}
 
+// Aggiunge gli event listener ai pulsanti
+document.getElementById('loginButton').addEventListener('click', (event) => accediProfilo('login', event));
+document.getElementById('registerButton').addEventListener('click', (event) => accediProfilo('registrazione', event));
+document.getElementById('logoutButton').addEventListener('click', (event) => logout(event));
+document.getElementById('eliminaButton').addEventListener('click', (event) => eliminaProfilo(event));
+document.getElementById('modificaButton').addEventListener('click', (event) => modificaProfilo(event));
+
+ricarica();

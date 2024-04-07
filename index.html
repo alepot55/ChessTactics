@@ -18,7 +18,7 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#problemi">Problemi</a></li>
                 <li><a href="#gioca">Gioca</a></li>
-                <li><a href="#login">Login</a></li>
+                <li><a href="#profilo">Profilo</a></li>
             </ul>
         </nav>
     </header>
@@ -50,17 +50,47 @@
             <button id="vamos">vamos</button>
         </section>
 
-        <section id="login">
-            <h2>Login</h2>
-            <form id="loginForm">
-                <label for="username">Nome utente:</label><br>
-                <input type="text" id="username" name="username"><br>
-                <label for="password">Password:</label><br>
-                <input type="password" id="password" name="password"><br>
-                <input type="submit" id="loginButton" value="Accedi">
-                <input type="submit" id="registerButton" value="Registrati">
-                <p id="loginMessage"></p>
-            </form>
+        <section id="profilo">
+
+            <div id="profiloUtente">
+                <h2>Profilo Utente</h2>
+                <p>Nome utente: <span id="usernameProfilo"></span></p>
+                <p>Punteggio: <span id="punteggioProfilo"></span></p>
+                <button id="logoutButton">Logout</button>
+            </div>
+
+            <div id="modificaProfilo">
+                <h2>Modifica Profilo</h2>
+                <label for="nuovoUsername">Nuovo nome utente:</label><br>
+                <input type="text" id="nuovoUsername" name="nuovoUsername"><br>
+                <label for="nuovaPassword">Nuova password:</label><br>
+                <input type="password" id="nuovaPassword" name="nuovaPassword"><br>
+                <input type="submit" id="modificaButton" value="Modifica">
+                <p id="rispostaModifica"></p>
+            </div>
+
+            <div id="eliminaProfilo">
+                <h2>Elimina Profilo</h2>
+                <label for="passwordElimina">Password:</label><br>
+                <input type="password" id="passwordElimina" name="passwordElimina"><br>
+                <input type="submit" id="eliminaButton" value="Elimina">
+                <p id="rispostaElimina"></p>
+            </div>
+
+            <div id="accediProfilo">
+                <h2>Accedi / Registrati</h2>
+                <form id="loginForm">
+                    <label for="username">Nome utente:</label><br>
+                    <input type="text" id="usernameAccedi" name="usernameAccedi"><br>
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="passwordAccedi" name="passwordAccedi"><br>
+                    <input type="submit" id="loginButton" value="Accedi">
+                    <input type="submit" id="registerButton" value="Registrati">
+                    <p id="rispostaAccedi"></p>
+                </form>
+            </div>
+
+        </section>
 
     </main>
 

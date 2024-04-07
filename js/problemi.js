@@ -50,11 +50,8 @@ function clicca(args) {
     if (sol.length === 0 || args['square'] == null) return;
     console.log(cliccato);
     if (cliccato !== null) {
-        let source = cliccato;
-        cliccato = null;
-        togliOmbre();
         checkMossa({
-            'source': source,
+            'source': cliccato,
             'target': args['square']
         });
     } else {
@@ -143,6 +140,8 @@ function checkMossa(args) {
     if (!legali.some(legale => legale.to === args['target'])) {
         return 'snapback';
     } else if (args['source'] + args['target'] === mossa) {
+        cliccato = null;
+        togliOmbre();
         risolvi()
         mossaCorretta()
     } else {

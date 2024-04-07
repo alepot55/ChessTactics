@@ -13,8 +13,15 @@ $problemi = array_map('str_getcsv', file('data\problemi\puzzles.csv'));
 // Carica l'array di utenti dal file
 $utenti = json_decode(file_get_contents('data\utenti.json'), true);
 
+// Funzione per verificare che la password abbia almeno 8 caratteri e contenga almeno un numero
+function verificaPassword($password)
+{
+    return strlen($password) >= 8 && preg_match('/[0-9]/', $password);
+}
+
+
 // Funzione per calcolare la password dato un username
-function calcolaPassword($utenti, $username)
+function password($utenti, $username)
 {
     foreach ($utenti as $utente) {
         if ($utente['username'] === $username) {
@@ -28,6 +35,7 @@ function calcolaPassword($utenti, $username)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ottieni il tipo di azione (login o registrazione)
     $azione = $_POST['operazione'];
+    $dati = array();
 
     if ($azione === 'login') {
         // Gestisci il login
@@ -35,34 +43,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = $_POST['password'];
 
         // calcola la password per l'utente
-        $passwordCalcolata = calcolaPassword($utenti, $username);
+        $passwordTrovata = password($utenti, $username);
 
-        if ($passwordCalcolata === $password) {
-            // Per ora, supponiamo che il login sia riuscito
-            $_SESSION['username'] = $username;
-            echo json_encode("Login riuscito");
+        if ($passwordTrovata === null) {
+            $dati['messaggio'] = "Utente non registrato";
+        } else if ($passwordTrovata === $password) {
+            //$_SESSION['username'] = $username;
+            $dati['messaggio'] = "Login riuscito";
         } else {
-            echo json_encode("Password errata");
+            $dati['messaggio'] = "Password errata";
         }
     } else if ($azione === 'registrazione') {
         // Gestisci la registrazione
         $username = $_POST['username'];
         $password = $_POST['password'];
 
-        $passwordCalcolata = calcolaPassword($utenti, $username);
+        $passwordTrovata = password($utenti, $username);
 
-        if ($passwordCalcolata === null) {
-            $nuovoUtente = array('username' => $username, 'password' => $password);
+        if (!verificaPassword($password)) {
+            $dati['messaggio'] = ("La password deve contenere almeno 8 caratteri e un numero");
+        } else if ($passwordTrovata === null) {
+            $nuovoUtente = array(
+                'username' => $username, 
+                'password' => $password,
+                'punteggio' => $_POST['punteggio']
+            );
             array_push($utenti, $nuovoUtente);
-            $_SESSION['username'] = $username;
-            echo json_encode("Registrazione riuscita");
+            $dati['messaggio'] = "Registrazione riuscita";
 
             // Salva l'array di utenti nel file
             file_put_contents('data\utenti.json', json_encode($utenti));
         } else {
-            echo json_encode("Username già esistente");
+            $dati['messaggio'] = "Username già esistente";
+        }
+    } else if ($azione === 'logout') {
+        // Gestisci il logout
+        //session_unset();
+        //session_destroy();
+        $dati['messaggio'] = "Logout riuscito";
+    } else if ($azione === 'elimina') {
+        // Gestisci l'eliminazione dell'account
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        $passwordTrovata = password($utenti, $username);
+
+        if ($passwordTrovata === $password) {
+            // Rimuovi l'utente dall'array
+            foreach ($utenti as $key => $utente) {
+                if ($utente['username'] === $username) {
+                    unset($utenti[$key]);
+                }
+            }
+
+            // Salva l'array di utenti nel file
+            file_put_contents('data\utenti.json', json_encode($utenti));
+
+            // Esegui il logout
+            //session_unset();
+            //session_destroy();
+            $dati['messaggio'] = "Account eliminato";
+        } else {
+            $dati['messaggio'] = "Password errata";
+        }
+    
+    } else if ($azione === 'modifica') {
+        // Gestisci la modifica della password
+        $username = $_POST['username'];
+        
+        $nuovoUsername = $_POST['nuovoUsername'];
+        $nuovaPassword = $_POST['nuovaPassword'];
+
+        // Modifica l'utente e la password
+        if (!verificaPassword($nuovaPassword)) {
+            $dati['messaggio'] = "La password deve contenere almeno 8 caratteri e un numero";
+        } else {
+            foreach ($utenti as $key => $utente) {
+                if ($utente['username'] === $username) {
+                    $utenti[$key]['username'] = $nuovoUsername;
+                    $utenti[$key]['password'] = $nuovaPassword;
+                }
+            }
+
+            // Salva l'array di utenti nel file
+            file_put_contents('data\utenti.json', json_encode($utenti));
+            $dati['messaggio'] = "Modifica effettuata";
         }
     }
+    echo json_encode($dati);
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // Ottieni l'indice del problema dalla richiesta GET, se esiste
@@ -71,3 +139,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Restituisci il problema corrente come JSON
     echo json_encode($problemi[$indice]);
 }
+
