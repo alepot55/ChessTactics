@@ -1,3 +1,6 @@
+// Variabili globali
+
+
 // Gestione della navigazione
 var navLinks = document.querySelectorAll('nav ul li a');
 var sections = document.querySelectorAll('main section');

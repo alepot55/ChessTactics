@@ -1,116 +1,107 @@
-loggato = false;
-url = `http://localhost:3000/server.php`;
-username = '';
-punteggio = 0;
+let utenteLoggato = false;
+let indirizzoServer = `http://localhost:3000/server.php`;
+let nomeUtente = '';
+let punteggioUtente = 0;
 
-// Funzione per gestire l'invio dei dati al server
-async function accediProfilo(tipoOperazione, event) {
+async function gestisciAccessoProfilo(tipoOperazione, evento) {
+    let nomeUtenteInput = document.getElementById('usernameAccedi').value;
+    let passwordInput = document.getElementById('passwordAccedi').value;
 
-    // Ottiene il nome utente e la password
-    let user = document.getElementById('usernameAccedi').value;
-    let pass = document.getElementById('passwordAccedi').value;
-
-    // Crea un oggetto con i dati da inviare
-    let data = {
-        username: user,
-        password: pass,
-        punteggio: punteggio,
+    let datiDaInviare = {
+        username: nomeUtenteInput,
+        password: passwordInput,
+        punteggio: punteggioUtente,
         operazione: tipoOperazione
     };
 
-    let dati = await inviaDati(data, event);
+    let datiRicevuti = await inviaDatiAlServer(datiDaInviare, evento);
 
-    if (dati['messaggio'] == 'Login riuscito' || dati['messaggio'] == 'Registrazione riuscita') {
-        loggato = true;
-        username = user;
-        ricaricaProfilo();
+    if (datiRicevuti['messaggio'] == 'Login riuscito' || datiRicevuti['messaggio'] == 'Registrazione riuscita') {
+        utenteLoggato = true;
+        nomeUtente = nomeUtenteInput;
+        punteggioUtente = datiRicevuti['punteggio'];
+        aggiornaProfilo();
     } else {
-        document.getElementById('rispostaAccedi').innerHTML = dati['messaggio'];
+        document.getElementById('rispostaAccedi').innerHTML = datiRicevuti['messaggio'];
     }
 }
 
-// Funzione per gestire il logout
-async function logout(event) {
-
-    let data = {
+async function eseguiLogout(evento) {
+    let datiDaInviare = {
         operazione: 'logout'
     };
 
-    let dati = await inviaDati(data, event);
+    let datiRicevuti = await inviaDatiAlServer(datiDaInviare, evento);
 
-    if (dati['messaggio'] == 'Logout riuscito') {
-        loggato = false;
-        ricaricaProfilo();
+    if (datiRicevuti['messaggio'] == 'Logout riuscito') {
+        utenteLoggato = false;
+        aggiornaProfilo();
     }
 }
 
-async function eliminaProfilo(event) {
-
-    let data = {
-        username: username,
+async function eliminaProfiloUtente(evento) {
+    let datiDaInviare = {
+        username: nomeUtente,
         password: document.getElementById('passwordElimina').value,
         operazione: 'elimina'
     };
 
-    let dati = await inviaDati(data, event);
+    let datiRicevuti = await inviaDatiAlServer(datiDaInviare, evento);
 
-    if (dati['messaggio'] == 'Account eliminato') {
-        loggato = false;
-        username = '';
-        ricaricaProfilo();
+    if (datiRicevuti['messaggio'] == 'Account eliminato') {
+        utenteLoggato = false;
+        nomeUtente = '';
+        aggiornaProfilo();
     }
 }
 
-async function modificaProfilo(event) {
+async function modificaProfiloUtente(evento) {
+    let nuovoNomeUtente = document.getElementById('nuovoUsername').value;
+    let nuovaPassword = document.getElementById('nuovaPassword').value;
 
-    nuovoUsername = document.getElementById('nuovoUsername').value;
-    nuovaPassword = document.getElementById('nuovaPassword').value;
-
-    let data = {
-        username: username,
-        nuovoUsername: nuovoUsername,
+    let datiDaInviare = {
+        username: nomeUtente,
+        nuovoUsername: nuovoNomeUtente,
         nuovaPassword: nuovaPassword,
         operazione: 'modifica'
     };
 
-    let dati = await inviaDati(data, event);
+    let datiRicevuti = await inviaDatiAlServer(datiDaInviare, evento);
 
-    if (dati['messaggio'] == 'Modifica effettuata') {
-        username = nuovoUsername;
-        ricaricaProfilo();
+    if (datiRicevuti['messaggio'] == 'Modifica effettuata') {
+        nomeUtente = nuovoNomeUtente;
+        aggiornaProfilo();
     }
 
-    document.getElementById('rispostaModifica').innerHTML = dati['messaggio'];
+    document.getElementById('rispostaModifica').innerHTML = datiRicevuti['messaggio'];
 }
 
-// Funzione per inviare e ricevere la risposta dal server
-async function inviaDati(data, event) {
-    event.preventDefault();
-    let response = await fetch(url, {
+async function inviaDatiAlServer(dati, evento) {
+    evento.preventDefault();
+    let risposta = await fetch(indirizzoServer, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(data).toString()
+        body: new URLSearchParams(dati).toString()
     });
 
-    if (response.ok) {
-        return await response.json();
+    if (risposta.ok) {
+        return await risposta.json();
     }
 }
 
-function ricaricaProfilo() {
-    document.getElementById('accediProfilo').style.display = loggato ? 'none' : 'block';
-    document.getElementById('profiloUtente').style.display = loggato ? 'block' : 'none';
-    document.getElementById('modificaProfilo').style.display = loggato ? 'block' : 'none';
-    document.getElementById('eliminaProfilo').style.display = loggato ? 'block' : 'none';
-    document.getElementById('usernameProfilo').innerHTML = username;
-    document.getElementById('punteggioProfilo').innerHTML = punteggio;
+function aggiornaProfilo() {
+    document.getElementById('accediProfilo').style.display = utenteLoggato ? 'none' : 'block';
+    document.getElementById('profiloUtente').style.display = utenteLoggato ? 'block' : 'none';
+    document.getElementById('modificaProfilo').style.display = utenteLoggato ? 'block' : 'none';
+    document.getElementById('eliminaProfilo').style.display = utenteLoggato ? 'block' : 'none';
+    document.getElementById('usernameProfilo').innerHTML = nomeUtente;
+    document.getElementById('punteggioProfilo').innerHTML = punteggioUtente;
 }
 
-// Aggiunge gli event listener ai pulsanti
-document.getElementById('loginButton').addEventListener('click', (event) => accediProfilo('login', event));
-document.getElementById('registerButton').addEventListener('click', (event) => accediProfilo('registrazione', event));
-document.getElementById('logoutButton').addEventListener('click', (event) => logout(event));
-document.getElementById('eliminaButton').addEventListener('click', (event) => eliminaProfilo(event));
-document.getElementById('modificaButton').addEventListener('click', (event) => modificaProfilo(event));
+document.getElementById('loginButton').addEventListener('click', (evento) => gestisciAccessoProfilo('login', evento));
+document.getElementById('registerButton').addEventListener('click', (evento) => gestisciAccessoProfilo('registrazione', evento));
+document.getElementById('logoutButton').addEventListener('click', (evento) => eseguiLogout(evento));
+document.getElementById('eliminaButton').addEventListener('click', (evento) => eliminaProfiloUtente(evento));
+document.getElementById('modificaButton').addEventListener('click', (evento) => modificaProfiloUtente(evento));
 
-ricaricaProfilo();
+aggiornaProfilo();

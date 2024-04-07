@@ -1,116 +1,116 @@
-// Colonne problemi: PuzzleId,FEN,Moves,Rating,RatingDeviation,Popularity,NbPlays,Themes,GameUrl,OpeningTags
-var indice = 0;
-var sol = null;
+let indice = 0;
+let soluzione = null;
 const velocita = 500;
-const whiteSquareGrey = '#a9a9a9'
-const blackSquareGrey = '#696969'
-var cliccato = null;
-var board = Chessboard2('problema', 'start');;
-var game = null;
+const coloreCasellaBianca = '#a9a9a9'
+const coloreCasellaNera = '#696969'
+let casellaCliccata = null;
+let scacchiera = Chessboard2('problema', 'start');
+let partita = null;
 
-
-// Funzione per fare mosse sulla scacchiera
-function faiMossa() {
-    mossa = prossimaMossa();
-    game.move({
+function eseguiMossa() {
+    let mossa = ottieniProssimaMossa();
+    partita.move({
         from: mossa.slice(0, 2),
         to: mossa.slice(2, 4),
         promotion: 'q'
     });
-    board.position(game.fen(), 'slow');
+    scacchiera.position(partita.fen(), 'slow');
 }
 
-function prossimaMossa(aggiorna = true) {
-    mossa = sol.split(' ')[0];
-    if (aggiorna) sol = sol.slice(mossa.length + 1);
+function ottieniProssimaMossa(aggiorna = true) {
+    let mossa = soluzione.split(' ')[0];
+    if (aggiorna) soluzione = soluzione.slice(mossa.length + 1);
     return mossa;
 }
 
-// Funzione per aggiornare la scacchiera con una nuova FEN
 function aggiornaScacchiera(problema) {
-    game = new Chess(problema[1]);
-    let config = {
+    partita = new Chess(problema[1]);
+    let configurazione = {
         draggable: true,
-        position: game.fen(),
-        onDragStart: bloccaMosse,
-        onDrop: checkMossa,
-        orientation: game.turn() === 'w' ? 'black' : 'white',
-        onMouseenterSquare: mostraOmbreTemp,
+        position: partita.fen(),
+        onDragStart: bloccaMovimento,
+        onDrop: verificaMossa,
+        orientation: partita.turn() === 'w' ? 'black' : 'white',
+        onMouseenterSquare: mostraSuggerimentiTemp,
         trashSpeed: 'slow',
-        onMousedownSquare: clicca,
+        onMousedownSquare: gestisciClick,
     }
-    window.setTimeout(faiMossa, velocita);
-    board = Chessboard2('problema', config);
-    cliccato = null;
-    sol = problema[2];
-    document.getElementById('soluzione').textContent = sol;
+    window.setTimeout(eseguiMossa, velocita);
+    scacchiera = Chessboard2('problema', configurazione);
+    casellaCliccata = null;
+    soluzione = problema[2];
+    document.getElementById('soluzione').textContent = soluzione;
 }
 
-function clicca(args) {
-    if (sol.length === 0 || args['square'] == null) return;
-    if (cliccato !== null) {
-        checkMossa({
-            'source': cliccato,
-            'target': args['square']
-        });
+function gestisciClick(args) {
+    if (soluzione.length === 0) return;
+    let mossa = clickMossa(args);
+    if (mossa !== null) verificaMossa(mossa);
+}
+
+function clickMossa(args) {
+    if (args['square'] == null) return null;
+    let mossa = null;
+    if (casellaCliccata !== null) {
+        if (casellaCliccata !== args['square']) rimuoviSuggerimenti();
+        mossa = {'source': casellaCliccata, 'target': args['square']};
+        casellaCliccata = null;
     } else {
-        let pezzoGiusto = game.get(args['square']) !== null && game.get(args['square'])['color'] === board.orientation().slice(0, 1);
-        cliccato = pezzoGiusto ? args['square'] : null;
-        mostraOmbre(args);
+        let pezzoCorretto = partita.get(args['square']) !== null && partita.get(args['square'])['color'] === scacchiera.orientation().slice(0, 1);
+        casellaCliccata = pezzoCorretto ? args['square'] : null;
+        mostraSuggerimenti(args);
     }
+    return mossa;
 }
 
-function mostraOmbre(args) {
-    if (sol.length === 0) return;
-    let moves = game.moves({
+function mostraSuggerimenti(args) {
+    if (soluzione.length === 0) return;
+    let mosse = partita.moves({
         square: args.square,
         verbose: true
     });
-    if (moves.length === 0) return;
-    moves.forEach(move => {
-        greySquare(move.to);
-    });
-
-}
-
-function togliOmbre() {
-    document.querySelectorAll('[data-square-coord]').forEach(square => {
-        square.style.backgroundColor = '';
+    if (mosse.length === 0) return;
+    mosse.forEach(mossa => {
+        coloraCasella(mossa.to);
     });
 }
 
-// Funzione per mostrare i marker sulle caselle
-function mostraOmbreTemp(args) {
-    if (cliccato) return;
-    togliOmbre();
-    mostraOmbre(args);
+function rimuoviSuggerimenti() {
+    document.querySelectorAll('[data-square-coord]').forEach(casella => {
+        casella.style.backgroundColor = '';
+    });
 }
 
-function greySquare(square) {
-    const $square = document.querySelector('[data-square-coord="' + square + '"]')
-
-    let background = whiteSquareGrey
-    if ($square.classList.contains('black-b7cb6')) background = blackSquareGrey;
-
-    $square.style.backgroundColor = background;
+function mostraSuggerimentiTemp(args) {
+    if (casellaCliccata) return;
+    rimuoviSuggerimenti();
+    mostraSuggerimenti(args);
 }
 
-function isGreySquare(square) {
-    const $square = document.querySelector('[data-square-coord="' + square + '"]')
-    return $square.style.backgroundColor === whiteSquareGrey || $square.style.backgroundColor === blackSquareGrey;
+function coloraCasella(casella) {
+    const $casella = document.querySelector('[data-square-coord="' + casella + '"]')
+
+    let colore = coloreCasellaBianca
+    if ($casella.classList.contains('black-b7cb6')) colore = coloreCasellaNera;
+
+    $casella.style.backgroundColor = colore;
 }
 
-function bloccaMosse(args) {
-    if ((game.turn() === 'w' && args['piece'].search(/^b/) !== -1) ||
-        (game.turn() === 'b' && args['piece'].search(/^w/) !== -1)) {
+function isCasellaColorata(casella) {
+    const $casella = document.querySelector('[data-square-coord="' + casella + '"]')
+    return $casella.style.backgroundColor === coloreCasellaBianca || $casella.style.backgroundColor === coloreCasellaNera;
+}
+
+function bloccaMovimento(args) {
+    if ((partita.turn() === 'w' && args['piece'].search(/^b/) !== -1) ||
+        (partita.turn() === 'b' && args['piece'].search(/^w/) !== -1)) {
         return false
     }
 }
 
-function isWhitePiece(piece) { return /^w/.test(piece) }
-function isBlackPiece(piece) { return /^b/.test(piece) }
+function isPezzoBianco(pezzo) { return /^w/.test(pezzo) }
+function isPezzoNero(pezzo) { return /^b/.test(pezzo) }
 
-// Funzione per gestire la risposta del problema
 async function gestisciRispostaProblema(response) {
     if (response.ok) {
         const problema = await response.json();
@@ -118,7 +118,6 @@ async function gestisciRispostaProblema(response) {
     }
 }
 
-// Funzione per caricare un problema
 async function caricaProblema() {
     const url = `http://localhost:3000/server.php?indice=${indice}`;
     const response = await fetch(url);
@@ -129,27 +128,25 @@ async function caricaProblema() {
     document.getElementById('descrizione').textContent = 'Risolvi il problema!';
 }
 
-
-function checkMossa(args) {
-    mossa = prossimaMossa(aggiorna = false).slice(0, 4);
-    legali = game.moves({
+function verificaMossa(args) {
+    let mossa = ottieniProssimaMossa(aggiorna = false).slice(0, 4);
+    let mosseLegali = partita.moves({
         square: args['source'],
         verbose: true
     });
-    if (!legali.some(legale => legale.to === args['target'])) {
+    if (!mosseLegali.some(mossaLegale => mossaLegale.to === args['target'])) {
         return 'snapback';
     } else if (args['source'] + args['target'] === mossa) {
-        cliccato = null;
-        togliOmbre();
+        rimuoviSuggerimenti();
         risolvi()
-        mossaCorretta()
+        mossaGiusta()
     } else {
-        mossaErrata()
+        mossaSbagliata()
         return 'snapback'
     }
 }
 
-function mossaErrata() {
+function mossaSbagliata() {
     document.getElementById('descrizione').textContent = 'Mossa errata!';
 }
 
@@ -157,10 +154,10 @@ function vittoria() {
     document.getElementById('descrizione').textContent = 'Complimenti hai completato il puzzle!';
 }
 
-function mossaCorretta() {
+function mossaGiusta() {
     punteggio = punteggio + 1;
     ricaricaProfilo()
-    if (sol.length === 0) {
+    if (soluzione.length === 0) {
         return vittoria()
     }
     document.getElementById('descrizione').textContent = 'Esatto, continua così!';
@@ -168,16 +165,15 @@ function mossaCorretta() {
 }
 
 function risolvi() {
-    faiMossa();
-    if (sol.length === 0) {
+    eseguiMossa();
+    if (soluzione.length === 0) {
         document.getElementById('descrizione').textContent = 'Prova il prossimo problema!';
         document.getElementById('risolvi').disabled = true;
         return
     }
-    window.setTimeout(faiMossa, velocita);
+    window.setTimeout(eseguiMossa, velocita);
 }
 
-// Carica il problema iniziale 
 caricaProblema();
 
 document.getElementById('aggiorna').addEventListener('click', function () { caricaProblema(); });
