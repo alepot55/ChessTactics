@@ -1,11 +1,16 @@
 let utenteLoggato = false;
-let indirizzoServer = `http://localhost:3000/server.php`;
-let nomeUtente = '';
-let punteggioUtente = 0;
+nomeUtente = '';
+punteggioUtente = 0;
 
 async function gestisciAccessoProfilo(tipoOperazione, evento) {
     let nomeUtenteInput = document.getElementById('usernameAccedi').value;
     let passwordInput = document.getElementById('passwordAccedi').value;
+
+    if (nomeUtenteInput == '' || passwordInput == '') {
+        evento.preventDefault();
+        document.getElementById('rispostaAccedi').innerHTML = 'Inserire username e password';
+        return;
+    }
 
     let datiDaInviare = {
         username: nomeUtenteInput,
@@ -76,18 +81,6 @@ async function modificaProfiloUtente(evento) {
     document.getElementById('rispostaModifica').innerHTML = datiRicevuti['messaggio'];
 }
 
-async function inviaDatiAlServer(dati, evento) {
-    evento.preventDefault();
-    let risposta = await fetch(indirizzoServer, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(dati).toString()
-    });
-
-    if (risposta.ok) {
-        return await risposta.json();
-    }
-}
 
 function aggiornaProfilo() {
     document.getElementById('accediProfilo').style.display = utenteLoggato ? 'none' : 'block';

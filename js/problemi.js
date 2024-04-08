@@ -53,13 +53,15 @@ function ottieniProssimaMossa(aggiorna = true) {
 }
 
 async function caricaProblema() {
-    const url = `http://localhost:3000/server.php?indice=${indice}`;
-    const response = await fetch(url);
-    
-    if (response.ok) {
-        const problema = await response.json();
-        aggiornaScacchieraProblema(problema);
+
+    let datiDaInviare = {
+        operazione: 'problema',
+        indice: indice
     }
+    
+    let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
+
+    aggiornaScacchieraProblema(datiRicevuti['problema']);
 
     indice++;
     document.getElementById('risolvi').disabled = false;

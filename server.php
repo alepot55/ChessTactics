@@ -12,6 +12,7 @@ $problemi = array_map('str_getcsv', file('data\problemi\puzzles.csv'));
 
 // Carica l'array di utenti dal file
 $utenti = json_decode(file_get_contents('data\utenti.json'), true);
+$partite = json_decode(file_get_contents('data\partite.json'), true);
 
 // Funzione per verificare che la password abbia almeno 8 caratteri e contenga almeno un numero
 function passwordValida($password)
@@ -151,14 +152,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents('data\utenti.json', json_encode($utenti));
             $dati['messaggio'] = "Modifica effettuata";
         }
+    } else if ($azione === 'problema') {
+        $dati['problema'] = $problemi[$_POST['indice']];
+    } else if ($azione === 'creaPartita') {
+        if (count($partite) > 0 && $partite[count($partite) - 1]['giocatore2'] === null) {
+            $codice = $partite[count($partite) - 1]['codice'];
+            $partite[$codice]['giocatore2'] = $_POST['username'];
+            $partite[$codice]['ultimaMossa'] = null;
+            $dati['codice'] = $codice;
+            $dati['giocatore2'] = $partite[$codice]['giocatore2'];
+            $dati['colore'] = 'b';
+        } else {
+            $codice = 0;
+            if (count($partite) > 0) $codice = $partite[count($partite) - 1]['codice'] + 1;
+            $nuovaPartita = array(
+                'codice' => $codice,
+                'giocatore1' => $_POST['username'],
+                'giocatore2' => null,
+                'ultimaMossa' => null,
+            );
+            array_push($partite, $nuovaPartita);
+            $dati['codice'] = $codice;
+            $dati['giocatore2'] = $partite[$codice]['giocatore2'];
+            $dati['colore'] = 'w';
+        }
+        file_put_contents('data\partite.json', json_encode($partite));
+    } else if ($azione === 'aspettaGiocatori') {
+        $dati['messaggio'] = 'In attesa di un avversario';
+        $dati['giocatore2'] = $partite[$_POST['codice']]['giocatore2'];
+    } else if ($azione === 'faiMossa') {
+        $codice = $_POST['codice'];
+        $mossa = $_POST['mossa'];
+        $partite[$codice]['ultimaMossa'] = $mossa;
+        file_put_contents('data\partite.json', json_encode($partite));
+    } else if ($azione === 'aspettaMossa') {
+        $codice = $_POST['codice'];
+        $mossa = $partite[$codice]['ultimaMossa'];
+        $dati['mossa'] = $mossa;
     }
     echo json_encode($dati);
-} else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
-    // Ottieni l'indice del problema dalla richiesta GET, se esiste
-    $indice = isset($_GET['indice']) ? intval($_GET['indice']) : 0;
-
-    // Restituisci il problema corrente come JSON
-    echo json_encode($problemi[$indice]);
-}
+} 
 

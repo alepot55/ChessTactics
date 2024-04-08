@@ -1,3 +1,5 @@
+const indirizzoServer = `http://localhost:3000/server.php`;
+
 function bloccaMossa(pezzo, partita) {
     if ((partita.turn() === 'w' && pezzo.search(/^b/) !== -1) || (partita.turn() === 'b' && pezzo.search(/^w/) !== -1)) return false
     return true;
@@ -59,10 +61,18 @@ function coloraCasella(casella, idScacchiera) {
     $casella.style.backgroundColor = colore;
 }
 
-// function isCasellaColorata(casella, idScacchiera) {
-//     const $casella = document.querySelector('#' + idScacchiera + ' [data-square-coord="' + casella + '"]');
-//     return $casella.style.backgroundColor === '#a9a9a9' || $casella.style.backgroundColor === '#696969';
-// }
-
 function isPezzoBianco(pezzo) { return /^w/.test(pezzo) }
 function isPezzoNero(pezzo) { return /^b/.test(pezzo) }
+
+async function inviaDatiAlServer(dati, evento=null) {
+    if (evento !== null) evento.preventDefault();
+    let risposta = await fetch(indirizzoServer, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(dati).toString()
+    });
+
+    if (risposta.ok) {
+        return await risposta.json();
+    }
+}
