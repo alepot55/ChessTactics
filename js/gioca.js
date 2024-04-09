@@ -132,7 +132,6 @@ function onDropRandom(args) {
 }
 
 async function inviaMossaeAspetta(dati1, dati2, mossa) {
-    console.log("mossa inviata: " + mossa);
     if (dati1 !== null) {
         await inviaDatiAlServer(dati1);
     }
@@ -150,20 +149,28 @@ async function inviaMossaeAspetta(dati1, dati2, mossa) {
 }
 
 async function aspettaGiocatori(dati1, dati2) {
+    let iniziata = false;
     if (dati1 !== null) {
         let datiRicevuti = await inviaDatiAlServer(dati1);
-        console.log(datiRicevuti);
+        document.getElementById("stopRicercaRandom").style.display = "block";
         codicePartita = datiRicevuti['codice'];
         dati2['codice'] = codicePartita;
-        coloreUtente = datiRicevuti['colore'];
+        coloreUtente = datiRicevuti['colore'];    
+        iniziata = datiRicevuti['iniziata'];     
     }
-    console.log("codice partita: " + codicePartita);
     let datiRicevuti = await inviaDatiAlServer(dati2);
-    let giocatore2 = datiRicevuti['giocatore2'];
-    if (giocatore2 !== null && typeof giocatore2 !== 'undefined') {
+    if (datiRicevuti['annullata']) {
+        document.getElementById("messaggioRandom").innerText = "Partita annullata!";
+        document.getElementById("stopRicercaRandom").style.display = "none";
+        codicePartita = null;
+        coloreUtente = null;
+        return;
+    }
+    if (iniziata || datiRicevuti['iniziata']) {
+        document.getElementById("stopRicercaRandom").style.display = "none";
+        document.getElementById("messaggioRandom").innerText = "Partita iniziata!";
         partitaInit = true;
         aggiornaScacchieraGioca(scacchieraCorrente)
-        document.getElementById("messaggioRandom").innerText = "Partita iniziata!";
     } else {
         setTimeout(function () {
             aspettaGiocatori(null, dati2);
@@ -178,6 +185,7 @@ function creaPartitaeAspetta() {
     }
     let datiDaInviare2 = {
         operazione: 'aspettaGiocatori',
+        username: nomeUtente,
         codice: codicePartita
     }
     aspettaGiocatori(datiDaInviare1, datiDaInviare2);
@@ -215,7 +223,7 @@ function mostraGioca(sezione) {
 }
 
 mostraGioca("giocaComputer");
-
+document.getElementById("stopRicercaRandom").style.display = "none";
 document.getElementById("giocaComputerButton").addEventListener("click", function () {
     mostraGioca("giocaComputer");
 });
@@ -224,4 +232,12 @@ document.getElementById("giocaSoloButton").addEventListener("click", function ()
 });
 document.getElementById("giocaRandomButton").addEventListener("click", function () {
     mostraGioca("giocaRandom");
+});
+document.getElementById("stopRicercaRandom").addEventListener("click", function () {
+    let datiDaInviare = {
+        operazione: 'annullaPartita',
+        username: nomeUtente,
+        codice: codicePartita
+    }
+    inviaDatiAlServer(datiDaInviare);
 });
