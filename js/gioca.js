@@ -109,22 +109,20 @@ function onDropRandom(args) {
         mossa = args['source'] + args['target'];
         eseguiMossa(mossa, partitaGioca, scacchieraGioca);
 
-        if (partitaGioca.game_over()) {
-            document.getElementById("messaggioSolo").innerText = partitaGioca.in_checkmate() ? "Vince il " + (partitaGioca.turn() === 'w' ? "nero!" : "bianco!") : "Patta!";
-        }
-
         let datiDaInviare1 = {
             operazione: 'faiMossa',
             mossa: mossa,
-            codice: codicePartita
+            codice: codicePartita,
         }
         let datiDaInviare2 = {
             operazione: 'aspettaMossa',
             codice: codicePartita
         };
+
         inviaMossaeAspetta(datiDaInviare1, datiDaInviare2, mossa);
 
         if (partitaGioca.game_over()) {
+            aggiornaStatoRandom('terminata');
             document.getElementById("messaggioRandom").innerText = partitaGioca.in_checkmate() ? "Hai vinto!" : "Patta!";
             return;
         }
@@ -136,6 +134,10 @@ async function inviaMossaeAspetta(dati1, dati2, mossa) {
         await inviaDatiAlServer(dati1);
     }
     let datiRicevuti = await inviaDatiAlServer(dati2);
+    if (datiRicevuti['annullata']) {
+        aggiornaStatoRandom('annullata');
+        return;
+    }
     if (datiRicevuti['mossa'] === mossa) {
         setTimeout(function () {
             inviaMossaeAspetta(null, dati2, mossa);
@@ -143,7 +145,13 @@ async function inviaMossaeAspetta(dati1, dati2, mossa) {
     } else {
         eseguiMossa(datiRicevuti['mossa'], partitaGioca, scacchieraGioca);
         if (partitaGioca.game_over()) {
+            aggiornaStatoRandom('terminata');
             document.getElementById("messaggioRandom").innerText = partitaGioca.in_checkmate() ? "Hai perso!" : "Patta!";
+            let datiDaInviare = {
+                operazione: 'finePartita',
+                codice: codicePartita
+            }
+            await inviaDatiAlServer(datiDaInviare);
         }
     }
 }
@@ -152,24 +160,19 @@ async function aspettaGiocatori(dati1, dati2) {
     let iniziata = false;
     if (dati1 !== null) {
         let datiRicevuti = await inviaDatiAlServer(dati1);
-        document.getElementById("stopRicercaRandom").style.display = "block";
         codicePartita = datiRicevuti['codice'];
-        dati2['codice'] = codicePartita;
-        coloreUtente = datiRicevuti['colore'];    
-        iniziata = datiRicevuti['iniziata'];     
+        dati2['codice'] = datiRicevuti['codice'];
+        coloreUtente = datiRicevuti['colore'];
+        iniziata = datiRicevuti['iniziata'];
+        aggiornaStatoRandom(iniziata ? 'iniziata' : 'ricerca');
     }
     let datiRicevuti = await inviaDatiAlServer(dati2);
     if (datiRicevuti['annullata']) {
-        document.getElementById("messaggioRandom").innerText = "Partita annullata!";
-        document.getElementById("stopRicercaRandom").style.display = "none";
-        codicePartita = null;
-        coloreUtente = null;
+        aggiornaStatoRandom('annullata');
         return;
     }
     if (iniziata || datiRicevuti['iniziata']) {
-        document.getElementById("stopRicercaRandom").style.display = "none";
-        document.getElementById("messaggioRandom").innerText = "Partita iniziata!";
-        partitaInit = true;
+        aggiornaStatoRandom('iniziata');
         aggiornaScacchieraGioca(scacchieraCorrente)
     } else {
         setTimeout(function () {
@@ -178,10 +181,11 @@ async function aspettaGiocatori(dati1, dati2) {
     }
 }
 
-function creaPartitaeAspetta() {
+function creaPartitaeAspetta(protezione) {
     let datiDaInviare1 = {
         operazione: 'creaPartita',
         username: nomeUtente,
+        protezione: protezione
     }
     let datiDaInviare2 = {
         operazione: 'aspettaGiocatori',
@@ -189,7 +193,7 @@ function creaPartitaeAspetta() {
         codice: codicePartita
     }
     aspettaGiocatori(datiDaInviare1, datiDaInviare2);
-    document.getElementById("messaggioRandom").innerText = "In attesa di un avversario...";
+    aggiornaStatoRandom('ricerca');
 }
 
 function getMossaComputer(partita) {
@@ -210,16 +214,57 @@ function mostraGioca(sezione) {
     sezioneCorrente = sezione;
 
     if (sezione === "giocaRandom") {
-        scacchieraGioca = Chessboard2(scacchieraCorrente)
-        partitaGioca = Chess();
-        if (nomeUtente === '') {
-            document.getElementById("messaggioRandom").innerText = "Devi essere loggato per giocare!";
-            return;
-        }
-        return creaPartitaeAspetta();
+        aggiornaStatoRandom();
+        return;
     }
 
     aggiornaScacchieraGioca(scacchieraCorrente)
+}
+
+function aggiornaStatoRandom(stato = 'default') {
+    console.log(stato);
+    if (stato === 'default') {
+        scacchieraGioca = Chessboard2(scacchieraCorrente)
+        partitaGioca = Chess();
+        document.getElementById("messaggioRandom").innerText = "Benvenuto nella sezione random! Clicca su 'Nuova Partita' per iniziare! Puoi giocare con un avversario casuale o con un amico inserendo un codice!";
+        partitaInit = false;
+        codicePartita = null;
+        coloreUtente = null;
+        document.getElementById("stopRicercaRandom").style.display = "none";
+        document.getElementById("codiceRandom").value = "";
+        document.getElementById("terminaPartitaRandom").style.display = "none";
+        document.getElementById("nuovaPartitaRandom").style.display = "block";
+    } else if (stato === 'iniziata') {
+        document.getElementById("messaggioRandom").innerText = "Partita iniziata!";
+        partitaInit = true;
+        document.getElementById("codiceRandom").value = "";
+        document.getElementById("nuovaPartitaRandom").style.display = "none";
+        document.getElementById("terminaPartitaRandom").style.display = "block";
+        document.getElementById("stopRicercaRandom").style.display = "none";
+    } else if (stato === 'terminata') {
+        document.getElementById("messaggioRandom").innerText = "Partita terminata!";
+        partitaInit = false;
+        codicePartita = null;
+        coloreUtente = null;
+        document.getElementById("codiceRandom").value = "";
+        document.getElementById("stopRicercaRandom").style.display = "none";
+        document.getElementById("terminaPartitaRandom").style.display = "none";
+        document.getElementById("nuovaPartitaRandom").style.display = "block";
+    } else if (stato === 'annullata') {
+        document.getElementById("messaggioRandom").innerText = "Partita annullata!";
+        partitaInit = false;
+        codicePartita = null;
+        coloreUtente = null;
+        document.getElementById("codiceRandom").value = "";
+        document.getElementById("stopRicercaRandom").style.display = "none";
+        document.getElementById("terminaPartitaRandom").style.display = "none";
+        document.getElementById("nuovaPartitaRandom").style.display = "block";
+    } else if (stato === 'ricerca') {
+        document.getElementById("messaggioRandom").innerText = "In attesa di un avversario...";
+        document.getElementById("nuovaPartitaRandom").style.display = "none";
+        document.getElementById("terminaPartitaRandom").style.display = "none";
+        document.getElementById("stopRicercaRandom").style.display = "block";
+    }
 }
 
 mostraGioca("giocaComputer");
@@ -240,4 +285,30 @@ document.getElementById("stopRicercaRandom").addEventListener("click", function 
         codice: codicePartita
     }
     inviaDatiAlServer(datiDaInviare);
+});
+document.getElementById("nuovaPartitaRandom").addEventListener("click", function () {
+    if (partitaInit) {
+        document.getElementById("messaggioRandom").innerText = "Devi terminare la partita in corso!";
+        return;
+    }
+
+    let protezione = document.getElementById("codiceRandom").value;
+
+    if (protezione.length === 0) {
+        protezione = null;
+    }
+
+    if (nomeUtente === '') {
+        document.getElementById("messaggioRandom").innerText = "Devi essere loggato per giocare!";
+        return;
+    }
+    return creaPartitaeAspetta(protezione);
+});
+document.getElementById("terminaPartitaRandom").addEventListener("click", function () {
+    let datiDaInviare = {
+        operazione: 'finePartita',
+        codice: codicePartita
+    }
+    inviaDatiAlServer(datiDaInviare);
+    aggiornaStatoRandom('terminata');
 });

@@ -167,32 +167,34 @@ function problema($dati) {
 
 function creaPartita($dati) {
     $username = $dati['username'];
+    $protezione = $dati['protezione'];
     global $partite;
     $dati = array();
 
-    if (count($partite) > 0 && $partite[count($partite) - 1]['giocatore2'] === null && $partite[count($partite) - 1]['giocatore1'] !== null) {
-        $codice = $partite[count($partite) - 1]['codice'];
-        $partite[$codice]['giocatore2'] = $username;
-        $partite[$codice]['ultimaMossa'] = null;
-        $dati['codice'] = $codice;
-        $dati['giocatore2'] = $partite[$codice]['giocatore2'];
-        $dati['colore'] = 'b';
-        $dati['iniziata'] = true;
-    } else {
-        $codice = 0;
-        if (count($partite) > 0) $codice = $partite[count($partite) - 1]['codice'] + 1;
-        $nuovaPartita = array(
-            'codice' => $codice,
-            'giocatore1' => $username,
-            'giocatore2' => null,
-            'ultimaMossa' => null,
-        );
-        array_push($partite, $nuovaPartita);
-        $dati['codice'] = $codice;
-        $dati['giocatore2'] = $partite[$codice]['giocatore2'];
-        $dati['colore'] = 'w';
-        $dati['iniziata'] = false;
+    foreach ($partite as $partita) {
+        if ($partita['giocatore1'] !== null && $partita['giocatore2'] === null && $partita['protezione'] === $protezione) {
+            $codice = $partita['codice'];
+            $partite[$codice]['giocatore2'] = $username;
+            $dati['codice'] = $codice;
+            $dati['colore'] = 'b';
+            $dati['iniziata'] = true;
+            return $dati;
+        }
     }
+
+
+    $codice = count($partite);
+    $nuovaPartita = array(
+        'codice' => $codice,
+        'giocatore1' => $username,
+        'giocatore2' => null,
+        'ultimaMossa' => null,
+        'protezione' => $protezione
+    );
+    array_push($partite, $nuovaPartita);
+    $dati['codice'] = $codice;
+    $dati['colore'] = 'w';
+    $dati['iniziata'] = false;
 
     return $dati;
 }
@@ -233,15 +235,28 @@ function aspettaMossa($dati) {
     $mossa = $partite[$codice]['ultimaMossa'];
     $dati['mossa'] = $mossa;
 
+    if ($partite[$codice]['giocatore1'] === null && $partite[$codice]['giocatore2'] === null) {
+        $dati['annullata'] = true;
+    } else {
+        $dati['annullata'] = false;
+    }
+
     return $dati;
 }
 
 function annullaPartita($dati) {
+    return finePartita($dati);
+}
+
+function finePartita($dati) {
     global $partite;
     $codice = $dati['codice'];
     $dati = array();
 
     $partite[$codice]['giocatore1'] = null;
+    $partite[$codice]['giocatore2'] = null;
+    $partite[$codice]['ultimaMossa'] = null;
+    $partite[$codice]['protezione'] = null;
 
     return $dati;
 }
