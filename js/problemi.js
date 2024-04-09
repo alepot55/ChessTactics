@@ -8,7 +8,7 @@ var partita = null;
 function aggiornaScacchieraProblema(problema) {
     partita = new Chess(problema[1]);
     let configurazione = {
-        draggable: true,
+        draggable: false,
         position: partita.fen(),
         orientation: partita.turn() === 'w' ? 'black' : 'white',
         trashSpeed: 'slow',
@@ -22,6 +22,7 @@ function aggiornaScacchieraProblema(problema) {
     let mossa = ottieniProssimaMossa();
     window.setTimeout(() => eseguiMossa(mossa, partita, scacchiera), velocita);
     scacchiera = new Chessboard2('problema', configurazione);
+    applicaTema();
     document.getElementById('soluzione').textContent = soluzione;
 }
 

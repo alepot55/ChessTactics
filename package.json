@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@chrisoakman/chessboard2": "^0.5.0",
     "@chrisoakman/chessboardjs": "^1.0.0",
     "express": "^4.19.2"
   },

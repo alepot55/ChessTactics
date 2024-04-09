@@ -1,5 +1,5 @@
 let utenteLoggato = false;
-nomeUtente = '';
+nomeUtente = null;
 punteggioUtente = 0;
 
 async function gestisciAccessoProfilo(tipoOperazione, evento) {
@@ -81,7 +81,6 @@ async function modificaProfiloUtente(evento) {
     document.getElementById('rispostaModifica').innerHTML = datiRicevuti['messaggio'];
 }
 
-
 function aggiornaProfilo() {
     document.getElementById('accediProfilo').style.display = utenteLoggato ? 'none' : 'block';
     document.getElementById('profiloUtente').style.display = utenteLoggato ? 'block' : 'none';
@@ -96,5 +95,11 @@ document.getElementById('registerButton').addEventListener('click', (evento) => 
 document.getElementById('logoutButton').addEventListener('click', (evento) => eseguiLogout(evento));
 document.getElementById('eliminaButton').addEventListener('click', (evento) => eliminaProfiloUtente(evento));
 document.getElementById('modificaButton').addEventListener('click', (evento) => modificaProfiloUtente(evento));
+document.getElementById('salvaPreferenze').addEventListener('click', function () {
+    temaPezzi = document.getElementById('temaPezzi').value;
+    temaScacchiera = document.getElementById('temaScacchiera').value;
+    applicaTema('default');
+    applicaTema();
+});
 
 aggiornaProfilo();

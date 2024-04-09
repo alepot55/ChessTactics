@@ -20,19 +20,25 @@ function getCasellaCliccata() {
     return casellaCliccata;
 }
 
+function posizioneIniziale() {
+    return coloreUtente === 'b' ? DEFAULT_POSITION_BLACK : DEFAULT_POSITION_WHITE;
+}
+
 function aggiornaScacchieraGioca(scacchiera, posizione = DEFAULT_POSITION_WHITE) {
     partitaGioca = new Chess(posizione);
     onDropGioca = scacchiera === "scacchieraComputer" ? onDropComputer : scacchiera === "scacchieraSolo" ? onDropSolo : onDropRandom;
     scacchieraGioca = new Chessboard2(scacchiera, {
         position: partitaGioca.fen(),
-        draggable: true,
+        draggable: false,
         trashSpeed: 'slow',
-        orientation: coloreUtente === 'w' ? 'white' : 'black',
+        orientation: coloreUtente === 'b' ? 'black' : 'white',
+        pieceTheme: pieceTheme,
         onDragStart: onDragStartGioca,
         onMouseenterSquare: onMouseEnterSquareGioca,
         onMousedownSquare: onMousedownSquareGioca,
         onDrop: onDropGioca,
     });
+    applicaTema()
     if (coloreUtente === 'b') {
         let datiDaInviare = {
             operazione: 'aspettaMossa',
@@ -52,11 +58,13 @@ function onMouseEnterSquareGioca(args) {
 }
 
 function onMousedownSquareGioca(args) {
+    applicaTema();
     if (sezioneCorrente === "giocaRandom" && scacchieraGioca.orientation().slice(0, 1) !== partitaGioca.turn()) return;
     gestisciClick(args, partitaGioca, scacchieraGioca, getCasellaCliccata, onDropGioca, setCasellaCliccata, scacchieraCorrente);
 }
 
 function onDropSolo(args) {
+    applicaTema();
     let mosseLegali = partitaGioca.moves({
         square: args['source'],
         verbose: true
@@ -75,6 +83,7 @@ function onDropSolo(args) {
 }
 
 function onDropComputer(args) {
+    applicaTema();
     let mosseLegali = partitaGioca.moves({
         square: args['source'],
         verbose: true
@@ -97,6 +106,7 @@ function onDropComputer(args) {
 }
 
 function onDropRandom(args) {
+    applicaTema();
     let mosseLegali = partitaGioca.moves({
         square: args['source'],
         verbose: true
@@ -217,12 +227,11 @@ function mostraGioca(sezione) {
         aggiornaStatoRandom();
         return;
     }
-
     aggiornaScacchieraGioca(scacchieraCorrente)
 }
 
 function aggiornaStatoRandom(stato = 'default') {
-    console.log(stato);
+    applicaTema()
     if (stato === 'default') {
         scacchieraGioca = Chessboard2(scacchieraCorrente)
         partitaGioca = Chess();
@@ -260,6 +269,8 @@ function aggiornaStatoRandom(stato = 'default') {
         document.getElementById("terminaPartitaRandom").style.display = "none";
         document.getElementById("nuovaPartitaRandom").style.display = "block";
     } else if (stato === 'ricerca') {
+        scacchieraGioca = Chessboard2(scacchieraCorrente)
+        partitaGioca = Chess();
         document.getElementById("messaggioRandom").innerText = "In attesa di un avversario...";
         document.getElementById("nuovaPartitaRandom").style.display = "none";
         document.getElementById("terminaPartitaRandom").style.display = "none";
@@ -298,7 +309,7 @@ document.getElementById("nuovaPartitaRandom").addEventListener("click", function
         protezione = null;
     }
 
-    if (nomeUtente === '') {
+    if (nomeUtente === null || nomeUtente === "") {
         document.getElementById("messaggioRandom").innerText = "Devi essere loggato per giocare!";
         return;
     }
@@ -312,3 +323,5 @@ document.getElementById("terminaPartitaRandom").addEventListener("click", functi
     inviaDatiAlServer(datiDaInviare);
     aggiornaStatoRandom('terminata');
 });
+document.getElementById("nuovaPartitaComputer").addEventListener("click", function () { mostraGioca("giocaComputer"); });
+document.getElementById("nuovaPartitaSolo").addEventListener("click", function () { mostraGioca("giocaSolo"); });

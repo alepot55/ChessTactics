@@ -45,6 +45,20 @@ function password($utenti, $username) {
     return null;
 }
 
+function sessione($dati) {
+    $dati = array();
+
+    if (isset($_SESSION['username'])) {
+        $dati['username'] = $_SESSION['username'];
+        $dati['punteggio'] = $_SESSION['punteggio'];
+    } else {
+        $dati['username'] = null;
+        $dati['punteggio'] = 0;
+    }
+
+    return $dati;
+}
+
 function login($dati) {
     $username = $dati['username'];
     $password = $dati['password'];
@@ -58,6 +72,8 @@ function login($dati) {
     } else if ($passwordTrovata === $password) {
         $dati['messaggio'] = "Login riuscito";
         $dati['punteggio'] = sommaPunteggio($utenti, $username, $_POST['punteggio']);
+        $_SESSION['username'] = $username;
+        $_SESSION['punteggio'] = $dati['punteggio'];
     } else {
         $dati['messaggio'] = "Password errata";
     }
@@ -84,6 +100,8 @@ function registrazione($dati) {
         array_push($utenti, $nuovoUtente);
         $dati['messaggio'] = "Registrazione riuscita";
         $dati['punteggio'] = $_POST['punteggio'];
+        $_SESSION['username'] = $username;
+        $_SESSION['punteggio'] = $dati['punteggio'];
     } else {
         $dati['messaggio'] = "Username già esistente";
     }
