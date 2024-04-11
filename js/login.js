@@ -98,7 +98,6 @@ document.getElementById('modificaButton').addEventListener('click', (evento) => 
 document.getElementById('salvaPreferenze').addEventListener('click', function () {
     temaPezzi = document.getElementById('temaPezzi').value;
     temaScacchiera = document.getElementById('temaScacchiera').value;
-    applicaTema('default');
     applicaTema();
 });
 

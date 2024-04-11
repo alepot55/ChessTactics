@@ -1,123 +1,164 @@
 var indice = 0;
 var soluzione = null;
-const velocita = 500;
 var casellaCliccata = null;
-var scacchiera = Chessboard2('problema', 'start');
+var idScacchiera = 'scacchieraProblemi';
 var partita = null;
 
-function aggiornaScacchieraProblema(problema) {
+var scacchiera = Chessboard2(idScacchiera, 'start');
+var bottoneAggiorna = document.getElementById('aggiornaProblema');
+var bottoneRisolvi = document.getElementById('risolviProblema');
+
+// Funzione che aggiorna la scacchiera con il problema ricevuto dal server
+function aggiornaScacchieraProblemi(problema) {
+
+    // Inizializza la partita 
     partita = new Chess(problema[1]);
+
+    // Configura la scacchiera
     let configurazione = {
         draggable: false,
         position: partita.fen(),
         orientation: partita.turn() === 'w' ? 'black' : 'white',
         trashSpeed: 'slow',
-        onDragStart: onDragStartProblemi,
         onMouseenterSquare: onMouseEnterSquareProblemi,
         onMousedownSquare: onMousedownSquareProblemi,
-        onDrop: verificaMossa,
     }
+    scacchiera = new Chessboard2(idScacchiera, configurazione);
+
+    // Aggiorna la soluzione del problema
     soluzione = problema[2];
-    setCasellaCliccata(null)
-    let mossa = ottieniProssimaMossa();
-    window.setTimeout(() => eseguiMossa(mossa, partita, scacchiera), velocita);
-    scacchiera = new Chessboard2('problema', configurazione);
-    applicaTema();
     document.getElementById('soluzione').textContent = soluzione;
+
+    // Fai la prima mossa
+    let mossa = ottieniProssimaMossa();
+    window.setTimeout(() => eseguiMossa(mossa, partita, scacchiera), 700);
+
+    // Imposta il tema e la casella cliccata
+    setCasellaCliccata(null)
+    applicaTema();
 }
 
+// Imposta la casella cliccata (serve a gestire il click)
 function setCasellaCliccata(casella) {
     casellaCliccata = casella;
 }
 
+// Restituisce la casella cliccata (serve a gestire il click)
 function getCasellaCliccata() {
     return casellaCliccata;
 }
 
-function onDragStartProblemi(args) {
-    return bloccaMossa(args['piece'], partita);
-}
-
+// Funzione che gestisce il passaggio del mouse su una casella
 function onMouseEnterSquareProblemi(args) {
-    mostraSuggerimenti(args, partita, getCasellaCliccata, 'problema');
+    mostraSuggerimenti(args, partita, getCasellaCliccata, idScacchiera);
 }
 
+// Funzione che gestisce il click su una casella
 function onMousedownSquareProblemi(args) {
     if (soluzione.length === 0) return;
-    gestisciClick(args, partita, scacchiera, getCasellaCliccata, verificaMossa, setCasellaCliccata, 'problema');
+    gestisciClick(args, partita, scacchiera, getCasellaCliccata, convalidaMossaProblemi, setCasellaCliccata, idScacchiera);
 }
 
+// Funzione che restituisce la prossima mossa da eseguire
 function ottieniProssimaMossa(aggiorna = true) {
     let mossa = soluzione.split(' ')[0];
     if (aggiorna) soluzione = soluzione.slice(mossa.length + 1);
     return mossa;
 }
 
+// Carica il problema successivo e aggiorna la scacchiera
 async function caricaProblema() {
 
+    // Invia la richiesta al server per ottenere il problema
     let datiDaInviare = {
         operazione: 'problema',
         indice: indice
     }
-    
     let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
 
-    aggiornaScacchieraProblema(datiRicevuti['problema']);
+    // Aggiorna la scacchiera con il problema ricevuto
+    aggiornaScacchieraProblemi(datiRicevuti['problema']);
 
+    // Aggiorna l'indice del problema
     indice++;
-    document.getElementById('risolvi').disabled = false;
+
+    // Abilita il bottone risolvi e aggiorna il testo
+    bottoneRisolvi.disabled = false;
     document.getElementById('descrizione').textContent = 'Risolvi il problema!';
 }
 
-function verificaMossa(args) {
-    let mossa = ottieniProssimaMossa(aggiorna = false).slice(0, 4);
+// Funzione che convalida la mossa inserita dall'utente
+function convalidaMossaProblemi(args) {
+
+    // Ottieni la mossa corretta
+    let mossaCorretta = ottieniProssimaMossa(aggiorna = false).slice(0, 4);
+
+    // Ottieni le mosse legali
     let mosseLegali = partita.moves({
         square: args['source'],
         verbose: true
     });
-    if (!mosseLegali.some(mossaLegale => mossaLegale.to === args['target'])) {
-        return 'snapback';
-    } else if (args['source'] + args['target'] === mossa) {
+
+    // Se la mossa è corretta eseguila
+    if (args['source'] + args['target'] === mossaCorretta) {
         rimuoviSuggerimenti();
-        risolvi()
-        mossaGiusta()
+        risolvi();
+        mossaGiusta();
     } else {
-        mossaSbagliata()
+
+        // Se la mossa è legale, allora è sbagliata
+        if (mosseLegali.some(mossaLegale => mossaLegale.to === args['target'])) mossaSbagliata();
+
+        // Torna indietro
         return 'snapback'
     }
 }
 
+// Funzione per quando l'utente esegue una mossa sbagliata
 function mossaSbagliata() {
     document.getElementById('descrizione').textContent = 'Mossa errata!';
 }
 
+// Funzione per quando l'utente completa il puzzle
 function vittoria() {
     document.getElementById('descrizione').textContent = 'Complimenti hai completato il puzzle!';
 }
 
+// Funzione per quando l'utente esegue una mossa corretta
 function mossaGiusta() {
+
+    // Aggiorna il punteggio dell'utente
     punteggioUtente = punteggioUtente + 1;
     aggiornaProfilo()
+
+    // Se non ci sono più mosse da eseguire, l'utente ha completato il puzzle
     if (soluzione.length === 0) {
         return vittoria()
     }
+
+    // Altrimenti mostra un messaggio di conferma
     document.getElementById('descrizione').textContent = 'Esatto, continua così!';
-    0
+    
 }
 
+// Funzione che risolve una mossa del problema
 function risolvi() {
+
+    // Prendi la prossima mossa e eseguila
     let mossa = ottieniProssimaMossa();
-    eseguiMossa(mossa, partita, scacchiera);
+    eseguiMossa(mossa, partita, scacchiera, idScacchiera);
+
+    // Se non ci sono più mosse da eseguire, mostra un messaggio
     if (soluzione.length === 0) {
         document.getElementById('descrizione').textContent = 'Prova il prossimo problema!';
-        document.getElementById('risolvi').disabled = true;
-        return
+        return bottoneRisolvi.disabled = true;
     }
+
+    // Altrimenti esegui la mossa dell'avversario
     mossa = ottieniProssimaMossa();
-    window.setTimeout(() => eseguiMossa(mossa, partita, scacchiera), velocita);
+    window.setTimeout(() => eseguiMossa(mossa, partita, scacchiera), 700);
 }
 
 caricaProblema();
-
-document.getElementById('aggiorna').addEventListener('click', function () { caricaProblema(); });
-document.getElementById('risolvi').addEventListener('click', function () { risolvi(); });
+bottoneAggiorna.addEventListener('click', function () { caricaProblema(); });
+bottoneRisolvi.addEventListener('click', function () { risolvi(); });
