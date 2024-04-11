@@ -1,4 +1,3 @@
-let utenteLoggato = false;
 nomeUtente = null;
 punteggioUtente = 0;
 
@@ -22,7 +21,6 @@ async function gestisciAccessoProfilo(tipoOperazione, evento) {
     let datiRicevuti = await inviaDatiAlServer(datiDaInviare, evento);
 
     if (datiRicevuti['messaggio'] == 'Login riuscito' || datiRicevuti['messaggio'] == 'Registrazione riuscita') {
-        utenteLoggato = true;
         nomeUtente = nomeUtenteInput;
         punteggioUtente = datiRicevuti['punteggio'];
         aggiornaProfilo();
@@ -39,7 +37,7 @@ async function eseguiLogout(evento) {
     let datiRicevuti = await inviaDatiAlServer(datiDaInviare, evento);
 
     if (datiRicevuti['messaggio'] == 'Logout riuscito') {
-        utenteLoggato = false;
+        nomeUtente = null;
         aggiornaProfilo();
     }
 }
@@ -54,8 +52,7 @@ async function eliminaProfiloUtente(evento) {
     let datiRicevuti = await inviaDatiAlServer(datiDaInviare, evento);
 
     if (datiRicevuti['messaggio'] == 'Account eliminato') {
-        utenteLoggato = false;
-        nomeUtente = '';
+        nomeUtente = null;
         aggiornaProfilo();
     }
 }
@@ -82,6 +79,7 @@ async function modificaProfiloUtente(evento) {
 }
 
 function aggiornaProfilo() {
+    let utenteLoggato = nomeUtente != null;
     document.getElementById('accediProfilo').style.display = utenteLoggato ? 'none' : 'block';
     document.getElementById('profiloUtente').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('modificaProfilo').style.display = utenteLoggato ? 'block' : 'none';

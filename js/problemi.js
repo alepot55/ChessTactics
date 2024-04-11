@@ -56,7 +56,7 @@ function onMouseEnterSquareProblemi(args) {
 // Funzione che gestisce il click su una casella
 function onMousedownSquareProblemi(args) {
     if (soluzione.length === 0) return;
-    gestisciClick(args, partita, scacchiera, getCasellaCliccata, convalidaMossaProblemi, setCasellaCliccata, idScacchiera);
+    gestisciClick(args, partita, getCasellaCliccata, convalidaMossaProblemi, setCasellaCliccata, idScacchiera);
 }
 
 // Funzione che restituisce la prossima mossa da eseguire

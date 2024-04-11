@@ -1,12 +1,13 @@
-// le sezioni sono giocaComputer, giocaSolo, giocaRandom
-// le scacchiere sono scacchieraComputer, scacchieraSolo, scacchieraRandom
+// le sezioni sono giocaComputer, giocaSolo, giocaMultiplayer
+// le scacchiere sono scacchieraComputer, scacchieraSolo, scacchieraMultiplayer
 
 DEFAULT_POSITION_WHITE = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 DEFAULT_POSITION_BLACK = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1'
 
 // Variabili 
 var sezioneCorrente = "giocaComputer";
-var scacchieraCorrente = "scacchieraComputer";
+var idScacchieraCorrente = "scacchieraComputer";
+var modalitàMultiplayer = 'normale';
 var casellaCliccata = null;
 var scacchieraGioca = null;
 var partitaGioca = null;
@@ -15,14 +16,54 @@ var partitaInit = false;
 var coloreUtente = null;
 
 // Bottoni
-var buttStopRicercaRandom = document.getElementById("stopRicercaRandom");
-var buttNuovaPartitaRandom = document.getElementById("nuovaPartitaRandom");
-var buttTerminaPartitaRandom = document.getElementById("terminaPartitaRandom");
+var buttStopRicercaMultiplayer = document.getElementById("stopRicercaMultiplayer");
+var buttNuovaPartitaMultiplayer = document.getElementById("nuovaPartitaMultiplayer");
+var buttTerminaPartitaMultiplayer = document.getElementById("terminaPartitaMultiplayer");
 var buttGiocaComputer = document.getElementById("giocaComputerButton");
 var buttGiocaSolo = document.getElementById("giocaSoloButton");
-var buttGiocaRandom = document.getElementById("giocaRandomButton");
+var buttGiocaMultiplayer = document.getElementById("giocaMultiplayerButton");
 var buttNuovaPartitaComputer = document.getElementById("nuovaPartitaComputer");
 var buttNuovaPartitaSolo = document.getElementById("nuovaPartitaSolo");
+
+function applicaTemaMultiplayer() {
+    let tema = modalitàMultiplayer === 'pezziNascosti' ? 'dama' : temaPezzi;
+    applicaTema(idScacchieraCorrente, tema);
+    if (modalitàMultiplayer === 'nebbia' && partitaInit) annebbiaScacchiera();
+}
+
+function cambiaTurnoFen(fen) {
+    let parti = fen.split(" ");
+    parti[1] = parti[1] === 'w' ? 'b' : 'w';
+    parti[3] = '-';
+    return parti.join(" ");
+}
+
+// Funzione per annebbiare la scacchiera
+function annebbiaScacchiera() {
+    let fen = partitaGioca.fen();
+    if (partitaGioca.turn() !== coloreUtente) fen = cambiaTurnoFen(fen);
+    let partitaVisualizza = new Chess(fen);
+
+    let coloreAvversario = coloreUtente === 'w' ? 'b' : 'w';
+    let caselleAccessibili = [];
+    let mosse = partitaVisualizza.moves({ verbose: true });
+    for (var i = 0; i < mosse.length; i++) {
+        caselleAccessibili.push(mosse[i].to);
+    }
+    let caselle = document.querySelectorAll(`#${idScacchieraCorrente} [data-square-coord]`);
+    for (var i = 0; i < caselle.length; i++) {
+        let casella = caselle[i].getAttribute('data-square-coord');
+        if (!caselleAccessibili.includes(casella)) {
+            if (partitaVisualizza.get(casella) === null) caselle[i].style.backgroundColor = "#222222";
+            else if (partitaVisualizza.get(casella)['color'] === coloreAvversario) {
+                caselle[i].style.backgroundColor = "#222222";
+                partitaVisualizza.remove(casella);
+            }
+        }
+    }
+
+    scacchieraGioca.position(partitaVisualizza.fen());
+}
 
 // Imposta la casella cliccata (serve a gestire il click)
 function setCasellaCliccata(casella) {
@@ -57,7 +98,7 @@ function aggiornaScacchieraGioca(scacchiera, posizione = DEFAULT_POSITION_WHITE)
     });
 
     // Applica il tema (non applicabile dalla configurazione)
-    applicaTema(scacchiera)
+    applicaTemaMultiplayer();
 
     // Se inizia l'altro giocatore, aspetta la sua mossa
     if (coloreUtente === 'b') {
@@ -71,20 +112,19 @@ function aggiornaScacchieraGioca(scacchiera, posizione = DEFAULT_POSITION_WHITE)
 
 // Funzione per gestire il passaggio del mouse su una casella
 function onMouseEnterSquareGioca(args) {
-    if (sezioneCorrente === "giocaRandom" && coloreUtente !== partitaGioca.turn()) return;
-    mostraSuggerimenti(args, partitaGioca, getCasellaCliccata, scacchieraCorrente);
+    if (sezioneCorrente === "giocaMultiplayer" && coloreUtente !== partitaGioca.turn() || modalitàMultiplayer !== 'normale') return;
+    mostraSuggerimenti(args, partitaGioca, getCasellaCliccata, idScacchieraCorrente);
 }
 
 // Funzione per gestire il click su una casella
 function onMousedownSquareGioca(args) {
-    if (sezioneCorrente === "giocaRandom" && scacchieraGioca.orientation().slice(0, 1) !== partitaGioca.turn()) return;
-    gestisciClick(args, partitaGioca, scacchieraGioca, getCasellaCliccata, convalidaMossaGioca, setCasellaCliccata, scacchieraCorrente);
+    if (sezioneCorrente === "giocaMultiplayer" && scacchieraGioca.orientation().slice(0, 1) !== partitaGioca.turn()) return;
+
+    gestisciClick(args, partitaGioca, getCasellaCliccata, convalidaMossaGioca, setCasellaCliccata, idScacchieraCorrente, modalitàMultiplayer === 'normale');
 }
 
 // Funzione per convalidare una mossa
 function convalidaMossaGioca(args) {
-    applicaTema(sezioneCorrente);
-
     // Calcola le mosse legali
     let mosseLegali = partitaGioca.moves({
         square: args['source'],
@@ -94,19 +134,17 @@ function convalidaMossaGioca(args) {
     if (!mosseLegali.some(mossaLegale => mossaLegale.to === args['target'])) {
         return 'snapback';
     } else {
-        rimuoviSuggerimenti();
-        continuaMossa = sezioneCorrente === "giocaSolo" ? continuaMossaSolo : sezioneCorrente === "giocaComputer" ? continuaMossaComputer : continuaMossaRandom;
+        continuaMossa = sezioneCorrente === "giocaSolo" ? continuaMossaSolo : sezioneCorrente === "giocaComputer" ? continuaMossaComputer : continuaMossaMultiplayer;
         continuaMossa(args);
+        applicaTemaMultiplayer();
     }
-
-    applicaTema(sezioneCorrente);
 }
 
 // Funzione per proseguire la mossa nella sezione gioca da solo
 function continuaMossaSolo(args) {
 
     // Esegue la mossa
-    eseguiMossa(args['source'] + args['target'], partitaGioca, scacchieraGioca, scacchieraCorrente);
+    eseguiMossa(args['source'] + args['target'], partitaGioca, scacchieraGioca);
 
     // Se la partita è finita, mostra il messaggio corrispondente
     if (partitaGioca.game_over()) {
@@ -142,12 +180,13 @@ function continuaMossaComputer(args) {
 
 }
 
-// Funzione per proseguire la mossa nella sezione gioca random
-function continuaMossaRandom(args) {
+// Funzione per proseguire la mossa nella sezione gioca Multiplayer
+function continuaMossaMultiplayer(args) {
 
-    // Esegue la mossa
+    // Esegue la mossa e applica il tema
     mossa = args['source'] + args['target'];
     eseguiMossa(mossa, partitaGioca, scacchieraGioca);
+    applicaTemaMultiplayer();
 
     // Invia la mossa al server e aspetta la mossa dell'avversario
     let datiDaInviare1 = {
@@ -163,8 +202,8 @@ function continuaMossaRandom(args) {
 
     // Se la partita è finita, mostra il messaggio corrispondente
     if (partitaGioca.game_over()) {
-        aggiornaStatoRandom('terminata');
-        document.getElementById("messaggioRandom").innerText = partitaGioca.in_checkmate() ? "Hai vinto!" : "Patta!";
+        aggiornaStatoMultiplayer('terminata');
+        document.getElementById("messaggioMultiplayer").innerText = partitaGioca.in_checkmate() ? "Hai vinto!" : "Patta!";
         return;
     }
 
@@ -174,13 +213,16 @@ function continuaMossaRandom(args) {
 async function inviaMossaeAspetta(datiMossa, datiRichiesta, mossa) {
 
     // Se la mossa è null, invia solo la richiesta
-    if (datiMossa !== null) await inviaDatiAlServer(datiMossa);
+    if (datiMossa !== null) {
+        await inviaDatiAlServer(datiMossa);
+        aggiornaStatoMultiplayer('turnoAvversario');
+    }
 
     // Invia la richiesta
     let datiRicevuti = await inviaDatiAlServer(datiRichiesta);
 
     // Se la partita è stata annullata, aggiorna lo stato
-    if (datiRicevuti['annullata']) return aggiornaStatoRandom('annullata');
+    if (datiRicevuti['annullata']) return aggiornaStatoMultiplayer('annullata');
 
     // Se la mossa restituita è uguale a quella inviata, aspetta un secondo e ripeti
     if (datiRicevuti['mossa'] === mossa) return setTimeout(function () {
@@ -189,11 +231,13 @@ async function inviaMossaeAspetta(datiMossa, datiRichiesta, mossa) {
 
     // Altrimenti, esegui la mossa restituita
     eseguiMossa(datiRicevuti['mossa'], partitaGioca, scacchieraGioca);
+    applicaTemaMultiplayer();
+    aggiornaStatoMultiplayer('mioTurno');
 
     // Se la partita è finita, mostra il messaggio corrispondente
     if (partitaGioca.game_over()) {
-        aggiornaStatoRandom('terminata');
-        document.getElementById("messaggioRandom").innerText = partitaGioca.in_checkmate() ? "Hai perso!" : "Patta!";
+        aggiornaStatoMultiplayer('terminata');
+        document.getElementById("messaggioMultiplayer").innerText = partitaGioca.in_checkmate() ? "Hai perso!" : "Patta!";
 
         // Notifica il server della fine della partita
         let datiDaInviare = {
@@ -205,6 +249,7 @@ async function inviaMossaeAspetta(datiMossa, datiRichiesta, mossa) {
 
 }
 
+// Funzione per aspettare che i giocatori si uniscano alla partita
 async function aspettaGiocatori(datiPartita, datiRichiesta) {
 
     // Se la partita non è stata già iniziata
@@ -220,19 +265,19 @@ async function aspettaGiocatori(datiPartita, datiRichiesta) {
 
         // Se la partita è iniziata, aggiorna lo stato
         partitaInit = datiRicevuti['iniziata'];
-        aggiornaStatoRandom(partitaInit ? 'iniziata' : 'ricerca');
+        aggiornaStatoMultiplayer(partitaInit ? 'iniziata' : 'ricerca');
     }
 
     // Invia la richiesta al server e aspetta la risposta
     let datiRicevuti = await inviaDatiAlServer(datiRichiesta);
 
     // Se la partita è stata annullata, aggiorna lo stato
-    if (datiRicevuti['annullata']) return aggiornaStatoRandom('annullata');
+    if (datiRicevuti['annullata']) return aggiornaStatoMultiplayer('annullata');
 
     // Se la partita è iniziata, aggiorna lo stato e la scacchiera
     if (partitaInit || datiRicevuti['iniziata']) {
-        aggiornaStatoRandom('iniziata');
-        return aggiornaScacchieraGioca(scacchieraCorrente);
+        aggiornaStatoMultiplayer('iniziata');
+        return aggiornaScacchieraGioca(idScacchieraCorrente);
     }
 
     // Altrimenti, aspetta un secondo e ripeti
@@ -258,7 +303,7 @@ function creaPartitaeAspetta(protezione) {
 
     // Aspetta i giocatori e aggiorna lo stato
     aspettaGiocatori(datiPartita, datiRichiesta);
-    aggiornaStatoRandom('ricerca');
+    aggiornaStatoMultiplayer('ricerca');
 }
 
 // Funzione per ottenere la mossa del computer
@@ -280,71 +325,78 @@ function mostraGioca(sezione) {
     // Nasconde tutti i bottoni
     document.getElementById("giocaComputer").style.display = "none";
     document.getElementById("giocaSolo").style.display = "none";
-    document.getElementById("giocaRandom").style.display = "none";
+    document.getElementById("giocaMultiplayer").style.display = "none";
 
     // Mostra la sezione selezionata e imposta la sezione corrente
     document.getElementById(sezione).style.display = "block";
     sezioneCorrente = sezione;
-    scacchieraCorrente = sezioneCorrente === "giocaComputer" ? "scacchieraComputer" : sezioneCorrente === "giocaSolo" ? "scacchieraSolo" : "scacchieraRandom";
+    idScacchieraCorrente = sezioneCorrente === "giocaComputer" ? "scacchieraComputer" : sezioneCorrente === "giocaSolo" ? "scacchieraSolo" : "scacchieraMultiplayer";
 
-    // Se la sezione è random, aggiorna lo stato senza cambiare la scacchiera
-    if (sezioneCorrente === "giocaRandom") return aggiornaStatoRandom('default');
+    // Se la sezione è Multiplayer, aggiorna lo stato senza cambiare la scacchiera
+    if (sezioneCorrente === "giocaMultiplayer") return aggiornaStatoMultiplayer('default');
 
     // Aggiorna la scacchiera
-    aggiornaScacchieraGioca(scacchieraCorrente)
+    aggiornaScacchieraGioca(idScacchieraCorrente)
 }
 
-// Aggiorna lo stato della partita random
-function aggiornaStatoRandom(stato = 'default') {
+// Aggiorna lo stato della partita Multiplayer
+function aggiornaStatoMultiplayer(stato = 'default') {
     switch (stato) {
         case 'default':
-            scacchieraGioca = Chessboard2(scacchieraCorrente)
+            scacchieraGioca = Chessboard2(idScacchieraCorrente)
             partitaGioca = Chess();
-            applicaTema(sezioneCorrente)
-            document.getElementById("messaggioRandom").innerText = "Benvenuto nella sezione random! Clicca su 'Nuova Partita' per iniziare! Puoi giocare con un avversario casuale o con un amico inserendo un codice!";
+            applicaTemaMultiplayer();
+            document.getElementById("messaggioMultiplayer").innerText = "Benvenuto nella sezione Multiplayer! Clicca su 'Nuova Partita' per iniziare! Puoi giocare con un avversario casuale o con un amico inserendo un codice!";
             partitaInit = false;
             codicePartita = null;
             coloreUtente = null;
-            buttStopRicercaRandom.style.display = "none";
-            document.getElementById("codiceRandom").value = "";
-            buttTerminaPartitaRandom.style.display = "none";
-            buttNuovaPartitaRandom.style.display = "block";
+            buttStopRicercaMultiplayer.style.display = "none";
+            document.getElementById("codiceMultiplayer").value = "";
+            buttTerminaPartitaMultiplayer.style.display = "none";
+            buttNuovaPartitaMultiplayer.style.display = "block";
             break;
         case 'iniziata':
-            document.getElementById("messaggioRandom").innerText = "Partita iniziata!";
+            document.getElementById("messaggioMultiplayer").innerText = "Partita iniziata!";
             partitaInit = true;
-            document.getElementById("codiceRandom").value = "";
-            buttNuovaPartitaRandom.style.display = "none";
-            buttTerminaPartitaRandom.style.display = "block";
-            buttStopRicercaRandom.style.display = "none";
+            document.getElementById("codiceMultiplayer").value = "";
+            buttNuovaPartitaMultiplayer.style.display = "none";
+            buttTerminaPartitaMultiplayer.style.display = "block";
+            buttStopRicercaMultiplayer.style.display = "none";
             break;
         case 'terminata':
-            document.getElementById("messaggioRandom").innerText = "Partita terminata!";
+            document.getElementById("messaggioMultiplayer").innerText = "Partita terminata!";
             partitaInit = false;
             codicePartita = null;
             coloreUtente = null;
-            document.getElementById("codiceRandom").value = "";
-            buttStopRicercaRandom.style.display = "none";
-            buttTerminaPartitaRandom.style.display = "none";
-            buttNuovaPartitaRandom.style.display = "block";
+            document.getElementById("codiceMultiplayer").value = "";
+            buttStopRicercaMultiplayer.style.display = "none";
+            buttTerminaPartitaMultiplayer.style.display = "none";
+            buttNuovaPartitaMultiplayer.style.display = "block";
             break;
         case 'annullata':
-            document.getElementById("messaggioRandom").innerText = "Partita annullata!";
+            document.getElementById("messaggioMultiplayer").innerText = "Partita annullata!";
             partitaInit = false;
             codicePartita = null;
             coloreUtente = null;
-            document.getElementById("codiceRandom").value = "";
-            buttStopRicercaRandom.style.display = "none";
-            buttTerminaPartitaRandom.style.display = "none";
-            buttNuovaPartitaRandom.style.display = "block";
+            document.getElementById("codiceMultiplayer").value = "";
+            buttStopRicercaMultiplayer.style.display = "none";
+            buttTerminaPartitaMultiplayer.style.display = "none";
+            buttNuovaPartitaMultiplayer.style.display = "block";
             break;
         case 'ricerca':
-            scacchieraGioca = Chessboard2(scacchieraCorrente)
+            scacchieraGioca = Chessboard2(idScacchieraCorrente)
             partitaGioca = Chess();
-            document.getElementById("messaggioRandom").innerText = "In attesa di un avversario...";
-            buttNuovaPartitaRandom.style.display = "none";
-            buttTerminaPartitaRandom.style.display = "none";
-            buttStopRicercaRandom.style.display = "block";
+            applicaTemaMultiplayer();
+            document.getElementById("messaggioMultiplayer").innerText = "In attesa di un avversario...";
+            buttNuovaPartitaMultiplayer.style.display = "none";
+            buttTerminaPartitaMultiplayer.style.display = "none";
+            buttStopRicercaMultiplayer.style.display = "block";
+            break;
+        case 'mioTurno':
+            document.getElementById("messaggioMultiplayer").innerText = "Il tuo turno!";
+            break;
+        case 'turnoAvversario':
+            document.getElementById("messaggioMultiplayer").innerText = "Turno dell'avversario...";
             break;
         default:
             break;
@@ -352,17 +404,17 @@ function aggiornaStatoRandom(stato = 'default') {
 }
 
 mostraGioca("giocaComputer");
-buttStopRicercaRandom.style.display = "none";
+buttStopRicercaMultiplayer.style.display = "none";
 buttGiocaComputer.addEventListener("click", function () {
     mostraGioca("giocaComputer");
 });
 buttGiocaSolo.addEventListener("click", function () {
     mostraGioca("giocaSolo");
 });
-buttGiocaRandom.addEventListener("click", function () {
-    mostraGioca("giocaRandom");
+buttGiocaMultiplayer.addEventListener("click", function () {
+    mostraGioca("giocaMultiplayer");
 });
-buttStopRicercaRandom.addEventListener("click", function () {
+buttStopRicercaMultiplayer.addEventListener("click", function () {
     let datiDaInviare = {
         operazione: 'annullaPartita',
         username: nomeUtente,
@@ -370,35 +422,32 @@ buttStopRicercaRandom.addEventListener("click", function () {
     }
     inviaDatiAlServer(datiDaInviare);
 });
-buttNuovaPartitaRandom.addEventListener("click", function () {
-    if (partitaInit) {
-        document.getElementById("messaggioRandom").innerText = "Devi terminare la partita in corso!";
+buttNuovaPartitaMultiplayer.addEventListener("click", function () {
+
+    // Prende i dati inseriti dall'utente
+    modalitàMultiplayer = document.getElementById("modalitàMultiplayer").value;
+    let password = document.getElementById("codiceMultiplayer").value;
+
+    // Se non è loggato, mostra un messaggio
+    if (nomeUtente === null) {
+        document.getElementById("messaggioMultiplayer").innerText = "Devi essere loggato per giocare!";
         return;
     }
 
-    let protezione = document.getElementById("codiceRandom").value;
-
-    if (protezione.length === 0) {
-        protezione = null;
-    }
-
-    if (nomeUtente === null || nomeUtente === "") {
-        document.getElementById("messaggioRandom").innerText = "Devi essere loggato per giocare!";
-        return;
-    }
-    return creaPartitaeAspetta(protezione);
+    // Crea la partita e aspetta i giocatori
+    return creaPartitaeAspetta(modalitàMultiplayer + password);
 });
-buttTerminaPartitaRandom.addEventListener("click", function () {
+buttTerminaPartitaMultiplayer.addEventListener("click", function () {
     let datiDaInviare = {
         operazione: 'finePartita',
         codice: codicePartita
     }
     inviaDatiAlServer(datiDaInviare);
-    aggiornaStatoRandom('terminata');
+    aggiornaStatoMultiplayer('terminata');
 });
-buttNuovaPartitaComputer.addEventListener("click", function () { 
-    mostraGioca("giocaComputer"); 
+buttNuovaPartitaComputer.addEventListener("click", function () {
+    mostraGioca("giocaComputer");
 });
-buttNuovaPartitaSolo.addEventListener("click", function () { 
-    mostraGioca("giocaSolo"); 
+buttNuovaPartitaSolo.addEventListener("click", function () {
+    mostraGioca("giocaSolo");
 });

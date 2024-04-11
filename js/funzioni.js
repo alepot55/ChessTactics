@@ -75,9 +75,8 @@ function mostraSuggerimenti(args, partita, getCasellaCliccata, idScacchiera) {
     // Se è stata già cliccata una casella, esci
     if (getCasellaCliccata()) return;
 
-    // Rimuovi i suggerimenti di mossa e applica il tema
-    rimuoviSuggerimenti()
-    applicaTema(idScacchiera);
+    // Rimuovi i suggerimenti di mossa
+    rimuoviSuggerimenti(idScacchiera)
 
     // Ricava le mosse possibili per il pezzo cliccato
     let mosse = getMossePossibili(partita, args['square']);
@@ -89,44 +88,54 @@ function mostraSuggerimenti(args, partita, getCasellaCliccata, idScacchiera) {
     });
 }
 
+// Calcola se il pezzo sulla casella è posseduto dal giocatore
+function pezzoPosseduto(partita, casella) {
+    return partita.get(casella) !== null && partita.get(casella)['color'] === partita.turn();
+}
+
 // Gestisce il click su una casella della scacchiera
-function gestisciClick(args, partita, scacchiera, getCasellaCliccata, onDrop, setCasellaCliccata, idScacchiera) {
+function gestisciClick(args, partita, getCasellaCliccata, onDrop, setCasellaCliccata, idScacchiera, ombre = true) {
 
     // Se non è stata cliccata una casella, restituisci null (bugs di scacchiera.js)
     if (args['square'] == null) return null;
 
     // Calcola se il pezzo cliccato è posseduto dal giocatore
-    let pezzoPosseduto = partita.get(args['square']) !== null && partita.get(args['square'])['color'] === partita.turn();
+    let posseduto = pezzoPosseduto(partita, args['square']);
 
     // Rimuovi i suggerimenti di mossa
-    rimuoviSuggerimenti();
+    if (ombre) rimuoviSuggerimenti(idScacchiera);
 
     // Se è già stata cliccata una casella e il pezzo cliccato non è posseduto
-    if (getCasellaCliccata() !== null && !pezzoPosseduto) {
+    if ((getCasellaCliccata() !== null || !ombre) && !posseduto) {
 
         // Esegui la mossa
         onDrop({ 'source': getCasellaCliccata(), 'target': args['square'] });
 
         // Imposta la casella cliccata a null
-        setCasellaCliccata(null);
+        setCasellaCliccata(null);        
     } else {
 
         // Se il pezzo cliccato è posseduto, imposta la casella cliccata
-        if (pezzoPosseduto) setCasellaCliccata(null);
+        if (posseduto) setCasellaCliccata(null);
 
         // Mostra i suggerimenti di mossa
-        mostraSuggerimenti(args, partita, getCasellaCliccata, idScacchiera);
+        if (ombre) mostraSuggerimenti(args, partita, getCasellaCliccata, idScacchiera);
 
-        // Se ci sono mosse possibili, imposta la casella cliccata
+        // Calcula le mosse possibili per il pezzo cliccato
         mosse = getMossePossibili(partita, args['square']);
-        setCasellaCliccata(pezzoPosseduto && mosse.length > 0 ? args['square'] : null);
+
+        // Evidezia la casella cliccata e imposta la casella cliccata
+        if (posseduto && mosse.length > 0) {
+            ombraCasella(args['square'], idScacchiera, '#ffef82');
+            setCasellaCliccata(args['square']);
+        }
     }
 }
 
 // Esegue una mossa sulla scacchiera e aggiorna la posizione 
-function eseguiMossa(mossa, partita, scacchiera, idScacchiera) {
+function eseguiMossa(mossa, partita, scacchiera) {
 
-    // Ricava la mossa in formato UCI
+    // Ricava la mossa
     partita.move({
         from: mossa.slice(0, 2),
         to: mossa.slice(2, 4),
@@ -135,9 +144,6 @@ function eseguiMossa(mossa, partita, scacchiera, idScacchiera) {
 
     // Aggiorna la scacchiera
     scacchiera.position(partita.fen(), 'slow');
-
-    // Applica il tema 
-    applicaTema(idScacchiera);
 }
 
 // Restituisce le mosse possibili per un pezzo in una casella
@@ -149,33 +155,30 @@ function getMossePossibili(partita, casella, verbose = true) {
 }
 
 // Rimuove i suggerimenti di mossa
-function rimuoviSuggerimenti() {
+function rimuoviSuggerimenti(idScacchiera) {
 
     // Seleziona tutte le caselle della scacchiera
-    const caselle = document.querySelectorAll('[data-square-coord]');
+    let caselle = document.querySelectorAll(`#${idScacchiera} [data-square-coord]`);
 
     // Rimuovi il colore di sfondo
     caselle.forEach(casella => {
-        casella.style.backgroundColor = '';
+        let colore = coloriScacchiera[temaScacchiera][casella.classList.contains('black-b7cb6') ? 'scuro' : 'chiaro'];
+        casella.style.backgroundColor = colore;
     });
 }
 
 // Colora la casella di un grigio più chiaro o più scuro
-function ombraCasella(casella, idScacchiera) {
+function ombraCasella(coordinate, idScacchiera, colore = null) {
 
     // Seleziona la casella
-    const $casella = document.querySelector(`#${idScacchiera} [data-square-coord="${casella}"]`);
+    let casella = document.querySelector(`#${idScacchiera} [data-square-coord="${coordinate}"]`);
 
     // Se la casella è chiara, usa un colore più chiara, altrimenti più scura usando il colore di default
-    let colore = $casella.classList.contains('black-b7cb6') ? '#696969' : '#a9a9a9';
+    if (colore === null) colore = casella.classList.contains('black-b7cb6') ? '#696969' : '#a9a9a9';
 
     // Applica il colore
-    $casella.style.backgroundColor = colore;
+    casella.style.backgroundColor = colore;
 }
-
-// Controlla se il pezzo è bianco o nero
-function isPezzoBianco(pezzo) { return /^w/.test(pezzo) }
-function isPezzoNero(pezzo) { return /^b/.test(pezzo) }
 
 // Invoa i dati al server e restituisci la risposta
 async function inviaDatiAlServer(dati, evento = null) {

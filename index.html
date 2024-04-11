@@ -48,7 +48,7 @@
             <p>Scegli la modalità di gioco:</p>
             <button id="giocaComputerButton">Gioca con il Computer</button>
             <button id="giocaSoloButton">Gioca da Solo</button>
-            <button id="giocaRandomButton">Gioca con un Altro Giocatore</button>
+            <button id="giocaMultiplayerButton">Gioca con un Altro Giocatore</button>
 
             <div id="giocaComputer">
                 <h2>Gioca con il Computer</h2>
@@ -67,14 +67,19 @@
                 <p id="messaggioSolo"></p>
             </div>
 
-            <div id="giocaRandom">
+            <div id="giocaMultiplayer">
                 <h2>Gioca con un Altro Giocatore</h2>
-                <div id="scacchieraRandom" class="scacchiera"></div>
-                <input type="text" id="codiceRandom" name="codiceRandom" placeholder="Inserisci il codice della partita"><br>
-                <button id="nuovaPartitaRandom">Nuova Partita</button>
-                <button id="stopRicercaRandom">Annulla</button>
-                <button id="terminaPartitaRandom">Termina partita</button>
-                <p id="messaggioRandom"></p>
+                <select id="modalitàMultiplayer" name="modalitàMultiplayer">
+                    <option value="normale">Normale</option>
+                    <option value="pezziNascosti">Pezzi Nascosti</option>
+                    <option value="nebbia">Nebbia</option>
+                </select><br>
+                <div id="scacchieraMultiplayer" class="scacchiera"></div>
+                <input type="text" id="codiceMultiplayer" name="codiceMultiplayer" placeholder="Inserisci il codice della partita"><br>
+                <button id="nuovaPartitaMultiplayer">Nuova Partita</button>
+                <button id="stopRicercaMultiplayer">Annulla</button>
+                <button id="terminaPartitaMultiplayer">Termina partita</button>
+                <p id="messaggioMultiplayer"></p>
             </div>
 
         </section>
