@@ -282,64 +282,72 @@ function mostraGioca(sezione) {
     document.getElementById("giocaSolo").style.display = "none";
     document.getElementById("giocaRandom").style.display = "none";
 
-    // Mostra la sezione selezionata
+    // Mostra la sezione selezionata e imposta la sezione corrente
     document.getElementById(sezione).style.display = "block";
+    sezioneCorrente = sezione;
+    scacchieraCorrente = sezioneCorrente === "giocaComputer" ? "scacchieraComputer" : sezioneCorrente === "giocaSolo" ? "scacchieraSolo" : "scacchieraRandom";
 
     // Se la sezione è random, aggiorna lo stato senza cambiare la scacchiera
-    if (sezione === "giocaRandom") return aggiornaStatoRandom();
+    if (sezioneCorrente === "giocaRandom") return aggiornaStatoRandom('default');
 
-    // Imposta la scacchiera corrente e aggiorna la scacchiera
-    scacchieraCorrente = sezione === "giocaComputer" ? "scacchieraComputer" : sezione === "giocaSolo" ? "scacchieraSolo" : "scacchieraRandom";
-    sezioneCorrente = sezione;
+    // Aggiorna la scacchiera
     aggiornaScacchieraGioca(scacchieraCorrente)
 }
 
 // Aggiorna lo stato della partita random
 function aggiornaStatoRandom(stato = 'default') {
-    applicaTema(sezioneCorrente)
-    if (stato === 'default') {
-        scacchieraGioca = Chessboard2(scacchieraCorrente)
-        partitaGioca = Chess();
-        document.getElementById("messaggioRandom").innerText = "Benvenuto nella sezione random! Clicca su 'Nuova Partita' per iniziare! Puoi giocare con un avversario casuale o con un amico inserendo un codice!";
-        partitaInit = false;
-        codicePartita = null;
-        coloreUtente = null;
-        buttStopRicercaRandom.style.display = "none";
-        document.getElementById("codiceRandom").value = "";
-        buttTerminaPartitaRandom.style.display = "none";
-        buttNuovaPartitaRandom.style.display = "block";
-    } else if (stato === 'iniziata') {
-        document.getElementById("messaggioRandom").innerText = "Partita iniziata!";
-        partitaInit = true;
-        document.getElementById("codiceRandom").value = "";
-        buttNuovaPartitaRandom.style.display = "none";
-        buttTerminaPartitaRandom.style.display = "block";
-        buttStopRicercaRandom.style.display = "none";
-    } else if (stato === 'terminata') {
-        document.getElementById("messaggioRandom").innerText = "Partita terminata!";
-        partitaInit = false;
-        codicePartita = null;
-        coloreUtente = null;
-        document.getElementById("codiceRandom").value = "";
-        buttStopRicercaRandom.style.display = "none";
-        buttTerminaPartitaRandom.style.display = "none";
-        buttNuovaPartitaRandom.style.display = "block";
-    } else if (stato === 'annullata') {
-        document.getElementById("messaggioRandom").innerText = "Partita annullata!";
-        partitaInit = false;
-        codicePartita = null;
-        coloreUtente = null;
-        document.getElementById("codiceRandom").value = "";
-        buttStopRicercaRandom.style.display = "none";
-        buttTerminaPartitaRandom.style.display = "none";
-        buttNuovaPartitaRandom.style.display = "block";
-    } else if (stato === 'ricerca') {
-        scacchieraGioca = Chessboard2(scacchieraCorrente)
-        partitaGioca = Chess();
-        document.getElementById("messaggioRandom").innerText = "In attesa di un avversario...";
-        buttNuovaPartitaRandom.style.display = "none";
-        buttTerminaPartitaRandom.style.display = "none";
-        buttStopRicercaRandom.style.display = "block";
+    switch (stato) {
+        case 'default':
+            scacchieraGioca = Chessboard2(scacchieraCorrente)
+            partitaGioca = Chess();
+            applicaTema(sezioneCorrente)
+            document.getElementById("messaggioRandom").innerText = "Benvenuto nella sezione random! Clicca su 'Nuova Partita' per iniziare! Puoi giocare con un avversario casuale o con un amico inserendo un codice!";
+            partitaInit = false;
+            codicePartita = null;
+            coloreUtente = null;
+            buttStopRicercaRandom.style.display = "none";
+            document.getElementById("codiceRandom").value = "";
+            buttTerminaPartitaRandom.style.display = "none";
+            buttNuovaPartitaRandom.style.display = "block";
+            break;
+        case 'iniziata':
+            document.getElementById("messaggioRandom").innerText = "Partita iniziata!";
+            partitaInit = true;
+            document.getElementById("codiceRandom").value = "";
+            buttNuovaPartitaRandom.style.display = "none";
+            buttTerminaPartitaRandom.style.display = "block";
+            buttStopRicercaRandom.style.display = "none";
+            break;
+        case 'terminata':
+            document.getElementById("messaggioRandom").innerText = "Partita terminata!";
+            partitaInit = false;
+            codicePartita = null;
+            coloreUtente = null;
+            document.getElementById("codiceRandom").value = "";
+            buttStopRicercaRandom.style.display = "none";
+            buttTerminaPartitaRandom.style.display = "none";
+            buttNuovaPartitaRandom.style.display = "block";
+            break;
+        case 'annullata':
+            document.getElementById("messaggioRandom").innerText = "Partita annullata!";
+            partitaInit = false;
+            codicePartita = null;
+            coloreUtente = null;
+            document.getElementById("codiceRandom").value = "";
+            buttStopRicercaRandom.style.display = "none";
+            buttTerminaPartitaRandom.style.display = "none";
+            buttNuovaPartitaRandom.style.display = "block";
+            break;
+        case 'ricerca':
+            scacchieraGioca = Chessboard2(scacchieraCorrente)
+            partitaGioca = Chess();
+            document.getElementById("messaggioRandom").innerText = "In attesa di un avversario...";
+            buttNuovaPartitaRandom.style.display = "none";
+            buttTerminaPartitaRandom.style.display = "none";
+            buttStopRicercaRandom.style.display = "block";
+            break;
+        default:
+            break;
     }
 }
 
