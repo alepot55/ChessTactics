@@ -1,5 +1,5 @@
 const indirizzoServer = `http://localhost:3000/server.php`;
-const immaginiDaSostituire = {
+immaginiDaSostituire = {
     'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHhtbG5zOnY9Imh0dHBzOi8vdmVjdGEuaW8vbmFubyI+PGcgZmlsbD0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSI+PHBhdGggZD0iTTIyIDEwYzEwLjUgMSAxNi41IDggMTYgMjlIMTVjMC05IDEwLTYuNSA4LTIxIi8+PHBhdGggZD0iTTI0IDE4Yy4zOCAyLjkxLTUuNTUgNy4zNy04IDktMyAyLTIuODIgNC4zNC01IDQtMS4wNDItLjk0IDEuNDEtMy4wNCAwLTMtMSAwIC4xOSAxLjIzLTEgMi0xIDAtNC4wMDMgMS00LTQgMC0yIDYtMTIgNi0xMnMxLjg5LTEuOSAyLTMuNWMtLjczLS45OTQtLjUtMi0uNS0zIDEtMSAzIDIuNSAzIDIuNWgycy43OC0xLjk5MiAyLjUtM2MxIDAgMSAzIDEgMyIvPjwvZz48ZyBmaWxsPSIjZmZmIj48cGF0aCBkPSJNOS41IDI1LjVhLjUuNSAwIDEgMS0xIDAgLjUuNSAwIDEgMSAxIDB6bTUuNDMzLTkuNzVjLS40MTQuNzE3LS45NDQgMS4xODctMS4xODMgMS4wNDlzLS4wOTctLjgzMi4zMTctMS41NDkuOTQ0LTEuMTg3IDEuMTgzLTEuMDQ5LjA5Ny44MzItLjMxNyAxLjU0OXoiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2U9IiNmZmYiLz48cGF0aCBkPSJNMjQuNTUgMTAuNGwtLjQ1IDEuNDUuNS4xNWMzLjE1IDEgNS42NSAyLjQ5IDcuOSA2Ljc1UzM1Ljc1IDI5LjA2IDM1LjI1IDM5bC0uMDUuNWgyLjI1bC4wNS0uNWMuNS0xMC4wNi0uODgtMTYuODUtMy4yNS0yMS4zNHMtNS43OS02LjY0LTkuMTktNy4xNmwtLjUxLS4xeiIgc3Ryb2tlPSJub25lIi8+PC9nPjwvc3ZnPg==': 'nb',
     'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHhtbG5zOnY9Imh0dHBzOi8vdmVjdGEuaW8vbmFubyI+PGcgZmlsbD0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSI+PHBhdGggZD0iTTIyIDEwYzEwLjUgMSAxNi41IDggMTYgMjlIMTVjMC05IDEwLTYuNSA4LTIxIi8+PHBhdGggZD0iTTI0IDE4Yy4zOCAyLjkxLTUuNTUgNy4zNy04IDktMyAyLTIuODIgNC4zNC01IDQtMS4wNDItLjk0IDEuNDEtMy4wNCAwLTMtMSAwIC4xOSAxLjIzLTEgMi0xIDAtNC4wMDMgMS00LTQgMC0yIDYtMTIgNi0xMnMxLjg5LTEuOSAyLTMuNWMtLjczLS45OTQtLjUtMi0uNS0zIDEtMSAzIDIuNSAzIDIuNWgycy43OC0xLjk5MiAyLjUtM2MxIDAgMSAzIDEgMyIvPjwvZz48cGF0aCBkPSJNOS41IDI1LjVhLjUuNSAwIDEgMS0xIDAgLjUuNSAwIDEgMSAxIDB6bTUuNDMzLTkuNzVjLS40MTQuNzE3LS45NDQgMS4xODctMS4xODMgMS4wNDlzLS4wOTctLjgzMi4zMTctMS41NDkuOTQ0LTEuMTg3IDEuMTgzLTEuMDQ5LjA5Ny44MzItLjMxNyAxLjU0OXoiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMS41Ii8+PC9zdmc+': 'nw',
     'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHhtbG5zOnY9Imh0dHBzOi8vdmVjdGEuaW8vbmFubyI+PGcgZmlsbD0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiPjxwYXRoIGQ9Ik05IDM2YzMuMzktLjk3IDEwLjExLjQzIDEzLjUtMiAzLjM5IDIuNDMgMTAuMTEgMS4wMyAxMy41IDIgMCAwIDEuNjUuNTQgMyAyLS42OC45Ny0xLjY1Ljk5LTMgLjUtMy4zOS0uOTctMTAuMTEuNDYtMTMuNS0xLTMuMzkgMS40Ni0xMC4xMS4wMy0xMy41IDEtMS4zNS40OS0yLjMyLjQ3LTMtLjUgMS4zNS0xLjQ2IDMtMiAzLTJ6bTYtNGMyLjUgMi41IDEyLjUgMi41IDE1IDAgLjUtMS41IDAtMiAwLTIgMC0yLjUtMi41LTQtMi41LTQgNS41LTEuNSA2LTExLjUtNS0xNS41LTExIDQtMTAuNSAxNC01IDE1LjUgMCAwLTIuNSAxLjUtMi41IDQgMCAwLS41LjUgMCAyeiIvPjxwYXRoIGQ9Ik0yNSA4YTIuNSAyLjUgMCAxIDEtNSAwIDIuNSAyLjUgMCAxIDEgNSAweiIvPjwvZz48cGF0aCBkPSJNMTcuNSAyNmgxME0xNSAzMGgxNW0tNy41LTE0LjV2NU0yMCAxOGg1IiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48L3N2Zz4=': 'bb',
@@ -30,74 +30,126 @@ coloriScacchiera = {
     }
 }
 
+// Sostituisce il tema dei pezzi 
 function applicaTema(tema1 = temaPezzi, tema2 = temaScacchiera) {
-    if (tema1 !== 'default') {
-        for (let srcVecchio in immaginiDaSostituire) {
-            let pedina = immaginiDaSostituire[srcVecchio];
-            // Seleziona tutti gli elementi img
-            var imgElements = document.getElementsByTagName('img');
 
-            // Controlla ogni elemento img
-            for (var i = 0; i < imgElements.length; i++) {
-                // Se l'elemento img ha l'src vecchio, sostituiscilo con il nuovo
-                if (imgElements[i].src === srcVecchio) {
-                    imgElements[i].src = pieceTheme(pedina, tema1);
-                }
+    // Inizializza il nuovo dizionario delle immagini da sostituire
+    let immaginiDaSostituireNuovo = {}
+
+    // Per ogni immagine da sostituire
+    for (let srcVecchio in immaginiDaSostituire) {
+
+        // Ricava la pedina
+        let pedina = immaginiDaSostituire[srcVecchio];
+
+        // Seleziona tutti gli elementi con tag img
+        var imgElements = document.getElementsByTagName('img');
+
+        // Per ogni elemento img
+        for (var i = 0; i < imgElements.length; i++) {
+
+            // Se l'elemento img ha l'src vecchio, sostituiscilo con il nuovo e aggiorna il dizionario
+            if (imgElements[i].src === srcVecchio) {
+                srcNuovo = pieceTheme(pedina, tema1);
+                imgElements[i].src = srcNuovo
+                immaginiDaSostituireNuovo[srcNuovo] = pedina;
             }
         }
     }
-    if (tema2 !== 'default') {
-        let caselleDaColorare = document.querySelectorAll('[data-square-coord]');
-        caselleDaColorare.forEach(casella => {
-            let colori = coloriScacchiera[tema2];
-            let colore = colori['chiaro'];
-            if (casella.classList.contains('black-b7cb6')) colore = colori['scuro'];
-            casella.style.backgroundColor = colore;
-        });
-    }
+
+    // Aggiorna il dizionario delle immagini da sostituire
+    immaginiDaSostituire = immaginiDaSostituireNuovo;
+
+    // Seleziona tutte le caselle della scacchiera
+    let caselleDaColorare = document.querySelectorAll('[data-square-coord]');
+
+    // Per ogni casella, colorala in base al tema
+    caselleDaColorare.forEach(casella => {
+        let colori = coloriScacchiera[tema2];
+        let colore = casella.classList.contains('black-b7cb6') ? colori['scuro'] : colori['chiaro'];
+        casella.style.backgroundColor = colore;
+    });
+
 }
 
+// Calcola se bloccare la mossa
 function bloccaMossa(pezzo, partita) {
     if ((partita.turn() === 'w' && pezzo.search(/^b/) !== -1) || (partita.turn() === 'b' && pezzo.search(/^w/) !== -1)) return false
     return true;
 }
 
+// Mostra i suggerimenti di mossa per un pezzo
 function mostraSuggerimenti(args, partita, getCasellaCliccata, idScacchiera) {
+
+    // Se è stata già cliccata una casella, esci
     if (getCasellaCliccata()) return;
+
+    // Rimuovi i suggerimenti di mossa e applica il tema
     rimuoviSuggerimenti()
     applicaTema();
+
+    // Ricava le mosse possibili per il pezzo cliccato
     let mosse = getMossePossibili(partita, args['square']);
+
+    // Se non ci sono mosse possibili, esci altrimenti ombra le caselle
     if (mosse.length === 0) return;
     mosse.forEach(mossa => {
-        coloraCasella(mossa.to, idScacchiera);
+        ombraCasella(mossa.to, idScacchiera);
     });
 }
 
+// Gestisce il click su una casella della scacchiera
 function gestisciClick(args, partita, scacchiera, getCasellaCliccata, onDrop, setCasellaCliccata, idScacchiera) {
+
+    // Se non è stata cliccata una casella, restituisci null (bugs di scacchiera.js)
     if (args['square'] == null) return null;
+
+    // Calcola se il pezzo cliccato è posseduto dal giocatore
     let pezzoPosseduto = partita.get(args['square']) !== null && partita.get(args['square'])['color'] === partita.turn();
+
+    // Rimuovi i suggerimenti di mossa
     rimuoviSuggerimenti();
+
+    // Se è già stata cliccata una casella e il pezzo cliccato non è posseduto
     if (getCasellaCliccata() !== null && !pezzoPosseduto) {
+
+        // Esegui la mossa
         onDrop({ 'source': getCasellaCliccata(), 'target': args['square'] });
+
+        // Imposta la casella cliccata a null
         setCasellaCliccata(null);
     } else {
+
+        // Se il pezzo cliccato è posseduto, imposta la casella cliccata
         if (pezzoPosseduto) setCasellaCliccata(null);
+
+        // Mostra i suggerimenti di mossa
         mostraSuggerimenti(args, partita, getCasellaCliccata, idScacchiera);
+
+        // Se ci sono mosse possibili, imposta la casella cliccata
         mosse = getMossePossibili(partita, args['square']);
         setCasellaCliccata(pezzoPosseduto && mosse.length > 0 ? args['square'] : null);
     }
 }
 
+// Esegue una mossa sulla scacchiera e aggiorna la posizione 
 function eseguiMossa(mossa, partita, scacchiera, applica = true) {
+
+    // Ricava la mossa in formato UCI
     partita.move({
         from: mossa.slice(0, 2),
         to: mossa.slice(2, 4),
         promotion: 'q'
     });
+
+    // Aggiorna la scacchiera
     scacchiera.position(partita.fen(), 'slow');
+
+    // Applica il tema se richiesto
     if (applica) applicaTema();
 }
 
+// Restituisce le mosse possibili per un pezzo in una casella
 function getMossePossibili(partita, casella, verbose = true) {
     return partita.moves({
         square: casella,
@@ -105,39 +157,55 @@ function getMossePossibili(partita, casella, verbose = true) {
     });
 }
 
+// Rimuove i suggerimenti di mossa
 function rimuoviSuggerimenti() {
-    document.querySelectorAll('[data-square-coord]').forEach(casella => {
+
+    // Seleziona tutte le caselle della scacchiera
+    const caselle = document.querySelectorAll('[data-square-coord]');
+
+    // Rimuovi il colore di sfondo
+    caselle.forEach(casella => {
         casella.style.backgroundColor = '';
     });
 }
 
-function coloraCasella(casella, idScacchiera, temaScacchiera = 'grigio') {
-    let colori = coloriScacchiera[temaScacchiera];
-    const $casella = document.querySelector('#' + idScacchiera + ' [data-square-coord="' + casella + '"]')
+// Colora la casella di un grigio più chiaro o più scuro
+function ombraCasella(casella, idScacchiera) {
 
-    let colore = '#a9a9a9';
-    if ($casella.classList.contains('black-b7cb6')) colore = '#696969';
+    // Seleziona la casella
+    const $casella = document.querySelector(`#${idScacchiera} [data-square-coord="${casella}"]`);
 
+    // Se la casella è chiara, usa un colore più chiara, altrimenti più scura usando il colore di default
+    let colore = $casella.classList.contains('black-b7cb6') ? '#696969' : '#a9a9a9';
+
+    // Applica il colore
     $casella.style.backgroundColor = colore;
 }
 
+// Controlla se il pezzo è bianco o nero
 function isPezzoBianco(pezzo) { return /^w/.test(pezzo) }
 function isPezzoNero(pezzo) { return /^b/.test(pezzo) }
 
+// Invoa i dati al server e restituisci la risposta
 async function inviaDatiAlServer(dati, evento = null) {
+
+    // Evita il comportamento di default del form (ricaricamento della pagina)
     if (evento !== null) evento.preventDefault();
+
+    // Invia i dati al server e attendi la risposta
     let risposta = await fetch(indirizzoServer, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(dati).toString()
     });
 
+    // Se la risposta è ok, restituisci i dati ricevuti
     if (risposta.ok) {
         return await risposta.json();
     }
 }
 
-
+// Restituisci il percorso del tema del pezzo
 function pieceTheme(piece, tema) {
     return 'assets/pedine/' + tema + '/' + piece + '.svg';
 }
