@@ -96,7 +96,10 @@ document.getElementById('modificaButton').addEventListener('click', (evento) => 
 document.getElementById('salvaPreferenze').addEventListener('click', function () {
     temaPezzi = document.getElementById('temaPezzi').value;
     temaScacchiera = document.getElementById('temaScacchiera').value;
-    applicaTema();
+    scacchieraGiocaComputer.cambiaTema(temaPezzi, temaScacchiera);
+    scacchieraGiocaMultiplayer.cambiaTema(temaPezzi, temaScacchiera);
+    scacchieraGiocaSolo.cambiaTema(temaPezzi, temaScacchiera);
+    scacchieraProblemi.cambiaTema(temaPezzi, temaScacchiera);
 });
 
 aggiornaProfilo();

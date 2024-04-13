@@ -27,6 +27,11 @@
         <section id="home">
             <h2>Benvenuto!</h2>
             <p>Benvenuto nel nostro sito di puzzle di scacchi. Speriamo che ti diverta!</p>
+            <div class=container style="width: 400px; height: 400px;">
+                <div id="scacchiera">
+
+                </div>
+            </div>
         </section>
 
         <section id="problemi">
@@ -41,7 +46,6 @@
                     <button id="risolviProblema">Risolvi</button>
                 </div>
             </div>
-
         </section>
 
         <section id="gioca">
@@ -75,7 +79,8 @@
                     <option value="nebbia">Nebbia</option>
                 </select><br>
                 <div id="scacchieraMultiplayer" class="scacchiera"></div>
-                <input type="text" id="codiceMultiplayer" name="codiceMultiplayer" placeholder="Inserisci il codice della partita"><br>
+                <input type="text" id="codiceMultiplayer" name="codiceMultiplayer"
+                    placeholder="Inserisci il codice della partita"><br>
                 <button id="nuovaPartitaMultiplayer">Nuova Partita</button>
                 <button id="stopRicercaMultiplayer">Annulla</button>
                 <button id="terminaPartitaMultiplayer">Termina partita</button>
@@ -152,6 +157,7 @@
     integrity="sha384-/KwQCjA1GWovZNV3QDVtvSMDzO4reGgarF/RqHipr7hIUElH3r5zNl9WEPPOBRIF"
     crossorigin="anonymous"></script>
 <script src="js/funzioni.js"></script>
+<script src="js/scacchiera.js"></script>
 <script src="js/script.js"></script>
 <script src="js/login.js"></script>
 <script src="js/problemi.js"></script>

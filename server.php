@@ -191,7 +191,7 @@ function creaPartita($dati) {
 
     foreach ($partite as $partita) {
         if ($partita['giocatore1'] !== null && $partita['giocatore2'] === null && $partita['protezione'] === $protezione) {
-            $codice = $partita['codice'];
+            $codice = intval($partita['codice']);
             $partite[$codice]['giocatore2'] = $username;
             $dati['codice'] = $codice;
             $dati['colore'] = 'b';
@@ -219,7 +219,7 @@ function creaPartita($dati) {
 
 function aspettaGiocatori($dati) {
     global $partite;
-    $codice = $dati['codice'];
+    $codice = intval($dati['codice']);
     $dati = array();
 
     if ($partite[$codice]['giocatore1'] === null) {
@@ -268,7 +268,7 @@ function annullaPartita($dati) {
 
 function finePartita($dati) {
     global $partite;
-    $codice = $dati['codice'];
+    $codice = intval($dati['codice']);
     $dati = array();
 
     $partite[$codice]['giocatore1'] = null;

@@ -4,26 +4,14 @@ var casellaCliccata = null;
 var idScacchiera = 'scacchieraProblemi';
 var partita = null;
 
-var scacchiera = Chessboard2(idScacchiera, 'start');
 var bottoneAggiorna = document.getElementById('aggiornaProblema');
 var bottoneRisolvi = document.getElementById('risolviProblema');
+var scacchieraProblemi = new Scacchiera(idScacchiera, DEFAULT_POSITION_WHITE, true, temaPezzi, temaScacchiera, convalidaMossaProblemi);
 
 // Funzione che aggiorna la scacchiera con il problema ricevuto dal server
 function aggiornaScacchieraProblemi(problema) {
 
-    // Inizializza la partita 
-    partita = new Chess(problema[1]);
-
-    // Configura la scacchiera
-    let configurazione = {
-        draggable: false,
-        position: partita.fen(),
-        orientation: partita.turn() === 'w' ? 'black' : 'white',
-        trashSpeed: 'slow',
-        onMouseenterSquare: onMouseEnterSquareProblemi,
-        onMousedownSquare: onMousedownSquareProblemi,
-    }
-    scacchiera = new Chessboard2(idScacchiera, configurazione);
+    scacchieraProblemi.posizione(problema[1], false);
 
     // Aggiorna la soluzione del problema
     soluzione = problema[2];
@@ -31,32 +19,7 @@ function aggiornaScacchieraProblemi(problema) {
 
     // Fai la prima mossa
     let mossa = ottieniProssimaMossa();
-    window.setTimeout(() => eseguiMossa(mossa, partita, scacchiera), 700);
-
-    // Imposta il tema e la casella cliccata
-    setCasellaCliccata(null)
-    applicaTema();
-}
-
-// Imposta la casella cliccata (serve a gestire il click)
-function setCasellaCliccata(casella) {
-    casellaCliccata = casella;
-}
-
-// Restituisce la casella cliccata (serve a gestire il click)
-function getCasellaCliccata() {
-    return casellaCliccata;
-}
-
-// Funzione che gestisce il passaggio del mouse su una casella
-function onMouseEnterSquareProblemi(args) {
-    mostraSuggerimenti(args, partita, getCasellaCliccata, idScacchiera);
-}
-
-// Funzione che gestisce il click su una casella
-function onMousedownSquareProblemi(args) {
-    if (soluzione.length === 0) return;
-    gestisciClick(args, partita, getCasellaCliccata, convalidaMossaProblemi, setCasellaCliccata, idScacchiera);
+    window.setTimeout(() => scacchieraProblemi.eseguiMossa(mossa), 700);
 }
 
 // Funzione che restituisce la prossima mossa da eseguire
@@ -88,29 +51,23 @@ async function caricaProblema() {
 }
 
 // Funzione che convalida la mossa inserita dall'utente
-function convalidaMossaProblemi(args) {
+function convalidaMossaProblemi(mossa) {
 
     // Ottieni la mossa corretta
     let mossaCorretta = ottieniProssimaMossa(aggiorna = false).slice(0, 4);
 
-    // Ottieni le mosse legali
-    let mosseLegali = partita.moves({
-        square: args['source'],
-        verbose: true
-    });
-
     // Se la mossa è corretta eseguila
-    if (args['source'] + args['target'] === mossaCorretta) {
-        rimuoviSuggerimenti();
+    if (mossa.slice(0, 2) + mossa.slice(2, 4) === mossaCorretta) {
         risolvi();
         mossaGiusta();
+        return true;
     } else {
 
         // Se la mossa è legale, allora è sbagliata
-        if (mosseLegali.some(mossaLegale => mossaLegale.to === args['target'])) mossaSbagliata();
+         mossaSbagliata();
 
         // Torna indietro
-        return 'snapback'
+        return false
     }
 }
 
@@ -146,7 +103,7 @@ function risolvi() {
 
     // Prendi la prossima mossa e eseguila
     let mossa = ottieniProssimaMossa();
-    eseguiMossa(mossa, partita, scacchiera, idScacchiera);
+    scacchieraProblemi.eseguiMossa(mossa);
 
     // Se non ci sono più mosse da eseguire, mostra un messaggio
     if (soluzione.length === 0) {
@@ -156,7 +113,7 @@ function risolvi() {
 
     // Altrimenti esegui la mossa dell'avversario
     mossa = ottieniProssimaMossa();
-    window.setTimeout(() => eseguiMossa(mossa, partita, scacchiera), 700);
+    window.setTimeout(() => scacchieraProblemi.eseguiMossa(mossa), 700);
 }
 
 caricaProblema();
