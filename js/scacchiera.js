@@ -47,6 +47,16 @@ class Scacchiera {
     // Dimensione della scacchiera e della tavola
     dimensioneTavola = 600;
     dimensioneScacchiera = this.dimensioneTavola * 0.95;
+    dimensioneBordo = this.dimensioneScacchiera / 45;
+    dimensioneCella = this.dimensioneScacchiera / 8;
+    dimensioneNumeri = this.dimensioneScacchiera * 0.022;
+    dimensioneTesto = this.dimensioneScacchiera * 0.021;
+
+    posizioneRighe = (this.dimensioneTavola - this.dimensioneScacchiera) / 2 - this.dimensioneScacchiera / 55;
+    posizioneColonne = (this.dimensioneTavola - this.dimensioneScacchiera) / 2 - this.dimensioneScacchiera / 37;
+
+    font = "'Roboto', sans-serif";
+
 
     constructor(id_div, posizione, orientamento, temaPezzi, temaCelle, onMossa, suggerimenti = true, annebbia = false) {
 
@@ -102,7 +112,7 @@ class Scacchiera {
         this.tavola.style.height = this.dimensioneTavola + "px";
         this.tavola.style.background = "white";
         this.tavola.style.borderRadius = "10px";
-        this.tavola.style.border = this.dimensioneScacchiera / 45 + "px solid white";
+        this.tavola.style.border = this.dimensioneBordo + "px solid white";
         this.tavola.style.borderRadius = "10px";
         this.tavola.style.display = "flex";
         this.tavola.style.justifyContent = "flex-end";
@@ -117,7 +127,7 @@ class Scacchiera {
         // Crea un nuovo elemento div per i numeri delle righe
         var numeriRighe = document.createElement("div");
         numeriRighe.style.position = "absolute";
-        numeriRighe.style.left = (this.dimensioneTavola - this.dimensioneScacchiera) / 2 - this.dimensioneScacchiera / 55 + "px";
+        numeriRighe.style.left = this.posizioneRighe + "px";
         numeriRighe.style.top = "0";
         numeriRighe.style.display = "flex";
         numeriRighe.style.flexDirection = "column";
@@ -131,11 +141,11 @@ class Scacchiera {
             numero.style.display = "flex";
             numero.style.justifyContent = "center";
             numero.style.alignItems = "center";
-            numero.style.height = this.dimensioneScacchiera / 8 + "px";
-            numero.style.fontFamily = "'Roboto', sans-serif";
+            numero.style.height = this.dimensioneCella + "px";
+            numero.style.fontFamily = this.font;
             numero.style.fontWeight = "bold";
-            numero.style.color = "#34364c";
-            numero.style.fontSize = this.dimensioneScacchiera * 0.022 + "px";
+            numero.style.color = "black";
+            numero.style.fontSize = this.dimensioneNumeri + "px";
             numeriRighe.appendChild(numero);
         }
 
@@ -146,7 +156,7 @@ class Scacchiera {
         var lettereColonne = document.createElement("div");
         lettereColonne.style.position = "absolute";
         lettereColonne.style.right = "0";
-        lettereColonne.style.bottom = (this.dimensioneTavola - this.dimensioneScacchiera) / 2 - this.dimensioneScacchiera / 37 + "px";
+        lettereColonne.style.bottom = this.posizioneColonne + "px";
         lettereColonne.style.display = "flex";
         lettereColonne.style.justifyContent = "space-between";
         lettereColonne.style.width = this.dimensioneScacchiera + "px";
@@ -158,11 +168,11 @@ class Scacchiera {
             lettera.style.display = "flex";
             lettera.style.justifyContent = "center";
             lettera.style.alignItems = "center";
-            lettera.style.width = this.dimensioneScacchiera / 8 + "px";
-            lettera.style.fontFamily = "'Roboto', sans-serif";
+            lettera.style.width = this.dimensioneCella + "px";
+            lettera.style.fontFamily = this.font;
             lettera.style.fontWeight = "bold";
-            lettera.style.color = "#34364c";
-            lettera.style.fontSize = this.dimensioneScacchiera * 0.021 + "px";
+            lettera.style.color = "black";
+            lettera.style.fontSize = this.dimensioneTesto + "px";
             lettereColonne.appendChild(lettera);
         }
 
