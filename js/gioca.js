@@ -262,7 +262,6 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             if (fine !== null) {
                 let colore = coloreUtente;
                 aggiornaStatoMultiplayer('terminata');
-                console.log(fine, colore);
                 fine === colore ? vittoriaPartitaMultiplayer() : colore === 'p' ? pattaPartitaMultiplayer() : sconfittaPartitaMultiplayer();
 
                 inviaDatiAlServer({
@@ -278,7 +277,6 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             if (fine !== null) {
                 let colore = coloreUtente;
                 aggiornaStatoMultiplayer('terminata');
-                console.log(fine, colore);
                 fine === colore ? vittoriaPartitaMultiplayer() : colore === 'p' ? pattaPartitaMultiplayer() : sconfittaPartitaMultiplayer();
                 return false;
             }

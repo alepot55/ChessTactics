@@ -55,6 +55,7 @@ class Scacchiera {
         this.colore = coloriTemaCelle[temaCelle];
         this.colori['tema'] = { 'scuro': 'hsl(' + this.colore + ', 30%, 78%)', 'chiaro': 'hsl(' + this.colore + ', 59%, 94%)' };
         this.colori['selezione'] = { 'scuro': 'hsl(' + ((this.colore + 30) % 360) + ', 71%, 75%)', 'chiaro': 'hsl(' + ((this.colore + 30) % 360) + ', 93%, 82%)' };
+        this.colori['ombra'] = { 'scuro': 'hsl(' + ((this.colore + 30) % 360) + ', 93%, 84%)', 'chiaro': 'hsl(' + ((this.colore + 30) % 360) + ', 92%, 85%)' };
         this.colori['suggerimento'] = this.colori['selezione']['scuro'];
 
         if (modNotte) {
@@ -63,7 +64,8 @@ class Scacchiera {
         } else {
             this.colori['tavola'] = 'white';
             this.colori['text'] = 'black';
-        }    }
+        }
+    }
 
     impostaDimensioni(altezza) { // Imposta le dimensioni della scacchiera e delle componenti
         this.dimensioneTavolaAltezza = altezza;
@@ -227,6 +229,19 @@ class Scacchiera {
     }
 
     annebbia() { // Annebbia le caselle non accessibili nella modalità nebbia
+
+        // Se c'è solo un re, non annebbiare le caselle perché la partita è terminata
+        let k = 0;
+        for (let casella in this.celle) {
+            if (this.partita.get(casella) === null) continue;
+            else if ('k' === this.partita.get(casella)['type']) k = k + 1;
+        }
+        if (k === 1) {
+            this.termina();
+            return;
+        }
+
+        // Imposta la posizione della partita visualizzata
         let posizione = this.partita.fen();
 
         // Rimuove lo scacco
@@ -270,27 +285,42 @@ class Scacchiera {
         this.nebbia = flag;
     }
 
+    rimuoviSelezioni() { // Rimuove le selezioni dalle caselle
+        for (let casella in this.celle) {
+            this.coloraCasella(casella, 'tema');
+        }
+    }
+
     eseguiMossa(mossa) { // Esegue la mossa TODO: da rivedere quando la mossa non è legale in nebbia
+        this.rimuoviSelezioni();
         let res = this.partita.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: 'q' });
         if (res == null && this.nebbia) {
-            let pezzoDaMuovere = this.partita.remove(mossa.slice(0, 2))
-            this.partita.remove(mossa.slice(2, 4));
-            this.partita.put(pezzoDaMuovere, mossa.slice(2, 4));
-            this.partitaVisualizzata.remove(mossa.slice(0, 2));
-            this.partitaVisualizzata.remove(mossa.slice(2, 4));
-            this.partitaVisualizzata.put(pezzoDaMuovere, mossa.slice(2, 4));
-            let posizione = this.partita.fen();
-            let parti = posizione.split(' ');
-            parti[1] = this.partita.turn() === 'w' ? 'b' : 'w';
-            posizione = parti.join(' ');
-            this.partita = Chess(posizione);
-            posizione = this.partitaVisualizzata.fen();
-            parti = posizione.split(' ');
-            parti[1] = this.partita.turn() === 'w' ? 'b' : 'w';
-            posizione = parti.join(' ');
-            this.partitaVisualizzata = Chess(posizione);
+
+            let pezziRimossi = {};
+            for (let casella in this.celle) {
+                if (this.partita.get(casella) !== null && this.partita.get(casella)['color'] !== this.partita.turn() && this.partita.get(casella)['type'] !== 'k') {
+                    pezziRimossi[casella] = this.partita.remove(casella);
+                }
+            }
+
+            this.partita.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: 'q' });
+            this.partitaVisualizzata.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: 'q' });
+
+            for (let casella in pezziRimossi) {
+                this.partita.put(pezziRimossi[casella], casella);
+            }
+
+            let nuovaFen = this.partita.fen().split(' ')[0];
+            nuovaFen = [nuovaFen].concat(this.partitaVisualizzata.fen().split(' ').slice(1));
+            nuovaFen = nuovaFen.join(' ');
+
+            this.partita = Chess(nuovaFen);
         }
         this.aggiorna();
+        if (!this.nebbia || this.terminata) {
+            this.coloraCasella(mossa.slice(2, 4), 'ombra');
+            this.coloraCasella(mossa.slice(0, 2), 'ombra');
+        }
     }
 
     onOver(casella) { // Mostra i suggerimenti quando il mouse è sopra una casella
@@ -379,7 +409,7 @@ class Scacchiera {
         for (let casella in this.celle) {
 
             // Se la casella è occupata
-            let partita = this.nebbia ? this.partitaVisualizzata : this.partita;
+            let partita = this.nebbia && !this.terminata ? this.partitaVisualizzata : this.partita;
             let pezzo = partita.get(casella);
             if (pezzo !== null) {
 
