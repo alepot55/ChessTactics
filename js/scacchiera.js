@@ -1,28 +1,7 @@
 const coloriTemaCelle = {
-    'default': {
-        'chiaro': '#f0d9b5',
-        'scuro': '#b58863',
-        'ombra': '#696969',
-        'selezione': { 'scuro': '#ffef82', 'chiaro': '#ffef82' }
-    },
-    'verde': {
-        'chiaro': '#9ee0bc',
-        'scuro': '#00ad88',
-        'ombra': '#696969',
-        'selezione': { 'scuro': '#ffef82', 'chiaro': '#ffef82' }
-    },
-    'blu': {
-        'chiaro': '#7dd3e2',
-        'scuro': '#277ece',
-        'ombra': '#696969',
-        'selezione': { 'scuro': '#ffef82', 'chiaro': '#ffef82' }
-    },
-    'simple': {
-        'scuro': '#b7c0d8',
-        'chiaro': '#e8edf9',
-        'ombra': '#9890ec',
-        'selezione': { 'scuro': '#9890ec', 'chiaro': '#b1a6fc' }
-    },
+    'default': 30,
+    'verde': 120,
+    'simple': 220,
 }
 
 const DEFAULT_POSITION_WHITE = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
@@ -37,23 +16,13 @@ class Scacchiera {
 
     // Rapporto tra la dimensione della scacchiera e la dimensione dei pezzi
     rapportoDimensioniPezzi = {
-        'default': 0.9,
-        'marshmallow': 0.9,
+        'default': 0.75,
+        'marshmallow': 0.8,
         'horsey': 0.9,
         'simple': 0.75,
+        'verde': 0.75,
         'dama': 0.9,
     };
-
-    // Dimensione della scacchiera e della tavola
-    dimensioneTavola = 600;
-    dimensioneScacchiera = this.dimensioneTavola * 0.95;
-    dimensioneBordo = this.dimensioneScacchiera / 45;
-    dimensioneCella = this.dimensioneScacchiera / 8;
-    dimensioneNumeri = this.dimensioneScacchiera * 0.022;
-    dimensioneTesto = this.dimensioneScacchiera * 0.021;
-
-    posizioneRighe = (this.dimensioneTavola - this.dimensioneScacchiera) / 2 - this.dimensioneScacchiera / 55;
-    posizioneColonne = (this.dimensioneTavola - this.dimensioneScacchiera) / 2 - this.dimensioneScacchiera / 37;
 
     font = "'Roboto', sans-serif";
 
@@ -66,9 +35,7 @@ class Scacchiera {
         this.partita = Chess(posizione);
 
         // Imposta le impostazioni della scacchiera
-        this.colori['tema'] = coloriTemaCelle[temaCelle];
-        this.colori['ombra'] = coloriTemaCelle[temaCelle]['ombra'];
-        this.colori['selezione'] = coloriTemaCelle[temaCelle]['selezione'];
+        this.temaCelle = temaCelle;
         this.temaPezzi = temaPezzi;
         this.onMossa = onMossa;
         this.suggerimenti = suggerimenti;
@@ -84,11 +51,43 @@ class Scacchiera {
         this.aggiorna(id_div);
     }
 
-    aggiorna(id_div = this.tavola.id) { // Inizializza la scacchiera
+    impostaColori(temaCelle = this.temaCelle) { // Imposta i colori della scacchiera
+        this.colore = coloriTemaCelle[temaCelle];
+        this.colori['tema'] = { 'scuro': 'hsl(' + this.colore + ', 30%, 78%)', 'chiaro': 'hsl(' + this.colore + ', 59%, 94%)' };
+        this.colori['selezione'] = { 'scuro': 'hsl(' + ((this.colore + 30) % 360) + ', 71%, 75%)', 'chiaro': 'hsl(' + ((this.colore + 30) % 360) + ', 93%, 82%)' };
+        this.colori['suggerimento'] = this.colori['selezione']['scuro'];
+
+        if (modNotte) {
+            this.colori['tavola'] = 'hsl(' + this.colore + ', 19%, 25%)';
+            this.colori['text'] = 'white';
+        } else {
+            this.colori['tavola'] = 'white';
+            this.colori['text'] = 'black';
+        }    }
+
+    impostaDimensioni(altezza) { // Imposta le dimensioni della scacchiera e delle componenti
+        this.dimensioneTavolaAltezza = altezza;
+        this.dimensioneTavolaLarghezza = this.dimensioneTavolaAltezza * 0.98;
+        this.dimensioneScacchieraAltezza = this.dimensioneTavolaAltezza * 0.94;
+        this.dimensioneScacchieraLarghezza = this.dimensioneTavolaLarghezza * 0.94;
+        this.dimensioneCellaAltezza = this.dimensioneScacchieraAltezza / 8;
+        this.dimensioneCellaLarghezza = this.dimensioneScacchieraLarghezza / 8;
+        this.dimensioneBordo = this.dimensioneScacchieraAltezza / 45;
+        this.dimensioneNumeri = this.dimensioneScacchieraAltezza * 0.022;
+        this.dimensioneTesto = this.dimensioneScacchieraAltezza * 0.021;
+
+        this.posizioneRighe = (this.dimensioneTavolaLarghezza - this.dimensioneScacchieraLarghezza) / 2 - this.dimensioneScacchieraLarghezza / 55;
+        this.posizioneColonne = (this.dimensioneTavolaAltezza - this.dimensioneScacchieraAltezza) / 2 - this.dimensioneScacchieraAltezza / 37;
+    }
+
+    aggiorna(id_div = this.tavola.id, altezza = 600) { // Inizializza la scacchiera
         this.terminata = false;
         this._rimuoviPezzi();
         this._rimuoviCelle();
         while (this.tavola && this.tavola.firstChild) this.tavola.removeChild(this.tavola.firstChild);
+        this.impostaColori();
+        this.impostaDimensioni(altezza);
+        this.impostaColori();
         this.creaTavola(id_div);
         this._creaScacchiera();
         if (this.nebbia) this.annebbia();
@@ -109,11 +108,11 @@ class Scacchiera {
 
         // Crea un nuovo elemento div per la tavola
         this.tavola = document.getElementById(id_div);
-        this.tavola.style.width = this.dimensioneTavola + "px";
-        this.tavola.style.height = this.dimensioneTavola + "px";
-        this.tavola.style.background = "white";
+        this.tavola.style.width = this.dimensioneTavolaLarghezza + "px";
+        this.tavola.style.height = this.dimensioneTavolaAltezza + "px";
+        this.tavola.style.background = this.colori['tavola'];
         this.tavola.style.borderRadius = "10px";
-        this.tavola.style.border = this.dimensioneBordo + "px solid white";
+        this.tavola.style.border = this.dimensioneBordo + "px solid " + this.colori['tavola'];
         this.tavola.style.borderRadius = "10px";
         this.tavola.style.display = "flex";
         this.tavola.style.justifyContent = "flex-end";
@@ -121,8 +120,8 @@ class Scacchiera {
 
         // Crea un nuovo elemento div per la scacchiera e aggiungilo alla tavola
         this.scacchiera = document.createElement("div");
-        this.scacchiera.style.width = this.dimensioneScacchiera + "px";
-        this.scacchiera.style.height = this.dimensioneScacchiera + "px";
+        this.scacchiera.style.width = this.dimensioneScacchieraLarghezza + "px";
+        this.scacchiera.style.height = this.dimensioneScacchieraAltezza + "px";
         this.tavola.appendChild(this.scacchiera);
 
         // Crea un nuovo elemento div per i numeri delle righe
@@ -133,7 +132,7 @@ class Scacchiera {
         numeriRighe.style.display = "flex";
         numeriRighe.style.flexDirection = "column";
         numeriRighe.style.justifyContent = "space-between";
-        numeriRighe.style.height = this.dimensioneScacchiera + "px";
+        numeriRighe.style.height = this.dimensioneScacchieraAltezza + "px";
 
         // Aggiungi i numeri delle righe
         for (let riga of this.righe) {
@@ -142,10 +141,10 @@ class Scacchiera {
             numero.style.display = "flex";
             numero.style.justifyContent = "center";
             numero.style.alignItems = "center";
-            numero.style.height = this.dimensioneCella + "px";
+            numero.style.height = this.dimensioneCellaAltezza + "px";
             numero.style.fontFamily = this.font;
             numero.style.fontWeight = "bold";
-            numero.style.color = "black";
+            numero.style.color = this.colori['text'];
             numero.style.fontSize = this.dimensioneNumeri + "px";
             numeriRighe.appendChild(numero);
         }
@@ -160,7 +159,7 @@ class Scacchiera {
         lettereColonne.style.bottom = this.posizioneColonne + "px";
         lettereColonne.style.display = "flex";
         lettereColonne.style.justifyContent = "space-between";
-        lettereColonne.style.width = this.dimensioneScacchiera + "px";
+        lettereColonne.style.width = this.dimensioneScacchieraLarghezza + "px";
 
         // Aggiungi le lettere delle colonne
         for (let colonna of this.colonne) {
@@ -169,10 +168,10 @@ class Scacchiera {
             lettera.style.display = "flex";
             lettera.style.justifyContent = "center";
             lettera.style.alignItems = "center";
-            lettera.style.width = this.dimensioneCella + "px";
+            lettera.style.width = this.dimensioneCellaLarghezza + "px";
             lettera.style.fontFamily = this.font;
             lettera.style.fontWeight = "bold";
-            lettera.style.color = "black";
+            lettera.style.color = this.colori['text'];
             lettera.style.fontSize = this.dimensioneTesto + "px";
             lettereColonne.appendChild(lettera);
         }
@@ -365,8 +364,8 @@ class Scacchiera {
 
         // Imposta lo stile della cella
         let dimensioneCella = this.dimensioneScacchiera / 8 + "px";
-        cella.style.width = dimensioneCella;
-        cella.style.height = dimensioneCella;
+        cella.style.width = this.dimensioneCellaLarghezza + "px";
+        cella.style.height = this.dimensioneCellaAltezza + "px";
         cella.style.display = "flex";
         cella.style.alignItems = "center";
         cella.style.justifyContent = "center";
@@ -387,7 +386,7 @@ class Scacchiera {
                 // Crea un nuovo elemento img per il pezzo
                 pezzo = pezzo['type'] + pezzo['color'];
                 let percorso = 'assets/pedine/' + this.temaPezzi + '/' + pezzo + '.svg';
-                let dimensioneImg = this.rapportoDimensioniPezzi[this.temaPezzi] * this.dimensioneScacchiera / 8 + "px"
+                let dimensioneImg = this.rapportoDimensioniPezzi[this.temaPezzi] * this.dimensioneCellaLarghezza + "px"
                 let img = document.createElement("img");
 
                 // Imposta lo stile del pezzo
@@ -418,10 +417,10 @@ class Scacchiera {
             let cerchio = document.createElement("div");
 
             // Imposta lo stile del cerchio
-            let dimensioneCerchio = this.dimensioneScacchiera / 24 + "px";
+            let dimensioneCerchio = this.dimensioneCellaLarghezza / 3.5 + "px";
             cerchio.style.width = dimensioneCerchio;
             cerchio.style.height = dimensioneCerchio;
-            cerchio.style.background = this.colori['ombra'];
+            cerchio.style.background = this.colori['suggerimento'];
             cerchio.style.borderRadius = "50%";
             cerchio.style.opacity = "0.8";
 
@@ -445,9 +444,7 @@ class Scacchiera {
 
         // Imposta i nuovi temi
         this.temaPezzi = nuovoTemaPezzi;
-        this.colori['tema'] = coloriTemaCelle[nuovoTemaCelle];
-        this.colori['ombra'] = coloriTemaCelle[nuovoTemaCelle]['ombra'];
-        this.colori['selezione'] = coloriTemaCelle[nuovoTemaCelle]['selezione'];
+        this.temaCelle = nuovoTemaCelle;
 
         // Aggiorna la scacchiera
         this.aggiorna();
