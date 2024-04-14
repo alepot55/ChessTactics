@@ -84,7 +84,7 @@ class Scacchiera {
         this.aggiorna(id_div);
     }
 
-    aggiorna(id_div) { // Inizializza la scacchiera
+    aggiorna(id_div = this.tavola.id) { // Inizializza la scacchiera
         this.terminata = false;
         this._rimuoviPezzi();
         this._rimuoviCelle();
@@ -94,6 +94,7 @@ class Scacchiera {
         if (this.nebbia) this.annebbia();
         this._posizionaPezzi();
         this._aggiungiListener();
+        if (this.statoPartita() !== null) this.termina();
     }
 
     creaTavola(id_div) { // Crea la tavola e la scacchiera con le lettere delle colonne e i numeri delle righe
@@ -290,9 +291,7 @@ class Scacchiera {
             posizione = parti.join(' ');
             this.partitaVisualizzata = Chess(posizione);
         }
-        this._rimuoviPezzi();
-        if (this.nebbia && this.statoPartita() === null) this.annebbia();
-        this._posizionaPezzi();
+        this.aggiorna();
     }
 
     onOver(casella) { // Mostra i suggerimenti quando il mouse è sopra una casella
@@ -439,7 +438,7 @@ class Scacchiera {
         this.partita = Chess(posizione);
 
         // Aggiorna la scacchiera
-        this.aggiorna(this.tavola.id);
+        this.aggiorna();
     }
 
     cambiaTema(nuovoTemaPezzi, nuovoTemaCelle) { // Cambia il tema dei pezzi e delle caselle
@@ -451,7 +450,7 @@ class Scacchiera {
         this.colori['selezione'] = coloriTemaCelle[nuovoTemaCelle]['selezione'];
 
         // Aggiorna la scacchiera
-        this.aggiorna(this.tavola.id);
+        this.aggiorna();
     }
 
     _rimuoviPezzi() { // Rimuove i pezzi dalla scacchiera
@@ -466,7 +465,7 @@ class Scacchiera {
 
     ribalta() { // Ribalta la scacchiera e cambia l'orientamento
         this.orientamento = this.orientamento === 'w' ? 'b' : 'w';
-        this.aggiorna(this.tavola.id);
+        this.aggiorna();
     }
 
     setSuggerimenti(flag) { // Imposta i suggerimenti
