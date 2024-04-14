@@ -1,6 +1,6 @@
 const indirizzoServer = `http://localhost:3000/server.php`;
-temaPezzi = 'default';
-temaScacchiera = 'default';
+temaPezzi = 'simple';
+temaScacchiera = 'simple';
 
 // Invoa i dati al server e restituisci la risposta
 async function inviaDatiAlServer(dati, evento = null) {
