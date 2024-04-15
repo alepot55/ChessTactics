@@ -204,9 +204,16 @@ class Scacchiera {
         if (!this.suggerimenti) return;
         for (let casella in this.celle) {
             let cella = this.celle[casella];
-            if (this.partita.get(casella) === null) {
-                while (cella.firstChild) cella.removeChild(cella.firstChild);
+            var figli = cella.childNodes;
+
+            // Itera all'indietro attraverso la lista dei figli
+            for (var i = figli.length - 1; i >= 0; i--) {
+                // Se il figlio è un 'div', rimuovilo
+                if (figli[i].nodeName === 'DIV') {
+                    cella.removeChild(figli[i]);
+                }
             }
+
         }
     }
 
@@ -293,7 +300,7 @@ class Scacchiera {
 
     eseguiMossa(mossa) { // Esegue la mossa TODO: da rivedere quando la mossa non è legale in nebbia
         this.rimuoviSelezioni();
-        let res = this.partita.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: 'q' });
+        let res = this.partita.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: mossa.length === 5 ? mossa[4] : undefined});
         if (res == null && this.nebbia) {
 
             let pezziRimossi = {};
@@ -303,8 +310,8 @@ class Scacchiera {
                 }
             }
 
-            this.partita.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: 'q' });
-            this.partitaVisualizzata.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: 'q' });
+            this.partita.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: mossa.length === 5 ? mossa[4] : undefined });
+            this.partitaVisualizzata.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: mossa.length === 5 ? mossa[4] : undefined });
 
             for (let casella in pezziRimossi) {
                 this.partita.put(pezziRimossi[casella], casella);
@@ -329,6 +336,54 @@ class Scacchiera {
         this.mostraSuggerimenti(casella);
     }
 
+    promozione(mossa) { // Restituisce true se la mossa è una promozione
+        let aCasella = mossa.slice(2, 4);
+        let daCasella = mossa.slice(0, 2);
+        let pezzo = this.partita.get(daCasella);
+        if (pezzo['type'] === 'p' && ((aCasella[1] === '1' || aCasella[1] === '8'))) {
+            for (let casella in this.celle) {
+                let coperturaCella = document.createElement("div");
+                coperturaCella.style.width = this.dimensioneCellaLarghezza + "px";
+                coperturaCella.style.height = this.dimensioneCellaAltezza + "px";
+                coperturaCella.style.position = "absolute";
+                coperturaCella.style.display = "flex";
+                coperturaCella.style.alignItems = "center";
+                coperturaCella.style.justifyContent = "center";
+
+                if (casella[0] === aCasella[0] && '8765'.includes(casella[1])) {
+                    coperturaCella.style.zIndex = "2";
+                    coperturaCella.style.backgroundColor = this.colori['selezione'][(this.getPosizioneCella(casella)[0] + this.getPosizioneCella(casella)[1]) % 2 === 1 ? 'scuro' : 'chiaro'];
+
+                    let temaPezzi = this.temaPezzi === 'dama' ? 'simple' : this.temaPezzi;
+                    let dimensioneImg = this.rapportoDimensioniPezzi[temaPezzi] * this.dimensioneCellaLarghezza + "px"
+                    let img = document.createElement("img");
+                    img.style.width = dimensioneImg;
+                    img.style.height = dimensioneImg;
+                    img.style.position = "absolute";
+                    img.style.zIndex = "3";
+
+                    let tipo = casella[1] === '8' ? 'q' : casella[1] === '7' ? 'r' : casella[1] === '6' ? 'b' : 'n';
+                    let percorso = 'assets/pedine/' + temaPezzi  + '/' + tipo + this.orientamento + '.svg';
+
+                    img.src = percorso;
+                    img.addEventListener("click", () => {
+                        let mossa = daCasella + aCasella + tipo;
+                        if (this.onMossa(mossa)) this.eseguiMossa(mossa);
+                    });
+                    coperturaCella.appendChild(img);
+                } else {
+                    coperturaCella.style.zIndex = "0";
+                    coperturaCella.style.backgroundColor = this.colori['nebbia'][(this.getPosizioneCella(casella)[0] + this.getPosizioneCella(casella)[1]) % 2 === 1 ? 'scuro' : 'chiaro'];
+                }
+
+                this.celle[casella].appendChild(coperturaCella);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     onClick(casella) { // Esegue la mossa quando si clicca su una casella
 
         // Se la partita è terminata o non è il turno del giocatore, non fare nulla
@@ -344,8 +399,11 @@ class Scacchiera {
 
             // Calcola la mossa e controlla se è legale
             let mossa = this.casellaCliccata + casella;
-            this.casellaCliccata = null;
+
             if (!this.mossaLegale(mossa)) return;
+            if (this.promozione(mossa)) return;
+
+            this.casellaCliccata = null;
 
             // Esegui la mossa se accettata dalla funzione onMossa
             if (this.onMossa(mossa)) this.eseguiMossa(mossa);
@@ -393,7 +451,6 @@ class Scacchiera {
         cella.id = id;
 
         // Imposta lo stile della cella
-        let dimensioneCella = this.dimensioneScacchiera / 8 + "px";
         cella.style.width = this.dimensioneCellaLarghezza + "px";
         cella.style.height = this.dimensioneCellaAltezza + "px";
         cella.style.display = "flex";
@@ -422,6 +479,8 @@ class Scacchiera {
                 // Imposta lo stile del pezzo
                 img.style.width = dimensioneImg;
                 img.style.height = dimensioneImg;
+                img.style.position = "absolute";
+                img.style.zIndex = "1";
                 img.src = percorso;
 
                 // Aggiungi il pezzo alla casella
@@ -438,24 +497,27 @@ class Scacchiera {
         this.celle = {};
     }
 
-    suggerimento(cella) { // Mostra il suggerimento per una mossa possibile
+    suggerimento(casella) { // Mostra il suggerimento per una mossa possibile
 
         // Se i suggerimenti sono attivi e la casella è vuota
-        if (this.suggerimenti && this.partita.get(cella) === null && !this.celle[cella].firstChild) {
+        if (this.suggerimenti) {
 
             // Crea un nuovo elemento div per il cerchio
             let cerchio = document.createElement("div");
 
             // Imposta lo stile del cerchio
             let dimensioneCerchio = this.dimensioneCellaLarghezza / 3.5 + "px";
+            if (this.partita.get(casella) !== null) dimensioneCerchio = this.dimensioneCellaLarghezza + "px";
             cerchio.style.width = dimensioneCerchio;
             cerchio.style.height = dimensioneCerchio;
             cerchio.style.background = this.colori['suggerimento'];
             cerchio.style.borderRadius = "50%";
             cerchio.style.opacity = "0.8";
+            cerchio.style.position = "absolute";
+            cerchio.style.zIndex = "0";
 
-            // Aggiunge il cerchio alla cella
-            this.celle[cella].appendChild(cerchio);
+            // Aggiunge il cerchio alla casella
+            this.celle[casella].appendChild(cerchio);
         }
     }
 

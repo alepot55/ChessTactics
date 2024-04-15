@@ -5,7 +5,7 @@ modNotte = false;
 
 // Invoa i dati al server e restituisci la risposta
 async function inviaDatiAlServer(dati, evento = null) {
-
+    
     // Evita il comportamento di default del form (ricaricamento della pagina)
     if (evento !== null) evento.preventDefault();
 

@@ -113,6 +113,8 @@ async function aspettaMossa(mossa, invia = true) {
         if (!aggiornaStatoMultiplayer('turnoAvversario')) return;
     }
 
+    if (codicePartita === null) return aggiornaStatoMultiplayer('annullata');
+
     // Invia la richiesta
     let datiRicevuti = await inviaDatiAlServer({
         operazione: 'aspettaMossa',

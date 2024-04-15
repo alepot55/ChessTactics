@@ -54,17 +54,17 @@ async function caricaProblema() {
 function convalidaMossaProblemi(mossa) {
 
     // Ottieni la mossa corretta
-    let mossaCorretta = ottieniProssimaMossa(aggiorna = false).slice(0, 4);
+    let mossaCorretta = ottieniProssimaMossa(aggiorna = false).split(' ')[0];
 
     // Se la mossa è corretta eseguila
-    if (mossa.slice(0, 2) + mossa.slice(2, 4) === mossaCorretta) {
+    if (mossa.slice(0, 2) + mossa.slice(2, 4) === mossaCorretta.slice(0, 4) && (mossaCorretta.length === 4 || mossaCorretta[4] === (mossa.length === 5 ? mossa[4] : null))) {
         risolvi();
         mossaGiusta();
         return true;
     } else {
 
         // Se la mossa è legale, allora è sbagliata
-         mossaSbagliata();
+        mossaSbagliata();
 
         // Torna indietro
         return false
@@ -95,7 +95,7 @@ function mossaGiusta() {
 
     // Altrimenti mostra un messaggio di conferma
     document.getElementById('descrizione').textContent = 'Esatto, continua così!';
-    
+
 }
 
 // Funzione che risolve una mossa del problema
