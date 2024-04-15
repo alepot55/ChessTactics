@@ -507,7 +507,7 @@ class Scacchiera {
 
             // Imposta lo stile del cerchio
             let dimensioneCerchio = this.dimensioneCellaLarghezza / 3.5 + "px";
-            if (this.partita.get(casella) !== null) dimensioneCerchio = this.dimensioneCellaLarghezza + "px";
+            if (this.partita.get(casella) !== null) dimensioneCerchio = this.dimensioneCellaLarghezza * 0.9 + "px";
             cerchio.style.width = dimensioneCerchio;
             cerchio.style.height = dimensioneCerchio;
             cerchio.style.background = this.colori['suggerimento'];
