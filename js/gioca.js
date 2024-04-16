@@ -1,6 +1,10 @@
 // le sezioni sono giocaComputer, giocaSolo, giocaMultiplayer
 // le scacchiere sono scacchieraComputer, scacchieraSolo, scacchieraMultiplayer
 
+const tempIntervallo = 100;
+const timerUtente = new Timer(mostraTempoUtente, 60);
+const timerAvversario = new Timer(mostraTempoAvversario, 60);
+
 // Variabili 
 let sezioneCorrente = "giocaComputer";
 let idScacchieraCorrente = "scacchieraComputer";
@@ -27,6 +31,22 @@ const messaggioComputer = document.getElementById("messaggioComputer");
 let scacchieraGiocaComputer = new Scacchiera('scacchieraComputer', DEFAULT_POSITION_WHITE, true, temaPezzi, temaScacchiera, continuaMossaComputer, true);
 let scacchieraGiocaSolo = new Scacchiera('scacchieraSolo', DEFAULT_POSITION_WHITE, true, temaPezzi, temaScacchiera, continuaMossaSolo, true);
 let scacchieraGiocaMultiplayer = new Scacchiera('scacchieraMultiplayer', '', true, temaPezzi, temaScacchiera, continuaMossaMultiplayer, true);
+
+function mostraTempoUtente(tempo) {
+    document.getElementById("tempoUtente").innerText = tempo.toFixed(1);
+    if (tempo <= 0) {
+        aggiornaStatoMultiplayer('terminata');
+        sconfittaPartitaMultiplayer();
+    }
+}
+
+function mostraTempoAvversario(tempo) {
+    document.getElementById("tempoAvversario").innerText = tempo.toFixed(1);
+    if (tempo <= 0) {
+        aggiornaStatoMultiplayer('terminata');
+        vittoriaPartitaMultiplayer();
+    }
+}
 
 // Aggiorna la scacchiera della sezione gioca
 function aggiornaScacchieraGioca(idScacchiera, posizione = DEFAULT_POSITION_WHITE) {
@@ -63,7 +83,7 @@ function continuaMossaSolo(mossa) {
         if (scacchieraGiocaSolo.statoPartita() !== null) {
             messaggioSolo.innerText = "Partita terminata!";
             return false;
-        } 
+        }
 
         scacchieraGiocaSolo.ribalta();
 
@@ -125,7 +145,7 @@ async function aspettaMossa(mossa, invia = true) {
     if (datiRicevuti['annullata']) {
         aggiornaStatoMultiplayer('annullata');
     } else if (datiRicevuti['mossa'] === mossa) {
-        setTimeout(() => aspettaMossa(mossa, false), 1000);
+        setTimeout(() => aspettaMossa(mossa, false), tempIntervallo);
     } else {
         scacchieraGiocaMultiplayer.eseguiMossa(datiRicevuti['mossa']);
         aggiornaStatoMultiplayer('mioTurno');
@@ -163,11 +183,12 @@ async function aspettaGiocatori(protezione) {
     // Se la partita è iniziata, aggiorna lo stato e la scacchiera
     if (partitaInit || datiRicevuti['iniziata']) {
         aggiornaStatoMultiplayer('iniziata');
-        return aggiornaScacchieraGioca(idScacchieraCorrente);
+        aggiornaScacchieraGioca(idScacchieraCorrente);
+        return;
     }
 
     // Altrimenti, aspetta un secondo e ripeti
-    setTimeout(() => aspettaGiocatori(false), 1000);
+    setTimeout(() => aspettaGiocatori(false), tempIntervallo);
 }
 
 // Funzione per creare una partita e aspettare i giocatori
@@ -230,8 +251,16 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             buttNuovaPartitaMultiplayer.style.display = "none";
             buttTerminaPartitaMultiplayer.style.display = "block";
             buttStopRicercaMultiplayer.style.display = "none";
+            timerUtente.start();
+            timerUtente.pausa();
+            timerAvversario.start();
+            timerAvversario.pausa();
+            mostraTempoAvversario(60);
+            mostraTempoUtente(60);
             break;
         case 'terminata':
+            timerUtente.stop();
+            timerAvversario.stop();
             scacchieraGiocaMultiplayer.termina();
             document.getElementById("messaggioMultiplayer").innerText = "Partita terminata!";
             partitaInit = false;
@@ -243,6 +272,8 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             buttNuovaPartitaMultiplayer.style.display = "block";
             break;
         case 'annullata':
+            timerUtente.stop();
+            timerAvversario.stop();
             document.getElementById("messaggioMultiplayer").innerText = "Partita annullata!";
             partitaInit = false;
             codicePartita = null;
@@ -258,9 +289,13 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             buttNuovaPartitaMultiplayer.style.display = "none";
             buttTerminaPartitaMultiplayer.style.display = "none";
             buttStopRicercaMultiplayer.style.display = "block";
+            mostraTempoAvversario(0);
+            mostraTempoUtente(0);
             break;
         case 'mioTurno':
             fine = scacchieraGiocaMultiplayer.statoPartita();
+            timerUtente.riprendi();
+            timerAvversario.pausa();
             if (fine !== null) {
                 let colore = coloreUtente;
                 aggiornaStatoMultiplayer('terminata');
@@ -276,6 +311,8 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             return true;
         case 'turnoAvversario':
             fine = scacchieraGiocaMultiplayer.statoPartita();
+            timerUtente.pausa();
+            timerAvversario.riprendi();
             if (fine !== null) {
                 let colore = coloreUtente;
                 aggiornaStatoMultiplayer('terminata');
