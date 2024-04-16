@@ -299,10 +299,17 @@ class Scacchiera {
     }
 
     eseguiMossa(mossa) { // Esegue la mossa TODO: da rivedere quando la mossa non è legale in nebbia
+
+        // RImuoce le selezioni dalle caselle
         this.rimuoviSelezioni();
-        let res = this.partita.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: mossa.length === 5 ? mossa[4] : undefined});
+
+        // Esegue la mossa 
+        let res = this.partita.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: mossa.length === 5 ? mossa[4] : undefined });
+
+        // Se la mossa non è stata eseguita in nebbia
         if (res == null && this.nebbia) {
 
+            // Rimuove i pezzi del giocatore avversario 
             let pezziRimossi = {};
             for (let casella in this.celle) {
                 if (this.partita.get(casella) !== null && this.partita.get(casella)['color'] !== this.partita.turn() && this.partita.get(casella)['type'] !== 'k') {
@@ -310,20 +317,26 @@ class Scacchiera {
                 }
             }
 
+            // Esegue la mossa nella partita visualizzata e nella partita
             this.partita.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: mossa.length === 5 ? mossa[4] : undefined });
             this.partitaVisualizzata.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: mossa.length === 5 ? mossa[4] : undefined });
 
+            // Ripristina i pezzi rimossi
             for (let casella in pezziRimossi) {
                 this.partita.put(pezziRimossi[casella], casella);
             }
 
+            // Aggiorna la posizione della partita
             let nuovaFen = this.partita.fen().split(' ')[0];
             nuovaFen = [nuovaFen].concat(this.partitaVisualizzata.fen().split(' ').slice(1));
             nuovaFen = nuovaFen.join(' ');
-
             this.partita = Chess(nuovaFen);
         }
+
+        // Aggiorna la scacchiera
         this.aggiorna();
+
+        // Se la partita non è terminata, evidenzia la mossa
         if (!this.nebbia || this.terminata) {
             this.coloraCasella(mossa.slice(2, 4), 'ombra');
             this.coloraCasella(mossa.slice(0, 2), 'ombra');
@@ -339,9 +352,15 @@ class Scacchiera {
     promozione(mossa) { // Restituisce true se la mossa è una promozione
         let aCasella = mossa.slice(2, 4);
         let daCasella = mossa.slice(0, 2);
+
+        // Se la mossa è una promozione e il pezzo è un pedone e la casella di arrivo è l'ultima riga
         let pezzo = this.partita.get(daCasella);
         if (pezzo['type'] === 'p' && ((aCasella[1] === '1' || aCasella[1] === '8'))) {
+
+            // Per ogni cella
             for (let casella in this.celle) {
+
+                // Crea un nuovo elemento div per la copertura della cella
                 let coperturaCella = document.createElement("div");
                 coperturaCella.style.width = this.dimensioneCellaLarghezza + "px";
                 coperturaCella.style.height = this.dimensioneCellaAltezza + "px";
@@ -350,10 +369,14 @@ class Scacchiera {
                 coperturaCella.style.alignItems = "center";
                 coperturaCella.style.justifyContent = "center";
 
+                // Se la casella è nel riquadro della scelta del pezzo
                 if (casella[0] === aCasella[0] && '8765'.includes(casella[1])) {
+
+                    // Imposta lo stile della copertura della cella e posizionala dava la casella
                     coperturaCella.style.zIndex = "2";
                     coperturaCella.style.backgroundColor = this.colori['selezione'][(this.getPosizioneCella(casella)[0] + this.getPosizioneCella(casella)[1]) % 2 === 1 ? 'scuro' : 'chiaro'];
 
+                    // Crea un nuovo elemento img per il pezzo 
                     let temaPezzi = this.temaPezzi === 'dama' ? 'simple' : this.temaPezzi;
                     let dimensioneImg = this.rapportoDimensioniPezzi[temaPezzi] * this.dimensioneCellaLarghezza + "px"
                     let img = document.createElement("img");
@@ -362,9 +385,11 @@ class Scacchiera {
                     img.style.position = "absolute";
                     img.style.zIndex = "3";
 
+                    // Imposta il tipo del pezzo e il percorso dell'immagine
                     let tipo = casella[1] === '8' ? 'q' : casella[1] === '7' ? 'r' : casella[1] === '6' ? 'b' : 'n';
-                    let percorso = 'assets/pedine/' + temaPezzi  + '/' + tipo + this.orientamento + '.svg';
+                    let percorso = 'assets/pedine/' + temaPezzi + '/' + tipo + this.orientamento + '.svg';
 
+                    // Aggiungi l'immagine alla copertura della cella e aggiungi un listener per la promozione
                     img.src = percorso;
                     img.addEventListener("click", () => {
                         let mossa = daCasella + aCasella + tipo;
@@ -372,10 +397,13 @@ class Scacchiera {
                     });
                     coperturaCella.appendChild(img);
                 } else {
+
+                    // Imposta lo stile della copertura della cella per oscurare le caselle non selezionate
                     coperturaCella.style.zIndex = "0";
                     coperturaCella.style.backgroundColor = this.colori['nebbia'][(this.getPosizioneCella(casella)[0] + this.getPosizioneCella(casella)[1]) % 2 === 1 ? 'scuro' : 'chiaro'];
                 }
 
+                // Aggiungi la copertura della cella alla casella
                 this.celle[casella].appendChild(coperturaCella);
             }
             return true;
@@ -562,7 +590,11 @@ class Scacchiera {
     }
 
     mossePossibili(casella = null) { // Restituisce le mosse possibili
+
+        // Se la modalità nebbia è attiva, restituisci le mosse possibili dalla partita visualizzata
         let partita = this.nebbia ? this.partitaVisualizzata : this.partita;
+
+        // Restituisci le mosse possibili per la casella specificata o per la partita
         if (casella === null) {
             return partita.moves({ verbose: true });
         } else {
@@ -571,8 +603,12 @@ class Scacchiera {
     }
 
     statoPartita() { // Restituisce lo stato della partita
+
+        // Se la modalità nebbia è attiva
         if (this.nebbia) {
             if (this.partita.fen() === '') return null;
+
+            // Se c'è solo un re, restituisci il vincitore
             let kb = false;
             let kw = false;
             for (let casella in this.celle) {
@@ -583,6 +619,8 @@ class Scacchiera {
             if (!kb) return 'w';
             if (!kw) return 'b';
         } else if (this.partita.game_over()) {
+
+            // Se la partita è terminata, restituisci il vincitore
             if (this.partita.in_checkmate()) return this.partita.turn() === 'w' ? 'b' : 'w';
             return 'p';
         }
