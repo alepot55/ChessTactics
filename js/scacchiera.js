@@ -390,7 +390,6 @@ class Scacchiera {
                     // Imposta il tipo del pezzo e il percorso dell'immagine
                     let pezzi = ['q', 'r', 'b', 'n'];
                     let tipo = pezzi[righePromozione.indexOf(casella[1])];
-                    console.log(tipo, pezzi, righePromozione, casella[1]);
                     let percorso = 'assets/pedine/' + temaPezzi + '/' + tipo + this.orientamento + '.svg';
 
                     // Aggiungi l'immagine alla copertura della cella e aggiungi un listener per la promozione
@@ -564,7 +563,7 @@ class Scacchiera {
         this.aggiorna();
     }
 
-    cambiaTema(nuovoTemaPezzi, nuovoTemaCelle) { // Cambia il tema dei pezzi e delle caselle
+    cambiaTema(nuovoTemaPezzi = 'simple', nuovoTemaCelle = 'simple') { // Cambia il tema dei pezzi e delle caselle
 
         // Imposta i nuovi temi
         this.temaPezzi = nuovoTemaPezzi;

@@ -1,8 +1,14 @@
 const indirizzoServer = `http://localhost:3000/server.php`;
-temaPezzi = 'simple';
-temaScacchiera = 'simple';
-modNotte = false;
 const buttModNotte = document.getElementById("modalitaNotteButton");
+const tempoCookie = 60 * 60 * 24 * 30;
+modNotte = false;
+
+if (get("temaPezzi") == null) {
+    set("temaPezzi", "simple");
+}
+if (get("temaScacchiera") == null) {
+    set("temaScacchiera", "simple");
+}
 
 buttModNotte.addEventListener("click", function () {
   modNotte = !modNotte;
@@ -29,7 +35,6 @@ class Timer {
                     this.callback(this.currentTime);
                     if (this.currentTime <= 0) {
                         this.stop();
-                        console.log("Il timer è scaduto!");
                     }
                 }
             }, 100);
@@ -56,7 +61,6 @@ class Timer {
 
 // Invoa i dati al server e restituisci la risposta
 async function inviaDatiAlServer(dati, evento = null) {
-    console.log(dati);
 
     // Evita il comportamento di default del form (ricaricamento della pagina)
     if (evento !== null) evento.preventDefault();
@@ -76,11 +80,11 @@ async function inviaDatiAlServer(dati, evento = null) {
 
 
 function set(campo, valore) {
-    document.cookie = campo + "=" + valore + "; max-age=" + 60 * 60 * 24 * 30;
+    document.cookie = campo + "=" + valore + "; max-age=" + tempoCookie;
 }
 
 function get(campo) {
-    if (!document.cookie.includes(campo)) return;
+    if (!document.cookie.includes(campo)) return null;
     let user = document.cookie.split(campo + '=')[1].split(';')[0];
     if (user == 'null') user = null;
     return user;
