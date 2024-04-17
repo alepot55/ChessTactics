@@ -27,7 +27,7 @@ class Scacchiera {
     font = "'Roboto', sans-serif";
 
 
-    constructor(id_div, posizione, orientamento, temaPezzi, temaCelle, onMossa, suggerimenti = true, annebbia = false) {
+    constructor(id_div, posizione, orientamento, temaPezzi = 'simple', temaCelle = 'simple', onMossa, suggerimenti = true, annebbia = false) {
 
         // Inizializza la posizione della scacchiera e l'orientamento
         let turno = posizione.split(' ')[1];

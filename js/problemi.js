@@ -6,7 +6,8 @@ var partita = null;
 
 var bottoneAggiorna = document.getElementById('aggiornaProblema');
 var bottoneRisolvi = document.getElementById('risolviProblema');
-var scacchieraProblemi = new Scacchiera(idScacchiera, DEFAULT_POSITION_WHITE, true, temaPezzi, temaScacchiera, convalidaMossaProblemi);
+var scacchieraProblemi = new Scacchiera(idScacchiera, DEFAULT_POSITION_WHITE, true, get('temaPezzi'), get('temaScacchiera'), convalidaMossaProblemi);
+
 
 // Funzione che aggiorna la scacchiera con il problema ricevuto dal server
 function aggiornaScacchieraProblemi(problema) {
@@ -32,10 +33,12 @@ function ottieniProssimaMossa(aggiorna = true) {
 // Carica il problema successivo e aggiorna la scacchiera
 async function caricaProblema() {
 
+    if (!get('indice')) set('indice', 0);
+
     // Invia la richiesta al server per ottenere il problema
     let datiDaInviare = {
         operazione: 'problema',
-        indice: indice
+        indice: get('indice'),
     }
     let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
 
@@ -43,7 +46,7 @@ async function caricaProblema() {
     aggiornaScacchieraProblemi(datiRicevuti['problema']);
 
     // Aggiorna l'indice del problema
-    indice++;
+    set('indice', parseInt(get('indice')) + 1);
 
     // Abilita il bottone risolvi e aggiorna il testo
     bottoneRisolvi.disabled = false;
@@ -85,8 +88,7 @@ function vittoria() {
 function mossaGiusta() {
 
     // Aggiorna il punteggio dell'utente
-    punteggioUtente = punteggioUtente + 1;
-    aggiornaProfilo()
+    set('punteggio', parseInt(get('punteggio')) + 1);
 
     // Se non ci sono più mosse da eseguire, l'utente ha completato il puzzle
     if (soluzione.length === 0) {

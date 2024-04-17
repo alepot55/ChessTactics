@@ -21,12 +21,14 @@ async function gestisciAccessoProfilo(tipoOperazione, evento) {
     let datiRicevuti = await inviaDatiAlServer(datiDaInviare, evento);
 
     if (datiRicevuti['messaggio'] == 'Login riuscito' || datiRicevuti['messaggio'] == 'Registrazione riuscita') {
-        nomeUtente = nomeUtenteInput;
-        punteggioUtente = datiRicevuti['punteggio'];
+        set('username', nomeUtenteInput);
+        set('punteggio', passwordInput);
         aggiornaProfilo();
     } else {
         document.getElementById('rispostaAccedi').innerHTML = datiRicevuti['messaggio'];
     }
+
+    console.log(get('username'));
 }
 
 async function eseguiLogout(evento) {
@@ -37,14 +39,15 @@ async function eseguiLogout(evento) {
     let datiRicevuti = await inviaDatiAlServer(datiDaInviare, evento);
 
     if (datiRicevuti['messaggio'] == 'Logout riuscito') {
-        nomeUtente = null;
+        set('username', null);
+        set('punteggio', 0);
         aggiornaProfilo();
     }
 }
 
 async function eliminaProfiloUtente(evento) {
     let datiDaInviare = {
-        username: nomeUtente,
+        username: get('username'),
         password: document.getElementById('passwordElimina').value,
         operazione: 'elimina'
     };
@@ -52,7 +55,8 @@ async function eliminaProfiloUtente(evento) {
     let datiRicevuti = await inviaDatiAlServer(datiDaInviare, evento);
 
     if (datiRicevuti['messaggio'] == 'Account eliminato') {
-        nomeUtente = null;
+        set('username', null);
+        set('punteggio', 0);
         aggiornaProfilo();
     }
 }
@@ -62,7 +66,7 @@ async function modificaProfiloUtente(evento) {
     let nuovaPassword = document.getElementById('nuovaPassword').value;
 
     let datiDaInviare = {
-        username: nomeUtente,
+        username: get('username'),
         nuovoUsername: nuovoNomeUtente,
         nuovaPassword: nuovaPassword,
         operazione: 'modifica'
@@ -71,7 +75,7 @@ async function modificaProfiloUtente(evento) {
     let datiRicevuti = await inviaDatiAlServer(datiDaInviare, evento);
 
     if (datiRicevuti['messaggio'] == 'Modifica effettuata') {
-        nomeUtente = nuovoNomeUtente;
+        set('username', nuovoNomeUtente);
         aggiornaProfilo();
     }
 
@@ -79,12 +83,12 @@ async function modificaProfiloUtente(evento) {
 }
 
 function aggiornaProfilo() {
-    let utenteLoggato = nomeUtente != null;
+    let utenteLoggato = get('username') != null;
     document.getElementById('accediProfilo').style.display = utenteLoggato ? 'none' : 'block';
     document.getElementById('profiloUtente').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('modificaProfilo').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('eliminaProfilo').style.display = utenteLoggato ? 'block' : 'none';
-    document.getElementById('usernameProfilo').innerHTML = nomeUtente;
+    document.getElementById('usernameProfilo').innerHTML = get('username');
     document.getElementById('punteggioProfilo').innerHTML = punteggioUtente;
 }
 
@@ -94,12 +98,8 @@ document.getElementById('logoutButton').addEventListener('click', (evento) => es
 document.getElementById('eliminaButton').addEventListener('click', (evento) => eliminaProfiloUtente(evento));
 document.getElementById('modificaButton').addEventListener('click', (evento) => modificaProfiloUtente(evento));
 document.getElementById('salvaPreferenze').addEventListener('click', function () {
-    temaPezzi = document.getElementById('temaPezzi').value;
-    temaScacchiera = document.getElementById('temaScacchiera').value;
-    scacchieraGiocaComputer.cambiaTema(temaPezzi, temaScacchiera);
-    scacchieraGiocaMultiplayer.cambiaTema(temaPezzi, temaScacchiera);
-    scacchieraGiocaSolo.cambiaTema(temaPezzi, temaScacchiera);
-    scacchieraProblemi.cambiaTema(temaPezzi, temaScacchiera);
+    set('temaPezzi', document.getElementById('temaPezzi').value);
+    set('temaScacchiera', document.getElementById('temaScacchiera').value);
 });
 
 aggiornaProfilo();

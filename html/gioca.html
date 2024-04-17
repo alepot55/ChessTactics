@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Puzzle di Scacchi</title>
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <link rel="stylesheet" type="text/css" href="css/stile.css">
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboard2@0.5.0/dist/chessboard2.min.css"
+        integrity="sha384-47VeTDpmy4yT21gKPXQcLQYQZwlmz27gEH5NTrOmTk3G/SGvMyltclOW/Q8uE+sL" crossorigin="anonymous">
+</head>
+
+<body>
+    <header>
+        <h1>Bentornato al sito di Puzzle di Scacchi!</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="problemi.html">Problemi</a></li>
+                <li><a href="gioca.html">Gioca</a></li>
+                <li><a href="profilo.html">Profilo</a></li>
+            </ul>
+        </nav>
+        <button id="modalitaNotteButton">Modalità Notte</button>
+    </header>
+    <main>
+
+        <p>Scegli la modalità di gioco:</p>
+        <button id="giocaComputerButton" class="button">Gioca con il Computer</button>
+        <button id="giocaSoloButton" class="button">Gioca da Solo</button>
+        <button id="giocaMultiplayerButton" class="button">Gioca con un Altro Giocatore</button>
+
+        <div id="giocaComputer">
+            <h2>Gioca con il Computer</h2>
+            <div id="scacchieraComputer" class="scacchiera"></div>
+            <p id="risultatoComputer"></p>
+            <button id="nuovaPartitaComputer"> class="button"Nuova Partita</button>
+            <p id="messaggioComputer"></p>
+        </div>
+
+        <div id="giocaSolo">
+            <h2>Gioca da Solo</h2>
+            <div id="scacchieraSolo" class="scacchiera
+                "></div>
+            <p id="risultatoSolo"></p>
+            <button id="nuovaPartitaSolo" class="button">Nuova Partita</button>
+            <p id="messaggioSolo"></p>
+        </div>
+
+        <div id="giocaMultiplayer">
+            <h2>Gioca con un Altro Giocatore</h2>
+            <select id="modalitàMultiplayer" name="modalitàMultiplayer">
+                <option value="normale">Normale</option>
+                <option value="pezziNascosti">Pezzi Nascosti</option>
+                <option value="nebbia">Nebbia</option>
+            </select><br>
+            <div class="container">
+                <p id="tempoAvversario"></p>
+                <div id="scacchieraMultiplayer" class="scacchiera"></div>
+                <p id="tempoUtente"></p>
+            </div>
+            <input type="text" id="codiceMultiplayer" name="codiceMultiplayer"
+                placeholder="Inserisci il codice della partita"><br>
+            <button id="nuovaPartitaMultiplayer" class="button">Nuova Partita</button>
+            <button id="stopRicercaMultiplayer" class="button">Annulla</button>
+            <button id="terminaPartitaMultiplayer" class="button">Termina partita</button>
+            <p id="messaggioMultiplayer"></p>
+        </div>
+
+
+
+    </main>
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
+<script src="https://unpkg.com/@chrisoakman/chessboard2@0.5.0/dist/chessboard2.min.js"
+    integrity="sha384-/KwQCjA1GWovZNV3QDVtvSMDzO4reGgarF/RqHipr7hIUElH3r5zNl9WEPPOBRIF"
+    crossorigin="anonymous"></script>
+<script src="js/funzioni.js"></script>
+<script src="js/scacchiera.js"></script>
+<script src="js/gioca.js"></script>
+
+</html>

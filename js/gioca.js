@@ -161,10 +161,9 @@ async function aspettaGiocatori(protezione) {
         // Invia i dati al server e ottieni il codice della partita
         let datiRicevuti = await inviaDatiAlServer({
             operazione: 'creaPartita',
-            username: nomeUtente,
+            username: get('username'),
             protezione: protezione
         });
-        console.log(datiRicevuti);
         codicePartita = datiRicevuti['codice'];
         coloreUtente = datiRicevuti['colore'];
         partitaInit = datiRicevuti['iniziata'];
@@ -174,7 +173,7 @@ async function aspettaGiocatori(protezione) {
     // Invia la richiesta al server e aspetta la risposta
     let datiRicevuti = await inviaDatiAlServer({
         operazione: 'aspettaGiocatori',
-        username: nomeUtente,
+        username: get('username'),
         codice: codicePartita
     });
 
@@ -330,7 +329,7 @@ function aggiornaStatoMultiplayer(stato = 'default') {
 function annullaRicercaMultiplayer() {
     inviaDatiAlServer({
         operazione: 'annullaPartita',
-        username: nomeUtente,
+        username: get('username'),
         codice: codicePartita
     });
 }
@@ -340,7 +339,7 @@ function nuovaPartitaMultiplayer() {
     modalitàMultiplayer = document.getElementById("modalitàMultiplayer").value;
     let password = document.getElementById("codiceMultiplayer").value;
 
-    if (nomeUtente === null) {
+    if (get('username') === null) {
         document.getElementById("messaggioMultiplayer").innerText = "Devi essere loggato per giocare!";
     } else {
         creaPartitaeAspetta(modalitàMultiplayer + password);

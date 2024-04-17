@@ -2,6 +2,15 @@ const indirizzoServer = `http://localhost:3000/server.php`;
 temaPezzi = 'simple';
 temaScacchiera = 'simple';
 modNotte = false;
+const buttModNotte = document.getElementById("modalitaNotteButton");
+
+buttModNotte.addEventListener("click", function () {
+  modNotte = !modNotte;
+  scacchieraGiocaComputer.cambiaTema(temaPezzi, temaScacchiera);
+  scacchieraGiocaMultiplayer.cambiaTema(temaPezzi, temaScacchiera);
+  scacchieraGiocaSolo.cambiaTema(temaPezzi, temaScacchiera);
+  scacchieraProblemi.cambiaTema(temaPezzi, temaScacchiera);
+});
 
 class Timer {
     constructor(callback, seconds) {
@@ -47,6 +56,7 @@ class Timer {
 
 // Invoa i dati al server e restituisci la risposta
 async function inviaDatiAlServer(dati, evento = null) {
+    console.log(dati);
 
     // Evita il comportamento di default del form (ricaricamento della pagina)
     if (evento !== null) evento.preventDefault();
@@ -62,4 +72,16 @@ async function inviaDatiAlServer(dati, evento = null) {
     if (risposta.ok) {
         return await risposta.json();
     }
+}
+
+
+function set(campo, valore) {
+    document.cookie = campo + "=" + valore + "; max-age=" + 60 * 60 * 24 * 30;
+}
+
+function get(campo) {
+    if (!document.cookie.includes(campo)) return;
+    let user = document.cookie.split(campo + '=')[1].split(';')[0];
+    if (user == 'null') user = null;
+    return user;
 }

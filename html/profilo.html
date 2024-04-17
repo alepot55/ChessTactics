@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Puzzle di Scacchi</title>
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <link rel="stylesheet" type="text/css" href="css/stile.css">
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboard2@0.5.0/dist/chessboard2.min.css"
+        integrity="sha384-47VeTDpmy4yT21gKPXQcLQYQZwlmz27gEH5NTrOmTk3G/SGvMyltclOW/Q8uE+sL" crossorigin="anonymous">
+</head>
+
+<body>
+    <header>
+        <h1>Bentornato al sito di Puzzle di Scacchi!</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="problemi.html">Problemi</a></li>
+                <li><a href="gioca.html">Gioca</a></li>
+                <li><a href="profilo.html">Profilo</a></li>
+            </ul>
+        </nav>
+        <button id="modalitaNotteButton">Modalità Notte</button>
+    </header>
+    <main>
+
+
+        <div id="preferenzeUtente">
+            <h2>Preferenze Utente</h2>
+            <label for="temaPezzi">Tema pedine:</label><br>
+            <select id="temaPezzi" name="temaPezzi">
+                <option value="default">Default</option>
+                <option value="simple">Simple</option>
+                <option value="verde">Verde</option>
+                <option value="marshmallow">Marshmallow</option>
+                <option value="horsey">Horsey</option>
+            </select><br>
+            <label for="temaScacchiera">Tema scacchiera:</label><br>
+            <select id="temaScacchiera" name="temaScacchiera">
+                <option value="default">Default</option>
+                <option value="simple">Simple</option>
+                <option value="verde">Verde</option>
+            </select><br>
+            <button id="salvaPreferenze" class="button">Applica</button>
+        </div>
+
+        <div id="profiloUtente">
+            <h2>Profilo Utente</h2>
+            <p>Nome utente: <span id="usernameProfilo"></span></p>
+            <p>Punteggio: <span id="punteggioProfilo"></span></p>
+            <button id="logoutButton" class="button">Logout</button>
+        </div>
+
+        <div id="modificaProfilo">
+            <h2>Modifica Profilo</h2>
+            <label for="nuovoUsername">Nuovo nome utente:</label><br>
+            <input type="text" id="nuovoUsername" name="nuovoUsername"><br>
+            <label for="nuovaPassword">Nuova password:</label><br>
+            <input type="password" id="nuovaPassword" name="nuovaPassword"><br>
+            <input type="submit" id="modificaButton" value="Modifica">
+            <p id="rispostaModifica"></p>
+        </div>
+
+        <div id="eliminaProfilo">
+            <h2>Elimina Profilo</h2>
+            <label for="passwordElimina">Password:</label><br>
+            <input type="password" id="passwordElimina" name="passwordElimina"><br>
+            <input type="submit" id="eliminaButton" value="Elimina">
+            <p id="rispostaElimina"></p>
+        </div>
+
+        <div id="accediProfilo">
+            <h2>Accedi / Registrati</h2>
+            <form id="loginForm">
+                <label for="username">Nome utente:</label><br>
+                <input type="text" id="usernameAccedi" name="usernameAccedi"><br>
+                <label for="password">Password:</label><br>
+                <input type="password" id="passwordAccedi" name="passwordAccedi"><br>
+                <input type="submit" id="loginButton" value="Accedi" class="button">
+                <input type="submit" id="registerButton" value="Registrati" class="button">
+                <p id="rispostaAccedi"></p>
+            </form>
+        </div>
+
+
+    </main>
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
+<script src="https://unpkg.com/@chrisoakman/chessboard2@0.5.0/dist/chessboard2.min.js"
+    integrity="sha384-/KwQCjA1GWovZNV3QDVtvSMDzO4reGgarF/RqHipr7hIUElH3r5zNl9WEPPOBRIF"
+    crossorigin="anonymous"></script>
+<script src="js/funzioni.js"></script>
+<script src="js/login.js"></script>
+
+</html>

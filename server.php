@@ -1,6 +1,4 @@
 <?php
-// Avvia la sessione
-session_start();
 
 // Imposta l'intestazione Access-Control-Allow-Origin
 header('Access-Control-Allow-Origin: *');
@@ -45,20 +43,6 @@ function password($utenti, $username) {
     return null;
 }
 
-function sessione($dati) {
-    $dati = array();
-
-    if (isset($_SESSION['username'])) {
-        $dati['username'] = $_SESSION['username'];
-        $dati['punteggio'] = $_SESSION['punteggio'];
-    } else {
-        $dati['username'] = null;
-        $dati['punteggio'] = 0;
-    }
-
-    return $dati;
-}
-
 function login($dati) {
     $username = $dati['username'];
     $password = $dati['password'];
@@ -72,8 +56,6 @@ function login($dati) {
     } else if ($passwordTrovata === $password) {
         $dati['messaggio'] = "Login riuscito";
         $dati['punteggio'] = sommaPunteggio($utenti, $username, $_POST['punteggio']);
-        $_SESSION['username'] = $username;
-        $_SESSION['punteggio'] = $dati['punteggio'];
     } else {
         $dati['messaggio'] = "Password errata";
     }
@@ -100,8 +82,6 @@ function registrazione($dati) {
         array_push($utenti, $nuovoUtente);
         $dati['messaggio'] = "Registrazione riuscita";
         $dati['punteggio'] = $_POST['punteggio'];
-        $_SESSION['username'] = $username;
-        $_SESSION['punteggio'] = $dati['punteggio'];
     } else {
         $dati['messaggio'] = "Username già esistente";
     }
@@ -133,9 +113,6 @@ function elimina($dati) {
             }
         }
 
-        // Esegui il logout
-        //session_unset();
-        //session_destroy();
         $dati['messaggio'] = "Account eliminato";
     } else {
         $dati['messaggio'] = "Password errata";
@@ -165,8 +142,6 @@ function modifica($dati) {
                 $utenti[$key]['password'] = $nuovaPassword;
             }
         }
-
-        // Salva l'array di utenti nel file
         $dati['messaggio'] = "Modifica effettuata";
     }
 
