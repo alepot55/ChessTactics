@@ -45,23 +45,6 @@ class Timer {
     }
 }
 
-// // Esempio di utilizzo:
-// const mioTimer = new Timer(10); // Parte da 10 secondi
-// mioTimer.start(); // Avvia il timer
-
-// // Dopo 5 secondi, metti in pausa il timer
-// setTimeout(() => {
-//     mioTimer.pausa();
-//     console.log("Timer in pausa.");
-// }, 5000);
-
-// // Dopo altri 3 secondi, riprendi il timer
-// setTimeout(() => {
-//     mioTimer.riprendi();
-//     console.log("Timer ripreso.");
-// }, 8000);
-
-
 // Invoa i dati al server e restituisci la risposta
 async function inviaDatiAlServer(dati, evento = null) {
 

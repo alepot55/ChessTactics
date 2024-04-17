@@ -369,8 +369,10 @@ class Scacchiera {
                 coperturaCella.style.alignItems = "center";
                 coperturaCella.style.justifyContent = "center";
 
+                let righePromozione = this.orientamento === 'w' ? ['8', '7', '6', '5'] : ['1', '2', '3', '4'];
+
                 // Se la casella è nel riquadro della scelta del pezzo
-                if (casella[0] === aCasella[0] && '8765'.includes(casella[1])) {
+                if (casella[0] === aCasella[0] && righePromozione.includes(casella[1])) {
 
                     // Imposta lo stile della copertura della cella e posizionala dava la casella
                     coperturaCella.style.zIndex = "2";
@@ -386,7 +388,9 @@ class Scacchiera {
                     img.style.zIndex = "3";
 
                     // Imposta il tipo del pezzo e il percorso dell'immagine
-                    let tipo = casella[1] === '8' ? 'q' : casella[1] === '7' ? 'r' : casella[1] === '6' ? 'b' : 'n';
+                    let pezzi = ['q', 'r', 'b', 'n'];
+                    let tipo = pezzi[righePromozione.indexOf(casella[1])];
+                    console.log(tipo, pezzi, righePromozione, casella[1]);
                     let percorso = 'assets/pedine/' + temaPezzi + '/' + tipo + this.orientamento + '.svg';
 
                     // Aggiungi l'immagine alla copertura della cella e aggiungi un listener per la promozione

@@ -236,7 +236,7 @@ function aspettaGiocatori($dati) {
 
 function faiMossa($dati) {
     global $partite;
-    $codice = $dati['codice'];
+    $codice = intval($dati['codice']);
     $mossa = $dati['mossa'];
     $dati = array();
 
@@ -247,7 +247,7 @@ function faiMossa($dati) {
 
 function aspettaMossa($dati) {
     global $partite;
-    $codice = $dati['codice'];
+    $codice = intval($dati['codice']);
     $dati = array();
 
     $mossa = $partite[$codice]['ultimaMossa'];

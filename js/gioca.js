@@ -34,7 +34,7 @@ let scacchieraGiocaMultiplayer = new Scacchiera('scacchieraMultiplayer', '', tru
 
 function mostraTempoUtente(tempo) {
     document.getElementById("tempoUtente").innerText = tempo.toFixed(1);
-    if (tempo <= 0) {
+    if (tempo < 0) {
         aggiornaStatoMultiplayer('terminata');
         sconfittaPartitaMultiplayer();
     }
@@ -42,7 +42,7 @@ function mostraTempoUtente(tempo) {
 
 function mostraTempoAvversario(tempo) {
     document.getElementById("tempoAvversario").innerText = tempo.toFixed(1);
-    if (tempo <= 0) {
+    if (tempo < 0) {
         aggiornaStatoMultiplayer('terminata');
         vittoriaPartitaMultiplayer();
     }
@@ -164,6 +164,7 @@ async function aspettaGiocatori(protezione) {
             username: nomeUtente,
             protezione: protezione
         });
+        console.log(datiRicevuti);
         codicePartita = datiRicevuti['codice'];
         coloreUtente = datiRicevuti['colore'];
         partitaInit = datiRicevuti['iniziata'];
