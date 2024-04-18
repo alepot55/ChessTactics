@@ -1,5 +1,4 @@
 const indirizzoServer = `http://localhost:3000/server.php`;
-const buttModNotte = document.getElementById("modalitaNotteButton");
 const tempoCookie = 60 * 60 * 24 * 30;
 modNotte = false;
 
@@ -9,14 +8,6 @@ if (get("temaPezzi") == null) {
 if (get("temaScacchiera") == null) {
     set("temaScacchiera", "simple");
 }
-
-buttModNotte.addEventListener("click", function () {
-  modNotte = !modNotte;
-  scacchieraGiocaComputer.cambiaTema(temaPezzi, temaScacchiera);
-  scacchieraGiocaMultiplayer.cambiaTema(temaPezzi, temaScacchiera);
-  scacchieraGiocaSolo.cambiaTema(temaPezzi, temaScacchiera);
-  scacchieraProblemi.cambiaTema(temaPezzi, temaScacchiera);
-});
 
 class Timer {
     constructor(callback, seconds) {

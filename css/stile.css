@@ -1,3 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+
+:root {
+    --borderRadius: 10px;
+    --spacer: 1rem;
+    --primary: #406ff3;
+    --text: #6a778e;
+    --linkHeight: calc(var(--spacer) * 3.5);
+    --timing: 250ms;
+    --transition: var(--timing) ease all;
+}
+
+body {
+    padding-left: 300px;
+    background: #eaeef6;
+    font-family: 'Open Sans', sans-serif;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -17,18 +35,4 @@
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
-}
-
-.rotate-90-cw {
-    animation: rotate-90-cw 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-}
-
-@keyframes rotate-90-cw {
-    0% {
-        transform: rotate(0);
-    }
-
-    100% {
-        transform: rotate(90deg);
-    }
 }

@@ -7,22 +7,27 @@
     <title>Puzzle di Scacchi</title>
     <link rel="stylesheet" type="text/css" href="css/layout.css">
     <link rel="stylesheet" type="text/css" href="css/stile.css">
-    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboard2@0.5.0/dist/chessboard2.min.css"
-        integrity="sha384-47VeTDpmy4yT21gKPXQcLQYQZwlmz27gEH5NTrOmTk3G/SGvMyltclOW/Q8uE+sL" crossorigin="anonymous">
 </head>
 
 <body>
     <header>
-        <h1>Bentornato al sito di Puzzle di Scacchi!</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="problemi.html">Problemi</a></li>
-                <li><a href="gioca.html">Gioca</a></li>
-                <li><a href="profilo.html">Profilo</a></li>
+        <link rel="stylesheet" type="text/css" href="css/navbar.css">
+        <nav class="navbar">
+            <ul class="navbar__menu">
+              <li class="navbar__item">
+                <a href="index.html" class="navbar__link"><img src="assets/icone/feather/home.svg"><span>Home</span></a>
+              </li>
+              <li class="navbar__item">
+                <a href="problemi.html" class="navbar__link"><img src="assets/icone/feather/shuffle.svg"><span>Problemi</span></a>        
+              </li>
+              <li class="navbar__item">
+                <a href="gioca.html" class="navbar__link"><img src="assets/icone/feather/play.svg"><span>Gioca</span></a>        
+              </li>
+              <li class="navbar__item">
+                <a href="profilo.html" class="navbar__link"><img src="assets/icone/feather/user.svg"><span>Profilo</span></a>        
+              </li>
             </ul>
-        </nav>
-        <button id="modalitaNotteButton">Modalità Notte</button>
+          </nav>
     </header>
     <main>
 
@@ -75,9 +80,6 @@
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
-<script src="https://unpkg.com/@chrisoakman/chessboard2@0.5.0/dist/chessboard2.min.js"
-    integrity="sha384-/KwQCjA1GWovZNV3QDVtvSMDzO4reGgarF/RqHipr7hIUElH3r5zNl9WEPPOBRIF"
-    crossorigin="anonymous"></script>
 <script src="js/funzioni.js"></script>
 <script src="js/scacchiera.js"></script>
 <script src="js/gioca.js"></script>
