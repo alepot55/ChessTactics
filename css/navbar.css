@@ -34,16 +34,10 @@
     border-radius: calc(var(--borderRadius) * 1.75);
 }
 
-.navbar__link:hover {
-    color: #fff;
-}
-
-.navbar:not(:hover) .navbar__link:focus span,
 .navbar__link:hover span {
     opacity: 1;
     transform: translate(0);
 }
-
 .navbar__menu {
     position: relative;
 }
