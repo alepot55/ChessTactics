@@ -52,6 +52,9 @@ class Scacchiera {
     }
 
     impostaColori(temaCelle = this.temaCelle) { // Imposta i colori della scacchiera
+        var root = document.documentElement;
+        root.style.setProperty('--colore-tema', coloriTemaCelle[temaCelle]);
+        
         this.colore = coloriTemaCelle[temaCelle];
         this.colori['tema'] = { 'scuro': 'hsl(' + this.colore + ', 30%, 78%)', 'chiaro': 'hsl(' + this.colore + ', 59%, 94%)' };
         this.colori['selezione'] = { 'scuro': 'hsl(' + ((this.colore + 30) % 360) + ', 71%, 75%)', 'chiaro': 'hsl(' + ((this.colore + 30) % 360) + ', 93%, 82%)' };
@@ -110,44 +113,25 @@ class Scacchiera {
 
         // Crea un nuovo elemento div per la tavola
         this.tavola = document.getElementById(id_div);
-        this.tavola.style.width = this.dimensioneTavolaLarghezza + "px";
-        this.tavola.style.height = this.dimensioneTavolaAltezza + "px";
+        this.tavola.className = "tavola";
         this.tavola.style.background = this.colori['tavola'];
-        this.tavola.style.borderRadius = "10px";
         this.tavola.style.border = this.dimensioneBordo + "px solid " + this.colori['tavola'];
-        this.tavola.style.borderRadius = "10px";
-        this.tavola.style.display = "flex";
-        this.tavola.style.justifyContent = "flex-end";
-        this.tavola.style.position = "relative";
 
         // Crea un nuovo elemento div per la scacchiera e aggiungilo alla tavola
         this.scacchiera = document.createElement("div");
-        this.scacchiera.style.width = this.dimensioneScacchieraLarghezza + "px";
-        this.scacchiera.style.height = this.dimensioneScacchieraAltezza + "px";
+        this.scacchiera.className = "scacchiera";
         this.tavola.appendChild(this.scacchiera);
 
         // Crea un nuovo elemento div per i numeri delle righe
         var numeriRighe = document.createElement("div");
-        numeriRighe.style.position = "absolute";
-        numeriRighe.style.left = this.posizioneRighe + "px";
-        numeriRighe.style.top = "0";
-        numeriRighe.style.display = "flex";
-        numeriRighe.style.flexDirection = "column";
-        numeriRighe.style.justifyContent = "space-between";
-        numeriRighe.style.height = this.dimensioneScacchieraAltezza + "px";
+        numeriRighe.className = "numeriRighe";
 
         // Aggiungi i numeri delle righe
         for (let riga of this.righe) {
             var numero = document.createElement("div");
+            numero.className = "numero";
             numero.textContent = riga;
-            numero.style.display = "flex";
-            numero.style.justifyContent = "center";
-            numero.style.alignItems = "center";
-            numero.style.height = this.dimensioneCellaAltezza + "px";
-            numero.style.fontFamily = this.font;
-            numero.style.fontWeight = "bold";
             numero.style.color = this.colori['text'];
-            numero.style.fontSize = this.dimensioneNumeri + "px";
             numeriRighe.appendChild(numero);
         }
 
@@ -156,25 +140,14 @@ class Scacchiera {
 
         // Crea un nuovo elemento div per le lettere delle colonne
         var lettereColonne = document.createElement("div");
-        lettereColonne.style.position = "absolute";
-        lettereColonne.style.right = "0";
-        lettereColonne.style.bottom = this.posizioneColonne + "px";
-        lettereColonne.style.display = "flex";
-        lettereColonne.style.justifyContent = "space-between";
-        lettereColonne.style.width = this.dimensioneScacchieraLarghezza + "px";
+        lettereColonne.className = "lettereColonne";
 
         // Aggiungi le lettere delle colonne
         for (let colonna of this.colonne) {
             var lettera = document.createElement("div");
+            lettera.className = "lettera";
             lettera.textContent = colonna.toUpperCase();
-            lettera.style.display = "flex";
-            lettera.style.justifyContent = "center";
-            lettera.style.alignItems = "center";
-            lettera.style.width = this.dimensioneCellaLarghezza + "px";
-            lettera.style.fontFamily = this.font;
-            lettera.style.fontWeight = "bold";
             lettera.style.color = this.colori['text'];
-            lettera.style.fontSize = this.dimensioneTesto + "px";
             lettereColonne.appendChild(lettera);
         }
 
@@ -459,10 +432,6 @@ class Scacchiera {
 
     _creaScacchiera() {  // Crea la scacchiera con le caselle
 
-        // Imposta lo stile della scacchiera
-        this.scacchiera.style.display = "grid";
-        this.scacchiera.style.gridTemplate = "repeat(8, 1fr) / repeat(8, 1fr)";
-
         // Crea le caselle della scacchiera
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
@@ -479,14 +448,8 @@ class Scacchiera {
         // Imposta l'id della cella e crea un nuovo elemento div
         let id = this.colonne[colonna] + this.righe[riga];
         let cella = document.createElement("div");
+        cella.className = "cella";
         cella.id = id;
-
-        // Imposta lo stile della cella
-        cella.style.width = this.dimensioneCellaLarghezza + "px";
-        cella.style.height = this.dimensioneCellaAltezza + "px";
-        cella.style.display = "flex";
-        cella.style.alignItems = "center";
-        cella.style.justifyContent = "center";
 
         return cella;
     }
@@ -504,14 +467,9 @@ class Scacchiera {
                 // Crea un nuovo elemento img per il pezzo
                 pezzo = pezzo['type'] + pezzo['color'];
                 let percorso = 'assets/pedine/' + this.temaPezzi + '/' + pezzo + '.svg';
-                let dimensioneImg = this.rapportoDimensioniPezzi[this.temaPezzi] * this.dimensioneCellaLarghezza + "px"
-                let img = document.createElement("img");
 
-                // Imposta lo stile del pezzo
-                img.style.width = dimensioneImg;
-                img.style.height = dimensioneImg;
-                img.style.position = "absolute";
-                img.style.zIndex = "1";
+                let img = document.createElement("img");
+                img.className = "pezzo";
                 img.src = percorso;
 
                 // Aggiungi il pezzo alla casella
@@ -535,6 +493,7 @@ class Scacchiera {
 
             // Crea un nuovo elemento div per il cerchio
             let cerchio = document.createElement("div");
+            cerchio.className = "suggerimento";
 
             // Imposta lo stile del cerchio
             let dimensioneCerchio = this.dimensioneCellaLarghezza / 3.5 + "px";
@@ -542,10 +501,6 @@ class Scacchiera {
             cerchio.style.width = dimensioneCerchio;
             cerchio.style.height = dimensioneCerchio;
             cerchio.style.background = this.colori['suggerimento'];
-            cerchio.style.borderRadius = "50%";
-            cerchio.style.opacity = "0.8";
-            cerchio.style.position = "absolute";
-            cerchio.style.zIndex = "0";
 
             // Aggiunge il cerchio alla casella
             this.celle[casella].appendChild(cerchio);

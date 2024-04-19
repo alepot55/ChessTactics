@@ -1,0 +1,96 @@
+:root {
+    --colore-tema: 220;
+    --dimensioneTavolaAltezza: 600px;
+    --dimensioneTavolaLarghezza: calc(var(--dimensioneTavolaAltezza) * 0.98);
+    --dimensioneScacchieraAltezza: calc(var(--dimensioneTavolaAltezza) * 0.94);
+    --dimensioneScacchieraLarghezza: calc(var(--dimensioneTavolaLarghezza) * 0.94);
+    --dimensioneCellaAltezza: calc(var(--dimensioneScacchieraAltezza) / 8);
+    --dimensioneCellaLarghezza: calc(var(--dimensioneScacchieraLarghezza) / 8);
+    --dimensioneBordo: calc(var(--dimensioneScacchieraAltezza) / 45);
+    --dimensioneNumeri: calc(var(--dimensioneScacchieraAltezza) * 0.022);
+    --dimensioneTesto: calc(var(--dimensioneScacchieraAltezza) * 0.021);
+
+    --posizioneRighe: calc((var(--dimensioneTavolaLarghezza) - var(--dimensioneScacchieraLarghezza)) / 2 - var(--dimensioneScacchieraLarghezza) / 55);
+    --posizioneColonne: calc((var(--dimensioneTavolaAltezza) - var(--dimensioneScacchieraAltezza)) / 2 - var(--dimensioneScacchieraAltezza) / 37);
+}
+
+.tavola {
+    width: var(--dimensioneTavolaLarghezza);
+    height: var(--dimensioneTavolaAltezza);
+    background: var(--coloriTavola);
+    border-radius: 10px;
+    border: var(--dimensioneBordo) solid var(--coloriTavola);
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.scacchiera {
+    display: grid;
+    grid-template: repeat(8, 1fr) / repeat(8, 1fr);
+    width: var(--dimensioneScacchieraLarghezza);
+    height: var(--dimensioneScacchieraAltezza);
+}
+
+.numeriRighe {
+    position: absolute;
+    left: var(--posizioneRighe);
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: var(--dimensioneScacchieraAltezza);
+}
+
+.numero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--dimensioneCellaAltezza);
+    font-family: var(--font);
+    font-weight: bold;
+    color: var(--coloriText);
+    font-size: var(--dimensioneNumeri);
+}
+
+.lettereColonne {
+    position: absolute;
+    right: 0;
+    bottom: var(--posizioneColonne);
+    display: flex;
+    justify-content: space-between;
+    width: var(--dimensioneScacchieraLarghezza);
+}
+
+.lettera {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--dimensioneCellaLarghezza);
+    font-family: var(--font);
+    font-weight: bold;
+    color: var(--coloriText);
+    font-size: var(--dimensioneTesto);
+}
+
+.cella {
+    width: var(--dimensioneCellaLarghezza);
+    height: var(--dimensioneCellaAltezza);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pezzo {
+    position: absolute;
+    z-index: 1;
+    width: calc(var(--dimensioneCellaLarghezza) * 0.75);
+    height: calc(var(--dimensioneCellaAltezza) * 0.75);
+}
+
+.suggerimento {
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+    opacity: 0.8;
+}
