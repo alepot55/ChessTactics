@@ -1,5 +1,4 @@
 :root {
-    --colore-tema: 220;
     --dimensioneTavolaAltezza: 600px;
     --dimensioneTavolaLarghezza: calc(var(--dimensioneTavolaAltezza) * 0.98);
     --dimensioneScacchieraAltezza: calc(var(--dimensioneTavolaAltezza) * 0.94);
@@ -17,9 +16,7 @@
 .tavola {
     width: var(--dimensioneTavolaLarghezza);
     height: var(--dimensioneTavolaAltezza);
-    background: var(--coloriTavola);
     border-radius: 10px;
-    border: var(--dimensioneBordo) solid var(--coloriTavola);
     display: flex;
     justify-content: flex-end;
     position: relative;

@@ -52,9 +52,7 @@ class Scacchiera {
     }
 
     impostaColori(temaCelle = this.temaCelle) { // Imposta i colori della scacchiera
-        var root = document.documentElement;
-        root.style.setProperty('--colore-tema', coloriTemaCelle[temaCelle]);
-        
+      
         this.colore = coloriTemaCelle[temaCelle];
         this.colori['tema'] = { 'scuro': 'hsl(' + this.colore + ', 30%, 78%)', 'chiaro': 'hsl(' + this.colore + ', 59%, 94%)' };
         this.colori['selezione'] = { 'scuro': 'hsl(' + ((this.colore + 30) % 360) + ', 71%, 75%)', 'chiaro': 'hsl(' + ((this.colore + 30) % 360) + ', 93%, 82%)' };
