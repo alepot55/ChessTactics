@@ -52,7 +52,7 @@ class Scacchiera {
     }
 
     impostaColori(temaCelle = this.temaCelle) { // Imposta i colori della scacchiera
-      
+
         this.colore = coloriTemaCelle[temaCelle];
         this.colori['tema'] = { 'scuro': 'hsl(' + this.colore + ', 30%, 78%)', 'chiaro': 'hsl(' + this.colore + ', 59%, 94%)' };
         this.colori['selezione'] = { 'scuro': 'hsl(' + ((this.colore + 30) % 360) + ', 71%, 75%)', 'chiaro': 'hsl(' + ((this.colore + 30) % 360) + ', 93%, 82%)' };
@@ -449,6 +449,17 @@ class Scacchiera {
         cella.className = "cella";
         cella.id = id;
 
+        cella.addEventListener('dragover', function(event) {
+            event.preventDefault(); // Permette il drop
+        });
+    
+        let scacchiera = this;
+        cella.addEventListener('drop', function (event) {
+            event.preventDefault(); // Previene l'apertura del link
+            scacchiera.onClick(id);
+        });
+
+
         return cella;
     }
 
@@ -467,6 +478,15 @@ class Scacchiera {
                 let percorso = 'assets/pedine/' + this.temaPezzi + '/' + pezzo + '.svg';
 
                 let img = document.createElement("img");
+                if (pezzo[1] === this.orientamento) {
+                    let scacchiera = this;
+                    let orizzontale = this.dimensioneCellaLarghezza*0.75 / 2
+                    let verticale = this.dimensioneCellaAltezza*0.75 / 2
+                    img.addEventListener('dragstart', function (event) {
+                        event.dataTransfer.setDragImage(this, orizzontale, verticale);
+                        scacchiera.onClick(casella);
+                    });
+                }
                 img.className = "pezzo";
                 img.src = percorso;
 
