@@ -3,15 +3,15 @@
 :root {
     --borderRadius: 10px;
     --spacer: 1rem;
-    --primary: #406ff3;
-    --text: #6a778e;
+    --primary: #e7edf9;
+    --text: #34364c;
     --linkHeight: calc(var(--spacer) * 3.5);
     --timing: 250ms;
     --transition: var(--timing) ease all;
 }
 
 body {
-    padding-left: 300px;
+    padding-left: 150px;
     background: #eaeef6;
     font-family: 'Open Sans', sans-serif;
 }

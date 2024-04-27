@@ -1,5 +1,5 @@
 :root {
-    --dimensioneTavolaAltezza: 600px;
+    --dimensioneTavolaAltezza: min(calc(100vw * 0.8), 600px);
     --dimensioneTavolaLarghezza: calc(var(--dimensioneTavolaAltezza) * 0.98);
     --dimensioneScacchieraAltezza: calc(var(--dimensioneTavolaAltezza) * 0.94);
     --dimensioneScacchieraLarghezza: calc(var(--dimensioneTavolaLarghezza) * 0.94);
@@ -11,11 +11,16 @@
 
     --posizioneRighe: calc((var(--dimensioneTavolaLarghezza) - var(--dimensioneScacchieraLarghezza)) / 2 - var(--dimensioneScacchieraLarghezza) / 55);
     --posizioneColonne: calc((var(--dimensioneTavolaAltezza) - var(--dimensioneScacchieraAltezza)) / 2 - var(--dimensioneScacchieraAltezza) / 37);
+
+    --dimensionePezzoLarghezza: calc(var(--dimensioneCellaLarghezza) * 0.75);
+    --dimensionePezzoAltezza: calc(var(--dimensioneCellaAltezza) * 0.75);
+
 }
 
 .tavola {
     width: var(--dimensioneTavolaLarghezza);
     height: var(--dimensioneTavolaAltezza);
+    border: var(--dimensioneBordo) solid white;
     border-radius: 10px;
     display: flex;
     justify-content: flex-end;
@@ -86,8 +91,29 @@
 }
 
 .suggerimento {
+    width: calc(var(--dimensioneCellaLarghezza) / 3.5);
+    height: calc(var(--dimensioneCellaAltezza) / 3.5);
     position: absolute;
     z-index: 0;
     border-radius: 50%;
     opacity: 0.8;
+}
+
+.catturabile {
+    width: calc(var(--dimensioneCellaLarghezza) * 0.9);
+    height: calc(var(--dimensioneCellaAltezza) * 0.9);
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.coperturaCella {
+    position: absolute;
+    width: var(--dimensioneCellaLarghezza);
+    height: var(--dimensioneCellaAltezza);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
 }

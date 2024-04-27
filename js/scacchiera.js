@@ -68,28 +68,12 @@ class Scacchiera {
         }
     }
 
-    impostaDimensioni(altezza) { // Imposta le dimensioni della scacchiera e delle componenti
-        this.dimensioneTavolaAltezza = altezza;
-        this.dimensioneTavolaLarghezza = this.dimensioneTavolaAltezza * 0.98;
-        this.dimensioneScacchieraAltezza = this.dimensioneTavolaAltezza * 0.94;
-        this.dimensioneScacchieraLarghezza = this.dimensioneTavolaLarghezza * 0.94;
-        this.dimensioneCellaAltezza = this.dimensioneScacchieraAltezza / 8;
-        this.dimensioneCellaLarghezza = this.dimensioneScacchieraLarghezza / 8;
-        this.dimensioneBordo = this.dimensioneScacchieraAltezza / 45;
-        this.dimensioneNumeri = this.dimensioneScacchieraAltezza * 0.022;
-        this.dimensioneTesto = this.dimensioneScacchieraAltezza * 0.021;
-
-        this.posizioneRighe = (this.dimensioneTavolaLarghezza - this.dimensioneScacchieraLarghezza) / 2 - this.dimensioneScacchieraLarghezza / 55;
-        this.posizioneColonne = (this.dimensioneTavolaAltezza - this.dimensioneScacchieraAltezza) / 2 - this.dimensioneScacchieraAltezza / 37;
-    }
-
     aggiorna(id_div = this.tavola.id, altezza = 600) { // Inizializza la scacchiera
         this.terminata = false;
         this._rimuoviPezzi();
         this._rimuoviCelle();
         while (this.tavola && this.tavola.firstChild) this.tavola.removeChild(this.tavola.firstChild);
         this.impostaColori();
-        this.impostaDimensioni(altezza);
         this.impostaColori();
         this.creaTavola(id_div);
         this._creaScacchiera();
@@ -113,7 +97,6 @@ class Scacchiera {
         this.tavola = document.getElementById(id_div);
         this.tavola.className = "tavola";
         this.tavola.style.background = this.colori['tavola'];
-        this.tavola.style.border = this.dimensioneBordo + "px solid " + this.colori['tavola'];
 
         // Crea un nuovo elemento div per la scacchiera e aggiungilo alla tavola
         this.scacchiera = document.createElement("div");
@@ -333,12 +316,10 @@ class Scacchiera {
 
                 // Crea un nuovo elemento div per la copertura della cella
                 let coperturaCella = document.createElement("div");
-                coperturaCella.style.width = this.dimensioneCellaLarghezza + "px";
-                coperturaCella.style.height = this.dimensioneCellaAltezza + "px";
-                coperturaCella.style.position = "absolute";
-                coperturaCella.style.display = "flex";
-                coperturaCella.style.alignItems = "center";
-                coperturaCella.style.justifyContent = "center";
+                coperturaCella.className = "coperturaCella";
+
+                // Aggiungi la copertura della cella alla casella
+                this.celle[casella].appendChild(coperturaCella);
 
                 let righePromozione = this.orientamento === 'w' ? ['8', '7', '6', '5'] : ['1', '2', '3', '4'];
 
@@ -346,17 +327,12 @@ class Scacchiera {
                 if (casella[0] === aCasella[0] && righePromozione.includes(casella[1])) {
 
                     // Imposta lo stile della copertura della cella e posizionala dava la casella
-                    coperturaCella.style.zIndex = "2";
                     coperturaCella.style.backgroundColor = this.colori['selezione'][(this.getPosizioneCella(casella)[0] + this.getPosizioneCella(casella)[1]) % 2 === 1 ? 'scuro' : 'chiaro'];
 
                     // Crea un nuovo elemento img per il pezzo 
                     let temaPezzi = this.temaPezzi === 'dama' ? 'simple' : this.temaPezzi;
-                    let dimensioneImg = this.rapportoDimensioniPezzi[temaPezzi] * this.dimensioneCellaLarghezza + "px"
                     let img = document.createElement("img");
-                    img.style.width = dimensioneImg;
-                    img.style.height = dimensioneImg;
-                    img.style.position = "absolute";
-                    img.style.zIndex = "3";
+                    img.className = "pezzo";
 
                     // Imposta il tipo del pezzo e il percorso dell'immagine
                     let pezzi = ['q', 'r', 'b', 'n'];
@@ -373,12 +349,8 @@ class Scacchiera {
                 } else {
 
                     // Imposta lo stile della copertura della cella per oscurare le caselle non selezionate
-                    coperturaCella.style.zIndex = "0";
                     coperturaCella.style.backgroundColor = this.colori['nebbia'][(this.getPosizioneCella(casella)[0] + this.getPosizioneCella(casella)[1]) % 2 === 1 ? 'scuro' : 'chiaro'];
                 }
-
-                // Aggiungi la copertura della cella alla casella
-                this.celle[casella].appendChild(coperturaCella);
             }
             return true;
         } else {
@@ -449,10 +421,10 @@ class Scacchiera {
         cella.className = "cella";
         cella.id = id;
 
-        cella.addEventListener('dragover', function(event) {
+        cella.addEventListener('dragover', function (event) {
             event.preventDefault(); // Permette il drop
         });
-    
+
         let scacchiera = this;
         cella.addEventListener('drop', function (event) {
             event.preventDefault(); // Previene l'apertura del link
@@ -472,7 +444,6 @@ class Scacchiera {
             let partita = this.nebbia && !this.terminata ? this.partitaVisualizzata : this.partita;
             let pezzo = partita.get(casella);
             if (pezzo !== null) {
-
                 // Crea un nuovo elemento img per il pezzo
                 pezzo = pezzo['type'] + pezzo['color'];
                 let percorso = 'assets/pedine/' + this.temaPezzi + '/' + pezzo + '.svg';
@@ -480,10 +451,7 @@ class Scacchiera {
                 let img = document.createElement("img");
                 if (pezzo[1] === this.orientamento) {
                     let scacchiera = this;
-                    let orizzontale = this.dimensioneCellaLarghezza*0.75 / 2
-                    let verticale = this.dimensioneCellaAltezza*0.75 / 2
-                    img.addEventListener('dragstart', function (event) {
-                        event.dataTransfer.setDragImage(this, orizzontale, verticale);
+                    img.addEventListener('dragstart', () => {
                         scacchiera.onClick(casella);
                     });
                 }
@@ -510,18 +478,17 @@ class Scacchiera {
         if (this.suggerimenti) {
 
             // Crea un nuovo elemento div per il cerchio
+            let cella = this.celle[casella];
             let cerchio = document.createElement("div");
             cerchio.className = "suggerimento";
 
             // Imposta lo stile del cerchio
-            let dimensioneCerchio = this.dimensioneCellaLarghezza / 3.5 + "px";
-            if (this.partita.get(casella) !== null) dimensioneCerchio = this.dimensioneCellaLarghezza * 0.9 + "px";
-            cerchio.style.width = dimensioneCerchio;
-            cerchio.style.height = dimensioneCerchio;
+            cerchio.className = "suggerimento";
+            if (this.partita.get(casella) !== null) cerchio.className = "catturabile";
             cerchio.style.background = this.colori['suggerimento'];
 
             // Aggiunge il cerchio alla casella
-            this.celle[casella].appendChild(cerchio);
+            cella.appendChild(cerchio);
         }
     }
 
