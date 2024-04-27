@@ -1,18 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
 
 :root {
-    --borderRadius: 10px;
-    --spacer: 1rem;
-    --primary: #e7edf9;
-    --text: #34364c;
-    --linkHeight: calc(var(--spacer) * 3.5);
-    --timing: 250ms;
-    --transition: var(--timing) ease all;
+    --tema: light;
+    --notte: 0;
+    color-scheme: var(--tema);
+
+    --color: 220;
+    --primario: light-dark(white, hsl(var(--color), 19%, 25%));
+    --secondario: light-dark(hsl(var(--color), 19%, 25%), white);
+    --secondarioInv: light-dark(hsl(calc(255 - var(--color)), 19%, 75%), black);
 }
 
 body {
-    padding-left: 150px;
-    background: #eaeef6;
+    background: light-dark(#eaeef6, black);
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -30,10 +30,10 @@ body {
     height: 45px;
     padding: 8px;
     border-radius: 5px;
-    border: 2.5px solid #E0E1E4;
+    border: 2.5px solid light-dark(#E0E1E4, #968cc9);
     box-shadow: 0px 0px 20px -20px;
     cursor: pointer;
-    background-color: white;
+    background-color: light-dark(#E0E1E4, #968cc9);
     transition: all 0.2s ease-in-out 0ms;
     user-select: none;
     font-family: 'Poppins', sans-serif;

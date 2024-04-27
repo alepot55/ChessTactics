@@ -14,18 +14,6 @@ class Scacchiera {
         'nebbia': { 'scuro': '#4d5358', 'chiaro': '#6a7278' },
     };
 
-    // Rapporto tra la dimensione della scacchiera e la dimensione dei pezzi
-    rapportoDimensioniPezzi = {
-        'default': 0.75,
-        'marshmallow': 0.8,
-        'horsey': 0.9,
-        'simple': 0.75,
-        'verde': 0.75,
-        'dama': 0.9,
-    };
-
-    font = "'Roboto', sans-serif";
-
 
     constructor(id_div, posizione, orientamento, temaPezzi = 'simple', temaCelle = 'simple', onMossa, suggerimenti = true, annebbia = false) {
 
@@ -96,7 +84,7 @@ class Scacchiera {
         // Crea un nuovo elemento div per la tavola
         this.tavola = document.getElementById(id_div);
         this.tavola.className = "tavola";
-        this.tavola.style.background = this.colori['tavola'];
+        // this.tavola.style.background = this.colori['tavola'];
 
         // Crea un nuovo elemento div per la scacchiera e aggiungilo alla tavola
         this.scacchiera = document.createElement("div");
@@ -112,7 +100,7 @@ class Scacchiera {
             var numero = document.createElement("div");
             numero.className = "numero";
             numero.textContent = riga;
-            numero.style.color = this.colori['text'];
+            //numero.style.color = this.colori['text'];
             numeriRighe.appendChild(numero);
         }
 
@@ -128,7 +116,7 @@ class Scacchiera {
             var lettera = document.createElement("div");
             lettera.className = "lettera";
             lettera.textContent = colonna.toUpperCase();
-            lettera.style.color = this.colori['text'];
+            //lettera.style.color = this.colori['text'];
             lettereColonne.appendChild(lettera);
         }
 

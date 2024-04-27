@@ -15,12 +15,14 @@
     --dimensionePezzoLarghezza: calc(var(--dimensioneCellaLarghezza) * 0.75);
     --dimensionePezzoAltezza: calc(var(--dimensioneCellaAltezza) * 0.75);
 
+    --coloreTesto: hsl(0, 0%, calc(var(--notte) * 100%));
 }
 
 .tavola {
     width: var(--dimensioneTavolaLarghezza);
     height: var(--dimensioneTavolaAltezza);
-    border: var(--dimensioneBordo) solid white;
+    border: var(--dimensioneBordo) solid var(--primario);
+    background-color: var(--primario);
     border-radius: 10px;
     display: flex;
     justify-content: flex-end;
@@ -51,7 +53,7 @@
     height: var(--dimensioneCellaAltezza);
     font-family: var(--font);
     font-weight: bold;
-    color: var(--coloriText);
+    color: var(--coloreTesto);
     font-size: var(--dimensioneNumeri);
 }
 
@@ -71,7 +73,7 @@
     width: var(--dimensioneCellaLarghezza);
     font-family: var(--font);
     font-weight: bold;
-    color: var(--coloriText);
+    color: var(--coloreTesto);
     font-size: var(--dimensioneTesto);
 }
 

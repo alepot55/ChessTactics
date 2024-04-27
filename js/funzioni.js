@@ -2,11 +2,14 @@ const indirizzoServer = `http://localhost:3000/server.php`;
 const tempoCookie = 60 * 60 * 24 * 30;
 modNotte = false;
 
-if (get("temaPezzi") == null) {
-    set("temaPezzi", "simple");
-}
-if (get("temaScacchiera") == null) {
-    set("temaScacchiera", "simple");
+function cambiaModNotte(flag = null) {
+    if (flag == null) {
+        flag = get("notte") == "false" ? true : false;
+    }
+    var root = document.documentElement;
+    root.style.setProperty('--tema', flag ? 'dark' : 'light');
+    root.style.setProperty('--notte', flag ? '1' : '0');
+    set("notte", flag);
 }
 
 class Timer {
@@ -69,7 +72,6 @@ async function inviaDatiAlServer(dati, evento = null) {
     }
 }
 
-
 function set(campo, valore) {
     document.cookie = campo + "=" + valore + "; max-age=" + tempoCookie;
 }
@@ -80,3 +82,19 @@ function get(campo) {
     if (user == 'null') user = null;
     return user;
 }
+
+if (get("temaPezzi") == null) {
+    set("temaPezzi", "simple");
+}
+if (get("temaScacchiera") == null) {
+    set("temaScacchiera", "simple");
+}
+if (get("notte") == null) {
+    set("notte", "false");
+} else {
+    cambiaModNotte(get("notte") == "true" ? true : false);
+}
+
+document.getElementById("btnNotte").addEventListener("click", () => {
+    cambiaModNotte();
+});

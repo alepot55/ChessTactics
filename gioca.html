@@ -21,13 +21,14 @@
               <li class="nav_item">
                 <a href="problemi.html" class="nav_link"><img src="assets/icone/feather/shuffle.svg"><span>Problemi</span></a>        
               </li>
-              <li class="nav_item">
+              <li class="nav_item selezionato">
                 <a href="gioca.html" class="nav_link"><img src="assets/icone/feather/play.svg"><span>Gioca</span></a>        
               </li>
               <li class="nav_item">
                 <a href="profilo.html" class="nav_link"><img src="assets/icone/feather/user.svg"><span>Profilo</span></a>        
               </li>
             </ul>
+            <button id="btnNotte"><span>Notte</span> </button>
           </nav>
     </header>
     <main>
@@ -47,11 +48,12 @@
 
         <div id="giocaSolo">
             <h2>Gioca da Solo</h2>
-            <div id="scacchieraSolo" class="scacchiera
-                "></div>
-            <p id="risultatoSolo"></p>
-            <button id="nuovaPartitaSolo" class="bottone">Nuova Partita</button>
-            <p id="messaggioSolo"></p>
+            <div class="container">
+              <div id="scacchieraSolo" class="scacchiera"></div>
+              <p id="risultatoSolo"></p>
+              <button id="nuovaPartitaSolo" class="bottone">Nuova Partita</button>
+              <p id="messaggioSolo"></p>
+            </div>
         </div>
 
         <div id="giocaMultiplayer">

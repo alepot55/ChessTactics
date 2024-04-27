@@ -109,7 +109,7 @@ function continuaMossaComputer(mossa) {
         if (scacchieraGiocaComputer.statoPartita() !== null) {
             messaggioComputer.innerText = scacchieraGiocaComputer.statoPartita() === 'p' ? "Patta!" : scacchieraGiocaComputer.statoPartita() === 'b' ? "Hai perso!" : "Hai vinto!";
         }
-    }, 200);
+    }, 500);
 
     return true
 }
