@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Puzzle di Scacchi</title>
+    <link rel="icon" type="image/x-icon" href="/assets/icone/logo.ico">
     <link rel="stylesheet" type="text/css" href="css/stile.css">
 </head>
 
@@ -36,17 +37,15 @@
             <select id="temaPezzi" name="temaPezzi">
                 <option value="default">Default</option>
                 <option value="simple">Simple</option>
-                <option value="verde">Verde</option>
                 <option value="marshmallow">Marshmallow</option>
                 <option value="horsey">Horsey</option>
             </select><br>
             <label for="temaScacchiera">Tema scacchiera:</label><br>
             <select id="temaScacchiera" name="temaScacchiera">
-                <option value="default">Default</option>
-                <option value="simple">Simple</option>
-                <option value="verde">Verde</option>
+                <input type="range" id="colore" min="0" max="360" />
             </select><br>
             <button id="salvaPreferenze" class="bottone">Applica</button>
+            <button id="resetPreferenze" class="bottone">Reset</button>
         </div>
 
         <div id="profiloUtente">

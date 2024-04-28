@@ -1,9 +1,3 @@
-const coloriTemaCelle = {
-    'default': 30,
-    'verde': 120,
-    'simple': 220,
-}
-
 const DEFAULT_POSITION_WHITE = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 const DEFAULT_POSITION_BLACK = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1'
 
@@ -15,7 +9,7 @@ class Scacchiera {
     };
 
 
-    constructor(id_div, posizione, orientamento, temaPezzi = 'simple', temaCelle = 'simple', onMossa, suggerimenti = true, annebbia = false) {
+    constructor(id_div, posizione, orientamento, temaPezzi = 'simple', colore = 220, onMossa, suggerimenti = true, annebbia = false) {
 
         // Inizializza la posizione della scacchiera e l'orientamento
         let turno = posizione.split(' ')[1];
@@ -23,7 +17,7 @@ class Scacchiera {
         this.partita = Chess(posizione);
 
         // Imposta le impostazioni della scacchiera
-        this.temaCelle = temaCelle;
+        this.colore = parseInt(colore);
         this.temaPezzi = temaPezzi;
         this.onMossa = onMossa;
         this.suggerimenti = suggerimenti;
@@ -39,9 +33,10 @@ class Scacchiera {
         this.aggiorna(id_div);
     }
 
-    impostaColori(temaCelle = this.temaCelle) { // Imposta i colori della scacchiera
+    impostaColori(colore = get('colore')) { // Imposta i colori della scacchiera
 
-        this.colore = coloriTemaCelle[temaCelle];
+        this.colore = parseInt(colore);
+        console.log(this.colore, this.colore + 30, (this.colore + 30) % 360);
         this.colori['tema'] = { 'scuro': 'hsl(' + this.colore + ', 30%, 78%)', 'chiaro': 'hsl(' + this.colore + ', 59%, 94%)' };
         this.colori['selezione'] = { 'scuro': 'hsl(' + ((this.colore + 30) % 360) + ', 71%, 75%)', 'chiaro': 'hsl(' + ((this.colore + 30) % 360) + ', 93%, 82%)' };
         this.colori['ombra'] = { 'scuro': 'hsl(' + ((this.colore + 30) % 360) + ', 93%, 84%)', 'chiaro': 'hsl(' + ((this.colore + 30) % 360) + ', 92%, 85%)' };
@@ -444,6 +439,9 @@ class Scacchiera {
                     });
                 }
                 img.className = "pezzo";
+                if (this.temaPezzi === 'simple') {
+                    img.className = "pezzo simple";
+                }
                 img.src = percorso;
 
                 // Aggiungi il pezzo alla casella
@@ -491,11 +489,11 @@ class Scacchiera {
         this.aggiorna();
     }
 
-    cambiaTema(nuovoTemaPezzi = 'simple', nuovoTemaCelle = 'simple') { // Cambia il tema dei pezzi e delle caselle
+    cambiaTema(nuovoTemaPezzi = 'simple', colore = 220) { // Cambia il tema dei pezzi e delle caselle
 
         // Imposta i nuovi temi
         this.temaPezzi = nuovoTemaPezzi;
-        this.temaCelle = nuovoTemaCelle;
+        this.colore = colore;
 
         // Aggiorna la scacchiera
         this.aggiorna();

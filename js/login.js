@@ -1,5 +1,6 @@
 nomeUtente = null;
 punteggioUtente = 0;
+var root = document.documentElement;
 
 async function gestisciAccessoProfilo(tipoOperazione, evento) {
     let nomeUtenteInput = document.getElementById('usernameAccedi').value;
@@ -99,7 +100,17 @@ document.getElementById('eliminaButton').addEventListener('click', (evento) => e
 document.getElementById('modificaButton').addEventListener('click', (evento) => modificaProfiloUtente(evento));
 document.getElementById('salvaPreferenze').addEventListener('click', function () {
     set('temaPezzi', document.getElementById('temaPezzi').value);
-    set('temaScacchiera', document.getElementById('temaScacchiera').value);
+});
+document.getElementById("colore").oninput = function () {
+    set("colore", this.value);
+    root.style.setProperty('--colore', this.value);
+};
+document.getElementById("resetPreferenze").addEventListener('click', function () {
+    set('temaPezzi', 'simple');
+    set('colore', '220');
+    root.style.setProperty('--colore', get('colore'));
+    document.getElementById('temaPezzi').value = 'simple';
+    document.getElementById('colore').value = get('colore');
 });
 
 aggiornaProfilo();

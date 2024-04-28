@@ -86,13 +86,16 @@ function get(campo) {
 if (get("temaPezzi") == null) {
     set("temaPezzi", "simple");
 }
-if (get("temaScacchiera") == null) {
-    set("temaScacchiera", "simple");
-}
 if (get("notte") == null) {
     set("notte", "false");
 } else {
     cambiaModNotte(get("notte") == "true" ? true : false);
+}
+if (get("colore") == null) {
+    set("colore", 220);
+} else {
+    var root = document.documentElement;
+    root.style.setProperty('--colore', get("colore"));
 }
 
 document.getElementById("btnNotte").addEventListener("click", () => {

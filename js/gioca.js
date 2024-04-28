@@ -28,9 +28,9 @@ const messaggioSolo = document.getElementById("messaggioSolo");
 const messaggioComputer = document.getElementById("messaggioComputer");
 
 // Scacchiere
-let scacchieraGiocaComputer = new Scacchiera('scacchieraComputer', DEFAULT_POSITION_WHITE, true, get('temaPezzi'), get('temaScacchiera'), continuaMossaComputer, true);
-let scacchieraGiocaSolo = new Scacchiera('scacchieraSolo', DEFAULT_POSITION_WHITE, true, get('temaPezzi'), get('temaScacchiera'), continuaMossaSolo, true);
-let scacchieraGiocaMultiplayer = new Scacchiera('scacchieraMultiplayer', '', true, get('temaPezzi'), get('temaScacchiera'), continuaMossaMultiplayer, true);
+let scacchieraGiocaComputer = new Scacchiera('scacchieraComputer', DEFAULT_POSITION_WHITE, true, get('temaPezzi'), get('colore'), continuaMossaComputer, true);
+let scacchieraGiocaSolo = new Scacchiera('scacchieraSolo', DEFAULT_POSITION_WHITE, true, get('temaPezzi'), get('colore'), continuaMossaSolo, true);
+let scacchieraGiocaMultiplayer = new Scacchiera('scacchieraMultiplayer', '', true, get('temaPezzi'), get('colore'), continuaMossaMultiplayer, true);
 
 function mostraTempoUtente(tempo) {
     document.getElementById("tempoUtente").innerText = tempo.toFixed(1);
@@ -56,13 +56,13 @@ function aggiornaScacchieraGioca(idScacchiera, posizione = DEFAULT_POSITION_WHIT
     if (sezioneCorrente !== "giocaMultiplayer" || modalitàMultiplayer === 'normale') {
         scacchiera.setSuggerimenti(true);
         scacchiera.setAnnebbia(false);
-        scacchiera.cambiaTema(get('temaPezzi'), get('temaScacchiera'));
+        scacchiera.cambiaTema(get('temaPezzi'), get('colore'));
     } else {
         scacchiera.setSuggerimenti(false);
-        scacchiera.cambiaTema(get('temaPezzi'), get('temaScacchiera'));
+        scacchiera.cambiaTema(get('temaPezzi'), get('colore'));
         if (modalitàMultiplayer === 'pezziNascosti') {
             scacchiera.setAnnebbia(false);
-            scacchiera.cambiaTema('dama', get('temaScacchiera'));
+            scacchiera.cambiaTema('dama', get('colore'));
         } else if (modalitàMultiplayer === 'nebbia') {
             scacchiera.setAnnebbia(true);
         }

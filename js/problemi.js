@@ -6,7 +6,7 @@ var partita = null;
 
 var bottoneAggiorna = document.getElementById('aggiornaProblema');
 var bottoneRisolvi = document.getElementById('risolviProblema');
-var scacchieraProblemi = new Scacchiera(idScacchiera, DEFAULT_POSITION_WHITE, true, get('temaPezzi'), get('temaScacchiera'), convalidaMossaProblemi);
+var scacchieraProblemi = new Scacchiera(idScacchiera, DEFAULT_POSITION_WHITE, true, get('temaPezzi'), get('colore'), convalidaMossaProblemi);
 
 
 // Funzione che aggiorna la scacchiera con il problema ricevuto dal server

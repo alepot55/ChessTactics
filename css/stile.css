@@ -5,14 +5,14 @@
     --notte: 0;
     color-scheme: var(--tema);
 
-    --color: 220;
-    --primario: light-dark(white, hsl(var(--color), 19%, 25%));
-    --secondario: light-dark(hsl(var(--color), 19%, 25%), white);
-    --secondarioInv: light-dark(hsl(calc(255 - var(--color)), 19%, 75%), black);
+    --colore: 220;
+    --primario: light-dark(white, hsl(var(--colore), 19%, 25%));
+    --secondario: light-dark(hsl(var(--colore), 19%, 25%), white);
+    --secondarioInv: light-dark(hsl(calc(var(--colore) - 180), 19%, 75%), black);
 }
 
 body {
-    background: light-dark(#eaeef6, black);
+    background: light-dark(hsl(var(--colore), 60%, 94%), hsl(calc(var(--colore)), 17%, 8%));
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -30,10 +30,10 @@ body {
     height: 45px;
     padding: 8px;
     border-radius: 5px;
-    border: 2.5px solid light-dark(#E0E1E4, #968cc9);
+    border: 2.5px solid light-dark(#E0E1E4, hsl(calc(var(--colore) + 30), 19%, 25%));
     box-shadow: 0px 0px 20px -20px;
     cursor: pointer;
-    background-color: light-dark(#E0E1E4, #968cc9);
+    background-color: light-dark(#E0E1E4, hsl(calc(var(--colore) + 30), 19%, 25%));
     transition: all 0.2s ease-in-out 0ms;
     user-select: none;
     font-family: 'Poppins', sans-serif;

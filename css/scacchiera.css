@@ -92,6 +92,10 @@
     height: calc(var(--dimensioneCellaAltezza) * 0.75);
 }
 
+.simple {
+    filter: hue-rotate(calc((var(--colore) - 220) * 1deg));
+}
+
 .suggerimento {
     width: calc(var(--dimensioneCellaLarghezza) / 3.5);
     height: calc(var(--dimensioneCellaAltezza) / 3.5);
