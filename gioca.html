@@ -2,84 +2,86 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Chess Tactics</title>
-    <link rel="icon" type="image/x-icon" href="/assets/icone/logo.ico">
-    <link rel="stylesheet" type="text/css" href="css/stile.css">
-    <link rel="stylesheet" type="text/css" href="css/scacchiera.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chess Tactics</title>
+  <link rel="icon" type="image/x-icon" href="/assets/icone/logo.ico">
+  <link rel="stylesheet" type="text/css" href="css/stile.css">
+  <link rel="stylesheet" type="text/css" href="css/scacchiera.css">
 
 </head>
 
 <body>
-    <header>
-        <link rel="stylesheet" type="text/css" href="css/navbar.css">
-        <nav class="navbar">
-            <ul class="nav_menu">
-              <li class="nav_item">
-                <a href="index.html" class="nav_link"><img src="assets/icone/feather/home.svg"><span>Home</span></a>
-              </li>
-              <li class="nav_item">
-                <a href="problemi.html" class="nav_link"><img src="assets/icone/feather/shuffle.svg"><span>Problemi</span></a>        
-              </li>
-              <li class="nav_item selezionato">
-                <a href="gioca.html" class="nav_link"><img src="assets/icone/feather/play.svg"><span>Gioca</span></a>        
-              </li>
-              <li class="nav_item">
-                <a href="profilo.html" class="nav_link"><img src="assets/icone/feather/user.svg"><span>Profilo</span></a>        
-              </li>
-            </ul>
-            <button id="btnNotte"><span>Notte</span> </button>
-          </nav>
-    </header>
-    <main>
+  <header>
+    <link rel="stylesheet" type="text/css" href="css/navbar.css">
+    <nav class="navbar">
+      <ul class="nav_menu">
+        <li class="nav_item">
+          <a href="index.html" class="nav_link"><img src="assets/icone/feather/home.svg"><span>Home</span></a>
+        </li>
+        <li class="nav_item">
+          <a href="problemi.html" class="nav_link"><img src="assets/icone/feather/shuffle.svg"><span>Problemi</span></a>
+        </li>
+        <li class="nav_item selezionato">
+          <a href="gioca.html" class="nav_link"><img src="assets/icone/feather/play.svg"><span>Gioca</span></a>
+        </li>
+        <li class="nav_item">
+          <a href="profilo.html" class="nav_link"><img src="assets/icone/feather/user.svg"><span>Profilo</span></a>
+        </li>
+      </ul>
+      <button id="btnNotte"><span>Notte</span> </button>
+    </nav>
+  </header>
+  <main>
 
-        <p>Scegli la modalità di gioco:</p>
-        <button id="giocaComputerButton" class="bottone">Gioca con il Computer</button>
-        <button id="giocaSoloButton" class="bottone">Gioca da Solo</button>
-        <button id="giocaMultiplayerButton" class="bottone">Gioca con un Altro Giocatore</button>
+    <p>Scegli la modalità di gioco:</p>
+    <button id="giocaComputerButton" class="bottone">Gioca con il Computer</button>
+    <button id="giocaSoloButton" class="bottone">Gioca da Solo</button>
+    <button id="giocaMultiplayerButton" class="bottone">Gioca con un Altro Giocatore</button>
 
-        <div id="giocaComputer">
-            <h2>Gioca con il Computer</h2>
-            <div id="scacchieraComputer" class="scacchiera"></div>
-            <p id="risultatoComputer"></p>
-            <button id="nuovaPartitaComputer" class="bottone"> Nuova Partita</button>
-            <p id="messaggioComputer"></p>
-        </div>
+    <div id="giocaComputer">
+      <h2>Gioca con il Computer</h2>
+      <div class="container">
+        <div id="scacchieraComputer" class="scacchiera"></div>
+        <p id="risultatoComputer"></p>
+        <button id="nuovaPartitaComputer" class="bottone"> Nuova Partita</button>
+        <p id="messaggioComputer"></p>
+      </div>
+    </div>
 
-        <div id="giocaSolo">
-            <h2>Gioca da Solo</h2>
-            <div class="container">
-              <div id="scacchieraSolo" class="scacchiera"></div>
-              <p id="risultatoSolo"></p>
-              <button id="nuovaPartitaSolo" class="bottone">Nuova Partita</button>
-              <p id="messaggioSolo"></p>
-            </div>
-        </div>
+    <div id="giocaSolo">
+      <h2>Gioca da Solo</h2>
+      <div class="container">
+        <div id="scacchieraSolo" class="scacchiera"></div>
+        <p id="risultatoSolo"></p>
+        <button id="nuovaPartitaSolo" class="bottone">Nuova Partita</button>
+        <p id="messaggioSolo"></p>
+      </div>
+    </div>
 
-        <div id="giocaMultiplayer">
-            <h2>Gioca con un Altro Giocatore</h2>
-            <select id="modalitàMultiplayer" name="modalitàMultiplayer">
-                <option value="normale">Normale</option>
-                <option value="pezziNascosti">Pezzi Nascosti</option>
-                <option value="nebbia">Nebbia</option>
-            </select><br>
-            <div class="container">
-                <p id="tempoAvversario"></p>
-                <div id="scacchieraMultiplayer" class="scacchiera"></div>
-                <p id="tempoUtente"></p>
-            </div>
-            <input type="text" id="codiceMultiplayer" name="codiceMultiplayer"
-                placeholder="Inserisci il codice della partita"><br>
-            <button id="nuovaPartitaMultiplayer" class="bottone">Nuova Partita</button>
-            <button id="stopRicercaMultiplayer" class="bottone">Annulla</button>
-            <button id="terminaPartitaMultiplayer" class="bottone">Termina partita</button>
-            <p id="messaggioMultiplayer"></p>
-        </div>
+    <div id="giocaMultiplayer">
+      <h2>Gioca con un Altro Giocatore</h2>
+      <select id="modalitàMultiplayer" name="modalitàMultiplayer">
+        <option value="normale">Normale</option>
+        <option value="pezziNascosti">Pezzi Nascosti</option>
+        <option value="nebbia">Nebbia</option>
+      </select><br>
+      <div class="container">
+        <p id="tempoAvversario"></p>
+        <div id="scacchieraMultiplayer" class="scacchiera"></div>
+        <p id="tempoUtente"></p>
+      </div>
+      <input type="text" id="codiceMultiplayer" name="codiceMultiplayer"
+        placeholder="Inserisci il codice della partita"><br>
+      <button id="nuovaPartitaMultiplayer" class="bottone">Nuova Partita</button>
+      <button id="stopRicercaMultiplayer" class="bottone">Annulla</button>
+      <button id="terminaPartitaMultiplayer" class="bottone">Termina partita</button>
+      <p id="messaggioMultiplayer"></p>
+    </div>
 
 
 
-    </main>
+  </main>
 
 </body>
 
