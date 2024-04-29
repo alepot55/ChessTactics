@@ -10,7 +10,6 @@
 
 body {
     padding-left: calc(var(--spessore) * 2);
-    position: absolute;
 }
 
 #btnNotte {
@@ -146,4 +145,17 @@ body {
         bottom: 120%;
         transform: translateY(calc(var(--spacer) * 3));
     }
+
+    #btnNotte {
+        width: auto;
+        height: 100%;
+    }
+
+    #btnNotte img {
+        width: auto;
+        height: 25%;
+        bottom: auto;
+        right: var(--spacer);
+    }
+    
 }
