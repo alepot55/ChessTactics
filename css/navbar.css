@@ -9,6 +9,8 @@
 }
 
 body {
+    width: 100%;
+    height: 100%;
     padding-left: calc(var(--spessore) * 2);
 }
 
@@ -20,7 +22,7 @@ body {
     border-radius: var(--borderRadius);
     padding: var(--spacer) 0;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.03);
-    height: calc(100vh - calc(var(--spacer) * 4));
+    height: calc(100vh - calc(var(--spacer) * 2));
     width: var(--spessore);
     display: flex;
     flex-direction: column;
