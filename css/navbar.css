@@ -14,15 +14,22 @@ body {
     padding-left: calc(var(--spessore) * 2);
 }
 
+#btnNotte {
+    width: 50%;
+    height: auto;
+    filter: invert(var(--notte));
+}
+
 .navbar {
     position: fixed;
     top: var(--spacer);
     left: var(--spacer);
+    bottom: var(--spacer);
     background: var(--primario);
     border-radius: var(--borderRadius);
     padding: var(--spacer) 0;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.03);
-    height: calc(100vh - calc(var(--spacer) * 2));
+    height: auto;
     width: var(--spessore);
     display: flex;
     flex-direction: column;
@@ -113,7 +120,9 @@ body {
         top: auto;
         bottom: var(--spacer);
         height: var(--spessore);
-        width: calc(100vw - calc(var(--spacer) * 2));
+        width: auto;
+        left: var(--spacer);
+        right: var(--spacer);
         flex-direction: row;
     }
 
