@@ -2,49 +2,52 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Chess Tactics</title>
-    <link rel="icon" type="image/x-icon" href="/assets/icone/logo.ico">
-    <link rel="stylesheet" type="text/css" href="css/stile.css">
-    <link rel="stylesheet" type="text/css" href="css/scacchiera.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chess Tactics</title>
+  <link rel="icon" type="image/x-icon" href="/assets/icone/logo.ico">
+  <link rel="stylesheet" type="text/css" href="css/stile.css">
+  <link rel="stylesheet" type="text/css" href="css/scacchiera.css">
 </head>
 
 <body>
-    <header>
-        <link rel="stylesheet" type="text/css" href="css/navbar.css">
-        <nav class="navbar">
-            <ul class="nav_menu">
-              <li class="nav_item">
-                <a href="index.html" class="nav_link"><img src="assets/icone/feather/home.svg"><span>Home</span></a>
-              </li>
-              <li class="nav_item selezionato">
-                <a href="problemi.html" class="nav_link"><img src="assets/icone/feather/shuffle.svg"><span>Problemi</span></a>        
-              </li>
-              <li class="nav_item">
-                <a href="gioca.html" class="nav_link"><img src="assets/icone/feather/play.svg"><span>Gioca</span></a>        
-              </li>
-              <li class="nav_item">
-                <a href="profilo.html" class="nav_link"><img src="assets/icone/feather/user.svg"><span>Profilo</span></a>        
-              </li>
-            </ul>
-            <button id="btnNotte"><span>Notte</span> </button>
-          </nav>
-    </header>
-    <main>
+  <header>
+    <link rel="stylesheet" type="text/css" href="css/navbar.css">
+    <nav class="navbar">
+      <ul class="nav_menu">
+        <li class="nav_item">
+          <a href="index.html" class="nav_link"><img src="assets/icone/feather/home.svg"><span>Home</span></a>
+        </li>
+        <li class="nav_item selezionato">
+          <a href="problemi.html" class="nav_link"><img src="assets/icone/feather/shuffle.svg"><span>Problemi</span></a>
+        </li>
+        <li class="nav_item">
+          <a href="gioca.html" class="nav_link"><img src="assets/icone/feather/play.svg"><span>Gioca</span></a>
+        </li>
+        <li class="nav_item">
+          <a href="profilo.html" class="nav_link"><img src="assets/icone/feather/user.svg"><span>Profilo</span></a>
+        </li>
+      </ul>
+      <div id="btnNotte">
+        <img id="sole" src="assets/icone/feather/sun.svg">
+        <img id="luna" src="assets/icone/feather/moon.svg">
+      </div>
+    </nav>
+  </header>
+  <main>
 
-        <h2>Problemi di Scacchi</h2>
-        <p>Qui troverai una serie di problemi di scacchi da risolvere. Buona fortuna!</p>
-        <div class=container>
-            <div id="scacchieraProblemi" class="scacchiera"></div>
-            <p id="descrizione"></p>
-            <p id="soluzione"></p>
-            <button id="aggiornaProblema" class="bottone">Aggiorna</button>
-            <button id="risolviProblema" class="bottone">Risolvi</button>
-        </div>
+    <h2>Problemi di Scacchi</h2>
+    <p>Qui troverai una serie di problemi di scacchi da risolvere. Buona fortuna!</p>
+    <div class=container>
+      <div id="scacchieraProblemi" class="scacchiera"></div>
+      <p id="descrizione"></p>
+      <p id="soluzione"></p>
+      <button id="aggiornaProblema" class="bottone">Aggiorna</button>
+      <button id="risolviProblema" class="bottone">Risolvi</button>
+    </div>
 
 
-    </main>
+  </main>
 
 </body>
 

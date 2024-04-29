@@ -12,12 +12,25 @@ body {
     width: 100%;
     height: 100%;
     padding-left: calc(var(--spessore) * 2);
+    position: absolute;
 }
 
 #btnNotte {
-    width: 50%;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+#btnNotte img {
+    display: inline;
+    position: absolute;
+    width: 25%;
     height: auto;
     filter: invert(var(--notte));
+    bottom: var(--spacer);
 }
 
 .navbar {

@@ -9,6 +9,8 @@ function cambiaModNotte(flag = null) {
     var root = document.documentElement;
     root.style.setProperty('--tema', flag ? 'dark' : 'light');
     root.style.setProperty('--notte', flag ? '1' : '0');
+    document.getElementById("sole").style.display = flag ? "block" : "none";
+    document.getElementById("luna").style.display = flag ? "none" : "block";
     set("notte", flag);
 }
 
