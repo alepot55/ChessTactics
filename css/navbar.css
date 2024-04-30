@@ -6,10 +6,12 @@
     --spessore: max(4vw, 68px);
     --timing: 250ms;
     --transition: var(--timing) ease all;
+    --nav_aperta: 0;
 }
 
 body {
-    padding-left: calc(var(--spessore) * 2);
+    padding-left: calc(var(--spessore) * (2 + 2 * var(--nav_aperta)));
+    transition: padding-left var(--timing) ease;
 }
 
 #btnNotte {
@@ -22,10 +24,25 @@ body {
 }
 
 #btnNotte img {
-    width: 25%;
+    width: max(9%, 17px);
     height: auto;
     filter: invert(var(--notte));
     bottom: var(--spacer);
+}
+
+#btnEspandi {
+    height: auto;
+    width: 100%;
+    filter: invert(var(--notte));
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#btnEspandi img {
+    width: max(9%, 21px);
+    height: auto;
+    margin-right: calc(var(--spessore) * 0.5 - max(9%, 21px) / 2); 
 }
 
 .navbar {
@@ -41,8 +58,20 @@ body {
     width: var(--spessore);
     display: flex;
     flex-direction: column;
-    align-items: center;
     z-index: 1;
+    transition: var(--transition);
+}
+
+.nav_aperta {
+    width: calc(var(--spessore) * 3);
+}
+
+.nav_aperta body {
+    padding-left: calc(var(--spessore) * 3);
+}
+
+.nav_aperta #btnEspandi img {
+    rotate: 180deg;
 }
 
 .nav_menu {
@@ -64,6 +93,12 @@ body {
     transition: var(--transition);
 }
 
+.nav_aperta .nav_item {
+    left: var(--spacer);
+    height: var(--linkHeight);
+    transition: var(--transition);
+}
+
 .nav_link {
     display: flex;
     align-items: center;
@@ -72,6 +107,15 @@ body {
     width: 100%;
     color: var(--textNav);
     transition: var(--transition);
+}
+
+.nav_aperta .nav_link {
+    left: 0;
+    transition: 0;
+    display: flex;
+    justify-content: normal;
+    padding: 0 calc(var(--spacer) * 1.5);
+    margin: 0 4%;
 }
 
 .nav_link span {
@@ -86,6 +130,19 @@ body {
     padding: calc(var(--spacer) * 0.75);
     transition: var(--transition);
     border-radius: calc(var(--borderRadius) * 1.75);
+}
+
+.nav_aperta span {
+    position: relative;
+    transform: translate(0);
+    left: 0%;
+    margin-left: 20%;
+    color: var(--secondario);
+    background: none;
+    padding: 0;
+    transition: 0;
+    border-radius: 0;
+    opacity: 1;
 }
 
 .nav_link:hover span {
@@ -108,6 +165,24 @@ body {
     filter: invert(calc(1 - var(--notte)));
 }
 
+.nav_aperta .nav_link:hover img {
+    background: none;
+    color: var(--primario);
+    border-radius: var(--borderRadius);
+    transition: 0;
+}
+
+.nav_aperta .nav_link:hover {
+    background: var(--secondario);
+    color: var(--primario);
+    border-radius: var(--borderRadius);
+    transition: var(--transition);
+}
+
+.nav_aperta .nav_link:hover span {
+    color: var(--primario);
+}
+
 .selezionato img {
     background-color: light-dark(var(--secondarioInv), var(--secondario));
     padding: 15px;
@@ -117,15 +192,31 @@ body {
     filter: invert(calc(1 - var(--notte)));
 }
 
+.nav_aperta .selezionato .nav_link {
+    background: var(--secondario);
+    color: var(--primario);
+    border-radius: var(--borderRadius);
+    transition: 0;
+}
 
 .selezionato:hover span {
     opacity: 0;
+}
+
+.nav_aperta .selezionato span {
+    color: var(--primario);
+    opacity: 1;
+}
+
+a {
+    text-decoration: none;
 }
 
 @media screen and (orientation: portrait) {
 
     :root {
         --spessore: max(3vh, 30px);
+        --aperta: 0;
     }
 
     body {
@@ -142,6 +233,7 @@ body {
         right: var(--spacer);
         flex-direction: row;
         padding: 0 var(--spacer);
+        align-items: center;
     }
 
     .nav_menu {
@@ -161,9 +253,15 @@ body {
 
     #btnNotte img {
         width: auto;
-        height: 30%;
+        height: max(9%, 15 px);
         bottom: auto;
         right: var(--spacer);
     }
-    
+
+    #btnEspandi {
+        height: 0%;
+        width: 0%;
+        opacity: 0;
+    }
+
 }

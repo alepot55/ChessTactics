@@ -99,7 +99,26 @@ if (get("colore") == null) {
     var root = document.documentElement;
     root.style.setProperty('--colore', get("colore"));
 }
+if (get("nav_aperta") === "true") {
+    document.documentElement.querySelector("nav").classList.add("nav_aperta");
+    document.documentElement.style.setProperty('--nav_aperta', 1);
+}
+
+
 
 document.getElementById("btnNotte").addEventListener("click", () => {
     cambiaModNotte();
+});
+
+document.getElementById("btnEspandi").addEventListener("click", () => {
+    var nav = document.querySelector("nav");
+    if (nav.classList.contains("nav_aperta")) {
+        nav.classList.remove("nav_aperta");
+        set("nav_aperta", false);
+    } else {
+        nav.classList.add("nav_aperta");
+        set("nav_aperta", true);
+    }
+    document.documentElement.style.setProperty('--nav_aperta', get("nav_aperta") == "true" ? 1 : 0);
+
 });
