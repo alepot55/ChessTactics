@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+
+html, body{
+
+    height: 100%;
+}
+
+.container.sceltamodalità {
+
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap; 
+    flex: 1; /*Assegna tutto lo spazio rimanente del padre all'elemento di questa classe */
+    justify-content: center;
+    align-items:center;
+}
+.container .custom-card {
+ 
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 400px;
+    height: 55%;
+    max-height: 500px;
+    background: #FFF;
+    border-radius: 20px;
+    transition: 0.5s;
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.15);
+
+    flex-grow: 1; /* Fai espandere gli elementi div per occupare lo spazio disponibile */
+    min-width: 0; /* Permetti agli elementi div di rimpicciolirsi se necessario */
+    margin: 1vw;
+}
+
+.container .custom-card:hover {
+
+    height: 60%;
+}
+
+.container .custom-card .img-box {
+
+    position: absolute;
+    top: 20px;
+    width: 50%;
+    height: 75%;
+    background: #333;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .custom-card:hover .img-box {
+
+    position: absolute;
+    text-align: center;
+    top: -30%;
+    scale: 0.75;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+}
+
+.container .custom-card .img-box img {
+    
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+}
+
+.container .custom-card .custom-content {
+
+    visibility: hidden; /* Nasconde il testo impostando la visibilità a hidden */
+    transition: visibility 0.5s;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    overflow: hidden;
+    transition: 0.5s;
+    font-size: clamp(0.7rem, 1vw, 24px);
+}
+
+.container .custom-card:hover .custom-content {
+     
+    visibility: visible;
+    top: 35%;
+    height: 100%;
+}
+
+.container .custom-card:not(:hover) .custom-content {
+    transition: 0s;
+}
+
+.container .custom-card .custom-content h2 {
+
+    text-align: center;
+    font-weight: 700;
+    color: #333333;
+}
+
+.container .custom-card .custom-content p {
+
+    text-align: center;
+    color: #333;
+}
+
+.container .custom-card .custom-content a {
+
+    position: relative;
+    top: 15px;
+    display: inline-block;
+    padding: 12px 25px;
+    text-decoration: none;
+    background: #181818;
+    color: #fff;
+    font-weight: 500;
+}
+
+.container .custom-card .custom-content a:hover {
+
+    opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+
+     .container.sceltamodalità {
+        
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container .custom-card {
+
+        
+        border-radius: 15px;
+
+    }
+
+    .container .custom-card .img-box {
+
+        
+        border-radius: 10px;
+    }
+
+    .container .custom-card .custom-content h2 {
+
+        font-size:  1rem;
+    }
+
+    .container .custom-card .custom-content p {
+
+        font-size:  0.8rem;
+    }
+
+    .container .custom-card .custom-content a {
+
+        font-size:  0.9rem;
+    }
+}
