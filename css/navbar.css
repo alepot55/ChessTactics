@@ -22,8 +22,6 @@ body {
 }
 
 #btnNotte img {
-    display: inline;
-    position: absolute;
     width: 25%;
     height: auto;
     filter: invert(var(--notte));
@@ -58,37 +56,20 @@ body {
 }
 
 .nav_item {
-    display: inline;
-}
-
-.nav_item img {
-    filter: invert(var(--notte));
-}
-
-.nav_item:hover img {
-    background-color: light-dark(var(--secondarioInv), var(--secondario));
-    padding: 15px;
-    border-radius: 35%;
-    border-color: light-dark(var(--secondarioInv), var(--secondario));
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: var(--transition);
-    filter: invert(calc(1 - var(--notte)));
-}
-
-.selezionato img {
-    background-color: light-dark(var(--secondarioInv), var(--secondario));
-    padding: 15px;
-    border-radius: 35%;
-    border-color: light-dark(var(--secondarioInv), var(--secondario));
-    transition: var(--transition);
-    filter: invert(calc(1 - var(--notte)));
 }
 
 .nav_link {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: var(--linkHeight);
-    width: calc(var(--spacer) * 5);
+    height: auto;
+    width: 100%;
     color: var(--textNav);
     transition: var(--transition);
 }
@@ -112,6 +93,31 @@ body {
     transform: translate(0);
 }
 
+.nav_link img {
+    height: 100%;
+    width: auto;
+    filter: invert(var(--notte));
+}
+
+.nav_link:hover img {
+    background-color: light-dark(var(--secondarioInv), var(--secondario));
+    padding: 15px;
+    border-radius: 35%;
+    border-color: light-dark(var(--secondarioInv), var(--secondario));
+    transition: var(--transition);
+    filter: invert(calc(1 - var(--notte)));
+}
+
+.selezionato img {
+    background-color: light-dark(var(--secondarioInv), var(--secondario));
+    padding: 15px;
+    border-radius: 35%;
+    border-color: light-dark(var(--secondarioInv), var(--secondario));
+    transition: var(--transition);
+    filter: invert(calc(1 - var(--notte)));
+}
+
+
 .selezionato:hover span {
     opacity: 0;
 }
@@ -127,13 +133,15 @@ body {
     }
 
     .navbar {
+        z-index: 10;
         top: auto;
         bottom: var(--spacer);
-        height: var(--spessore);
+        height: max(4vh, 68px);
         width: auto;
         left: var(--spacer);
         right: var(--spacer);
         flex-direction: row;
+        padding: 0 var(--spacer);
     }
 
     .nav_menu {
@@ -153,7 +161,7 @@ body {
 
     #btnNotte img {
         width: auto;
-        height: 25%;
+        height: 30%;
         bottom: auto;
         right: var(--spacer);
     }
