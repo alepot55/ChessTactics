@@ -218,7 +218,7 @@ a {
 
     #btnNotte img {
         width: auto;
-        height: max(9%, 15 px);
+        height: max(9%, 15px);
         bottom: auto;
         right: var(--spacer);
     }
