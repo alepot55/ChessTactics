@@ -1,5 +1,6 @@
 const indirizzoServer = `http://localhost:3000/server.php`;
 const tempoCookie = 60 * 60 * 24 * 30;
+
 modNotte = false;
 
 function cambiaModNotte(flag = null) {
@@ -83,6 +84,28 @@ function get(campo) {
     let user = document.cookie.split(campo + '=')[1].split(';')[0];
     if (user == 'null') user = null;
     return user;
+}
+
+function getStockfishMove(fen, elo) {
+    console.log(fen, elo);
+    stockfish.postMessage('uci');
+    stockfish.postMessage(`setoption name Skill Level value ${elo}`);
+    stockfish.postMessage(`position fen ${fen}`);
+    stockfish.postMessage('go depth 20');
+
+    let mossa = null;
+
+    stockfish.onmessage = function (event) {
+        // Assicurati di filtrare la mossa effettiva dall'output di Stockfish
+        if (event.data.startsWith('bestmove')) {
+            mossa = event.data.split(' ')[1];
+            console.log('La mossa consigliata è: ' + mossa);
+            // Puoi fare qualcosa con la mossa qui
+            stockfish.terminate();
+        }
+    };
+
+    return mossa
 }
 
 if (get("temaPezzi") == null) {

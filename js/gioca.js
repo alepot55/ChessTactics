@@ -4,6 +4,7 @@
 const tempIntervallo = 100;
 const timerUtente = new Timer(mostraTempoUtente, 60);
 const timerAvversario = new Timer(mostraTempoAvversario, 60);
+const stockfish = new Worker('node_modules/stockfish.js/stockfish.js');
 
 // Variabili 
 let sezioneCorrente = "giocaComputer";
@@ -26,6 +27,8 @@ const buttNuovaPartitaSolo = document.getElementById("nuovaPartitaSolo");
 const messaggioMultiplayer = document.getElementById("messaggioMultiplayer");
 const messaggioSolo = document.getElementById("messaggioSolo");
 const messaggioComputer = document.getElementById("messaggioComputer");
+
+const eloStockfish = document.getElementById("eloStockfish");
 
 // Scacchiere
 let scacchieraGiocaComputer = new Scacchiera('scacchieraComputer', DEFAULT_POSITION_WHITE, true, get('temaPezzi'), get('colore'), continuaMossaComputer, true);
@@ -102,13 +105,20 @@ function continuaMossaComputer(mossa) {
             return false;
         }
 
-        let mosse = scacchieraGiocaComputer.mossePossibili();
-        mossa = mosse[Math.floor(Math.random() * mosse.length)];
-        scacchieraGiocaComputer.eseguiMossa(mossa['from'] + mossa['to']);
+        stockfish.postMessage('uci');
+        stockfish.postMessage(`setoption name Skill Level value ${get('eloStockfish') / 4000 * 20}`);
+        stockfish.postMessage(`position fen ${scacchieraGiocaComputer.partita.fen()}`);
+        stockfish.postMessage('go depth 10');
 
-        if (scacchieraGiocaComputer.statoPartita() !== null) {
-            messaggioComputer.innerText = scacchieraGiocaComputer.statoPartita() === 'p' ? "Patta!" : scacchieraGiocaComputer.statoPartita() === 'b' ? "Hai perso!" : "Hai vinto!";
-        }
+        stockfish.onmessage = function (event) {
+            if (event.data.startsWith('bestmove')) {
+                mossa = event.data.split(' ')[1];
+                scacchieraGiocaComputer.eseguiMossa(mossa);
+                if (scacchieraGiocaComputer.statoPartita() !== null) {
+                    messaggioComputer.innerText = scacchieraGiocaComputer.statoPartita() === 'p' ? "Patta!" : scacchieraGiocaComputer.statoPartita() === 'b' ? "Hai perso!" : "Hai vinto!";
+                }
+            }
+        };
     }, 500);
 
     return true
@@ -363,3 +373,7 @@ buttNuovaPartitaSolo.addEventListener("click", () => mostraSezioneGioca("giocaSo
 buttStopRicercaMultiplayer.addEventListener("click", () => annullaRicercaMultiplayer());
 buttNuovaPartitaMultiplayer.addEventListener("click", () => nuovaPartitaMultiplayer());
 buttTerminaPartitaMultiplayer.addEventListener("click", () => terminaPartitaMultiplayer());
+eloStockfish.oninput = () => {
+    set('eloStockfish', eloStockfish.value);
+    document.getElementById("valoreEloStockfish").innerText = eloStockfish.value;
+}
