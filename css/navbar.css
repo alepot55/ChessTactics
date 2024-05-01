@@ -4,7 +4,7 @@
     --textNav: #fff;
     --linkHeight: calc(var(--spacer) * 3.5);
     --spessore: max(4vw, 68px);
-    --timing: 250ms;
+    --timing: 200ms;
     --transition: var(--timing) ease all;
     --nav_aperta: 0;
 }
@@ -80,73 +80,31 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
 }
 
 .nav_item {
-    height: 100%;
+    height: var(--spessore);
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: var(--transition);
-}
-
-.nav_aperta .nav_item {
-    left: var(--spacer);
-    height: var(--linkHeight);
-    transition: var(--transition);
+    margin: 10px 5px;
 }
 
 .nav_link {
     display: flex;
     align-items: center;
-    justify-content: center;
     height: auto;
     width: 100%;
     color: var(--textNav);
     transition: var(--transition);
-}
-
-.nav_aperta .nav_link {
-    left: 0;
-    transition: 0;
-    display: flex;
-    justify-content: normal;
-    padding: 0 calc(var(--spacer) * 1.5);
-    margin: 0 4%;
+    padding-left: calc(var(--spessore)/2 - 12px);
 }
 
 .nav_link span {
     position: absolute;
-    left: 90%;
-    transform: translate(calc(-1 * var(--spacer) * 3));
-    margin-left: 1rem;
     opacity: 0;
-    pointer-events: none;
-    color: var(--primario);
-    background: var(--secondario);
-    padding: calc(var(--spacer) * 0.75);
-    transition: var(--transition);
-    border-radius: calc(var(--borderRadius) * 1.75);
-}
-
-.nav_aperta span {
-    position: relative;
-    transform: translate(0);
-    left: 0%;
-    margin-left: 20%;
-    color: var(--secondario);
-    background: none;
-    padding: 0;
-    transition: 0;
-    border-radius: 0;
-    opacity: 1;
-}
-
-.nav_link:hover span {
-    opacity: 1;
-    transform: translate(0);
 }
 
 .nav_link img {
@@ -155,47 +113,46 @@ body {
     filter: invert(var(--notte));
 }
 
-.nav_link:hover img {
-    background-color: light-dark(var(--secondarioInv), var(--secondario));
-    padding: 15px;
-    border-radius: 35%;
-    border-color: light-dark(var(--secondarioInv), var(--secondario));
-    transition: var(--transition);
-    filter: invert(calc(1 - var(--notte)));
+.nav_aperta span {
+    left: 0%;
+    margin-left: calc(var(--spessore)/2 - 5% + 40px);;
+    color: var(--secondario);
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    opacity: 1;
+    transform: none;
 }
 
-.nav_aperta .nav_link:hover img {
-    background: none;
+.nav_item:hover {
+    background: var(--secondario);
     color: var(--primario);
+    border-radius: 0;
+    transition: var(--transition);
+}
+
+.nav_item:hover img {
+    background-color: none;
+    transition: var(--transition);
+    filter: invert(calc(1 - var(--notte)));
     border-radius: var(--borderRadius);
     transition: 0;
 }
 
-.nav_aperta .nav_link:hover {
-    background: var(--secondario);
+.nav_item:hover span {
     color: var(--primario);
-    border-radius: var(--borderRadius);
-    transition: var(--transition);
+    transform: none;
 }
 
-.nav_aperta .nav_link:hover span {
+.selezionato {
+    background: var(--secondario);
     color: var(--primario);
+    transition: 0;
 }
 
 .selezionato img {
-    background-color: light-dark(var(--secondarioInv), var(--secondario));
-    padding: 15px;
-    border-radius: 35%;
-    border-color: light-dark(var(--secondarioInv), var(--secondario));
     transition: var(--transition);
     filter: invert(calc(1 - var(--notte)));
-}
-
-.nav_aperta .selezionato .nav_link {
-    background: var(--secondario);
-    color: var(--primario);
-    border-radius: var(--borderRadius);
-    transition: 0;
 }
 
 .selezionato:hover span {
@@ -237,12 +194,21 @@ a {
 
     .nav_menu {
         flex-direction: row;
+        justify-content: space-around;
     }
 
-    .nav_link span {
-        left: auto;
-        bottom: 120%;
-        transform: translateY(calc(var(--spacer) * 3));
+    .nav_item {
+        height: 100%;
+        width: calc(var(--linkHeight) * 2);
+    }
+
+    .nav_link {
+        justify-content: center;
+        padding-left: 0;
+    }
+
+    .nav_item:hover span {
+        opacity: 0;
     }
 
     #btnNotte {
