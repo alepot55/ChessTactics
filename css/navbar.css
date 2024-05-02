@@ -95,7 +95,7 @@ body {
 .nav_link {
     display: flex;
     align-items: center;
-    height: auto;
+    height: 100%;
     width: 100%;
     color: var(--textNav);
     transition: var(--transition);
@@ -108,8 +108,6 @@ body {
 }
 
 .nav_link img {
-    height: 100%;
-    width: auto;
     filter: invert(var(--notte));
 }
 
@@ -193,6 +191,7 @@ a {
     }
 
     .nav_menu {
+        width: calc(100% - 15px);
         flex-direction: row;
         justify-content: space-around;
     }
