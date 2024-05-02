@@ -5,12 +5,12 @@ header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Methods: GET, POST");
 header("Access-Control-Allow-Headers: Content-Type");
 
-$problemi = array_map('str_getcsv', file('data\problemi\puzzles.csv'));
+$problemi = array_map('str_getcsv', file('data/problemi/puzzles.csv'));
 //shuffle($problemi);
 
 // Carica l'array di utenti dal file
-$utenti = json_decode(file_get_contents('data\utenti.json'), true);
-$partite = json_decode(file_get_contents('data\partite.json'), true);
+$utenti = json_decode(file_get_contents('data/utenti.json'), true);
+$partite = json_decode(file_get_contents('data/partite.json'), true);
 
 // Funzione per verificare che la password abbia almeno 8 caratteri e contenga almeno un numero
 function passwordValida($password) {
