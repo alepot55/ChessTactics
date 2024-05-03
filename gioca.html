@@ -40,9 +40,11 @@
   <main>
 
     <p>Scegli la modalità di gioco:</p>
-    <button id="giocaComputerButton" class="bottone">Gioca con il Computer</button>
-    <button id="giocaSoloButton" class="bottone">Gioca da Solo</button>
-    <button id="giocaMultiplayerButton" class="bottone">Gioca con un Altro Giocatore</button>
+    <div class="container">
+      <button id="giocaComputerButton" class="button_1">Gioca con il Computer</button>
+      <button id="giocaSoloButton" class="button_1">Gioca da Solo</button>
+      <button id="giocaMultiplayerButton" class="button_1">Gioca con un Altro Giocatore</button>
+    </div>
 
     <div id="giocaComputer">
       <h2>Gioca con il Computer</h2>
@@ -50,12 +52,12 @@
         <div id="scacchieraComputer" class="scacchiera"></div>
         <div class="comandi">
 
-        <input type="range" min="1" max="4000" value="50" id="eloStockfish">
-        <label for="eloStockfish">Elo Stockfish: <span id="valoreEloStockfish">50</span></label><br>
-        <p id="risultatoComputer"></p>
-        <button id="nuovaPartitaComputer" class="bottone"> Nuova Partita</button>
-        <p id="messaggioComputer"></p>
-        </div>  
+          <input type="range" min="1" max="4000" value="50" id="eloStockfish">
+          <label for="eloStockfish">Elo Stockfish: <span id="valoreEloStockfish">50</span></label><br>
+          <p id="risultatoComputer"></p>
+          <button id="nuovaPartitaComputer" class="button_1"> Nuova Partita</button>
+          <p id="messaggioComputer"></p>
+        </div>
       </div>
     </div>
 
@@ -65,9 +67,9 @@
         <div id="scacchieraSolo" class="scacchiera"></div>
         <div class="comandi">
 
-        <p id="risultatoSolo"></p>
-        <button id="nuovaPartitaSolo" class="bottone">Nuova Partita</button>
-        <p id="messaggioSolo"></p>
+          <p id="risultatoSolo"></p>
+          <button id="nuovaPartitaSolo" class="button_1">Nuova Partita</button>
+          <p id="messaggioSolo"></p>
         </div>
       </div>
     </div>
@@ -89,9 +91,9 @@
 
           <input type="text" id="codiceMultiplayer" name="codiceMultiplayer"
             placeholder="Inserisci il codice della partita"><br>
-          <button id="nuovaPartitaMultiplayer" class="bottone">Nuova Partita</button>
-          <button id="stopRicercaMultiplayer" class="bottone">Annulla</button>
-          <button id="terminaPartitaMultiplayer" class="bottone">Termina partita</button>
+          <button id="nuovaPartitaMultiplayer" class="button_1">Nuova Partita</button>
+          <button id="stopRicercaMultiplayer" class="button_1">Annulla</button>
+          <button id="terminaPartitaMultiplayer" class="button_1">Termina partita</button>
           <p id="messaggioMultiplayer"></p>
         </div>
       </div>

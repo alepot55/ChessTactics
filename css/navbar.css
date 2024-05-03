@@ -1,17 +1,19 @@
 :root {
+    --spostaBody: 0;
     --borderRadius: 10px;
     --spacer: 1rem;
     --textNav: #fff;
     --linkHeight: calc(var(--spacer) * 3.5);
     --spessore: max(4vw, 68px);
-    --timing: 200ms;
+    --timing: 500ms;
     --transition: var(--timing) ease all;
     --nav_aperta: 0;
     --dimIcone: 28px;
 }
 
 body {
-    padding-left: calc(var(--spessore) * (2 + 2 * var(--nav_aperta)));
+    transition: padding-left calc(var(--timing) * var(--spostaBody)) ease;
+    padding-left: calc(var(--spessore) * (2  +  2*var(--nav_aperta)));
 }
 
 #btnNotte {
@@ -28,6 +30,7 @@ body {
     height: auto;
     filter: invert(var(--notte));
     bottom: var(--spacer);
+    transition: var(--transition);
 }
 
 #btnEspandi {
@@ -43,6 +46,7 @@ body {
     width: max(9%, 21px);
     height: auto;
     margin-right: calc(var(--spessore) * 0.5 - max(9%, 21px) / 2); 
+    transition: var(--transition);
 }
 
 .navbar {
@@ -60,6 +64,7 @@ body {
     flex-direction: column;
     z-index: 1;
     transition: var(--transition);
+    overflow: hidden;
 }
 
 .nav_aperta {
@@ -105,7 +110,8 @@ body {
 
 .nav_link span {
     position: absolute;
-    opacity: 0;
+    opacity: 1;
+    margin-left: calc(var(--spessore) - 10px);
 }
 
 .nav_link img {
@@ -115,14 +121,8 @@ body {
 }
 
 .nav_aperta span {
-    left: 0%;
-    margin-left: calc(var(--spessore)/2 - 5% + 40px);;
     color: var(--secondario);
-    background: none;
-    padding: 0;
-    border-radius: 0;
     opacity: 1;
-    transform: none;
 }
 
 .nav_item:hover {

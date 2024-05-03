@@ -135,6 +135,7 @@ document.getElementById("btnNotte").addEventListener("click", () => {
 
 document.getElementById("btnEspandi").addEventListener("click", () => {
     var nav = document.querySelector("nav");
+    document.documentElement.style.setProperty('--spostaBody', 1);
     if (nav.classList.contains("nav_aperta")) {
         nav.classList.remove("nav_aperta");
         set("nav_aperta", false);
