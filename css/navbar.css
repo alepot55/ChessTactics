@@ -3,13 +3,13 @@
     --spacer: 1rem;
     --textNav: #fff;
     --linkHeight: calc(var(--spacer) * 3.5);
-    --spessore: max(4vw, 68px);
+    --spessore: max(4vw, 56px);
     --timing: 250ms;
     --transition: var(--timing) ease all;
 }
 
 body {
-    padding-left: calc(var(--spessore) * 2);
+    padding-left: calc(var(--spessore) * 1.5);
 }
 
 .navbar {
@@ -97,6 +97,7 @@ body {
     opacity: 0;
 }
 
+/*
 @media screen and (orientation: portrait) {
 
     :root {
