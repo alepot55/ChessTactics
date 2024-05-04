@@ -98,6 +98,6 @@ if (get("colore") == null) {
     root.style.setProperty('--colore', get("colore"));
 }
 
-document.getElementById("btnNotte").addEventListener("click", () => {
+document.querySelector('.theme-switch__checkbox').addEventListener("click", () => {
     cambiaModNotte();
 });

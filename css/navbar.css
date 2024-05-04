@@ -1,128 +1,206 @@
-:root {
-    --borderRadius: 10px;
-    --spacer: 1rem;
-    --textNav: #fff;
-    --linkHeight: calc(var(--spacer) * 3.5);
-    --spessore: max(4vw, 56px);
-    --timing: 250ms;
-    --transition: var(--timing) ease all;
+
+
+/* STEP-1: Hide the input type & burgerlines */
+.navbar input[id="hamburger"], 
+.navbar .hamburger-lines {
+
+    display: none;
 }
 
-body {
-    padding-left: calc(var(--spessore) * 1.5);
+/* STEP-2: Container - Sizing */
+.container.navbar-container {
+
+    max-width: 1200px; /*io proverei a mettere 100% dello schermo*/
+    width: 90%;
+    margin: auto;
 }
 
+/* STEP-3: NavBar - Styling */
 .navbar {
+
     position: fixed;
-    top: var(--spacer);
-    left: var(--spacer);
-    background: var(--primario);
-    border-radius: var(--borderRadius);
-    padding: var(--spacer) 0;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.03);
-    height: calc(100vh - calc(var(--spacer) * 4));
-    width: var(--spessore);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 1;
-}
-
-.nav_menu {
-    padding: 0;
-    height: 100%;
+    z-index: 8;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+    background-color:darkslateblue;
+    color: #fff;
+    
 }
 
-.nav_item {
-    display: inline;
-}
+/* STEP-4: NavBar-Container - Styling */
+.navbar-container {
 
-.nav_item img {
-    filter: invert(var(--notte));
-}
-
-.nav_item:hover img {
-    background-color: light-dark(var(--secondarioInv), var(--secondario));
-    padding: 15px;
-    border-radius: 35%;
-    border-color: light-dark(var(--secondarioInv), var(--secondario));
-    transition: var(--transition);
-    filter: invert(calc(1 - var(--notte)));
-}
-
-.selezionato img {
-    background-color: light-dark(var(--secondarioInv), var(--secondario));
-    padding: 15px;
-    border-radius: 35%;
-    border-color: light-dark(var(--secondarioInv), var(--secondario));
-    transition: var(--transition);
-    filter: invert(calc(1 - var(--notte)));
-}
-
-.nav_link {
-    display: flex;
-    align-items: center;
+    display:flex;
     justify-content: center;
-    height: var(--linkHeight);
-    width: calc(var(--spacer) * 5);
-    color: var(--textNav);
-    transition: var(--transition);
+    align-items: center;
+    height: 58px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.nav_link span {
+/* STEP-5: Logo - Styling */
+.logo {
+
     position: absolute;
-    left: 90%;
-    transform: translate(calc(-1 * var(--spacer) * 3));
-    margin-left: 1rem;
-    opacity: 0;
-    pointer-events: none;
-    color: var(--primario);
-    background: var(--secondario);
-    padding: calc(var(--spacer) * 0.75);
-    transition: var(--transition);
-    border-radius: calc(var(--borderRadius) * 1.75);
+    z-index: 10;
+    left: 15px;
+    font-size: 1.7rem;
 }
 
-.nav_link:hover span {
-    opacity: 1;
-    transform: translate(0);
+/* STEP-6: Menu List Links - Styling */
+.menu-items {
+
+    display: flex;
+    position: absolute;
+    right: 15px;
 }
 
-.selezionato:hover span {
-    opacity: 0;
+.menu-items li {
+
+    list-style-type: none; /*Rimuove il puntino accanto ad ogni elemento del menu*/
+    margin-left: 1.5rem;
+    display: flex;
+    
 }
 
-/*
-@media screen and (orientation: portrait) {
+.menu-items li a {
 
-    :root {
-        --spessore: max(3vh, 30px);
-    }
-
-    body {
-        padding-left: 2vw;
-    }
-
-    .navbar {
-        top: auto;
-        bottom: var(--spacer);
-        height: var(--spessore);
-        width: calc(100vw - calc(var(--spacer) * 2));
-        flex-direction: row;
-    }
-
-    .nav_menu {
-        flex-direction: row;
-    }
-
-    .nav_link span {
-        left: auto;
-        bottom: 120%;
-        transform: translateY(calc(var(--spacer) * 3));
-    }
+    text-decoration: none;
+    color: #fff;
 }
+
+.menu-items a:hover {
+    color: #f1c40f;
+}
+
+/* Mobile Responsive */
+@media (max-width:768px) {
+
+    /* STEP-7: Hamburger Starts from here */
+
+    /* display: from none to Block - Hamburger */
+    .navbar input[id="hamburger"], 
+    .navbar .hamburger-lines {
+
+        display: block;
+    }
+
+    /* Set Navbar-Container to Block and Set Relative */
+    .navbar-container {
+
+        position: static;
+        height: 64px;
+    }
+
+    /* Input CheckBox Styling */
+    .navbar-container input[id="hamburger"] {
+
+        position: absolute;
+        display: block;
+        height: 32px;
+        width: 30px;
+        top: 20px;
+        right: 20px;
+        z-index: 5;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+
+    /* Hamburger Styling */
+
+    /* Step 1: Hamburger Container Styling */
+    .navbar-container .hamburger-lines {
+
+        height: 28px;
+        width: 35px;
+        position: absolute;
+        right: 20px;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Step 2: Hamburger Lines Styling */
+    .navbar-container .hamburger-lines .line {
+
+        display: block;
+        height: 4px;
+        width: 100%;
+        border-radius: 10px;
+        background: #fff;
+    } 
+
+    /* Step 3: Hamburger Each Line Styling */
+
+    .navbar-container .hamburger-lines .line1 {
+
+        transform-origin: 0% 0%;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .navbar-container .hamburger-lines .line2 {
+
+        transition: transform 0.1s ease-in-out;
+    }
+
+    .navbar-container .hamburger-lines .line3 {
+
+        transform-origin: 0% 100%;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    /* Step 4: Styling Menu-List Vertical */
+    .navbar .menu-items {
+        
+        left: 80%;
+        position: absolute;
+        top: -16px;
+        padding-top: 100px;
+        margin-left: -100px;
+        padding-right: 100%;
+        height: 100vh;
+        max-width: 300px;
+
+
+        background: #24252a;
+        transform: translate(200%);
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.5s ease-in-out;
+        overflow: scroll;
+        
+    }
+
+    /* styling links: For Mobile View */
+    .navbar .menu-items li {
+
+        margin-bottom: 1.8rem;
+    }
+
+    /* Step 5: Styling Menu-List Vertical */
+
+    .navbar-container input[id="hamburger"]:checked~.menu-items {  /*la tilde è il selettore di elementi "fratelli"*/
+
+        transform: translateX(0);
+    }
+
+    .navbar-container input[id="hamburger"]:checked~.hamburger-lines .line1 {
+
+        transform: rotate(45deg);
+    }
+
+    .navbar-container input[id="hamburger"]:checked~.hamburger-lines .line2 {
+
+        transform: scaleY(0);
+    }
+
+    .navbar-container input[id="hamburger"]:checked~.hamburger-lines .line3 {
+
+        transform: rotate(-45deg);
+    }
+
+    /* End of Hamburger Styling */
+
+}  
+
