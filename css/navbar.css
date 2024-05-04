@@ -150,7 +150,8 @@
         transition: transform 0.3s ease-in-out;
     }
 
-    /* Step 4: Styling Menu-List Vertical */
+    /* Step 4: Styling Menu-List Vertical */ 
+    /* Questa parte di codice serve per posizionare correttamente il menu a tendina */
     .navbar .menu-items {
         
         left: 80%;
@@ -179,6 +180,7 @@
     }
 
     /* Step 5: Styling Menu-List Vertical */
+    /* Questa parte di codice crea l'animazione delle tre linee del menu che si trasformano in una croce */
 
     .navbar-container input[id="hamburger"]:checked~.menu-items {  /*la tilde è il selettore di elementi "fratelli"*/
 
