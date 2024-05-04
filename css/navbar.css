@@ -169,7 +169,7 @@ a {
 @media screen and (orientation: portrait) {
 
     :root {
-        --spessore: max(3vh, 30px);
+        --spessore: max(7vh, 60px);
         --aperta: 0;
     }
 
@@ -181,7 +181,7 @@ a {
         z-index: 10;
         top: auto;
         bottom: var(--spacer);
-        height: max(4vh, 68px);
+        height: var(--spessore);
         width: auto;
         left: var(--spacer);
         right: var(--spacer);
