@@ -149,6 +149,7 @@ body {
     background: var(--secondario);
     color: var(--primario);
     transition: 0;
+    
 }
 
 .selezionato img {
@@ -156,11 +157,7 @@ body {
     filter: invert(calc(1 - var(--notte)));
 }
 
-.selezionato:hover span {
-    opacity: 0;
-}
-
-.nav_aperta .selezionato span {
+.selezionato span {
     color: var(--primario);
     opacity: 1;
 }
