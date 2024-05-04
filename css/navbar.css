@@ -209,7 +209,7 @@ a {
         padding-left: 0;
     }
 
-    .nav_item:hover span {
+    .nav_item span {
         opacity: 0;
     }
 
