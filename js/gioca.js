@@ -20,6 +20,8 @@ const buttNuovaPartitaMultiplayer = document.getElementById("nuovaPartitaMultipl
 const buttTerminaPartitaMultiplayer = document.getElementById("terminaPartitaMultiplayer");
 const buttNuovaPartitaComputer = document.getElementById("nuovaPartitaComputer");
 const buttNuovaPartitaSolo = document.getElementById("nuovaPartitaSolo");
+const buttIndietroComputer = document.getElementById("indietroComputer");
+
 
 const messaggioMultiplayer = document.getElementById("messaggioMultiplayer");
 const messaggioSolo = document.getElementById("messaggioSolo");
@@ -40,7 +42,6 @@ function aggiungiMossa(mossa) {
     let mosse = getScacchieraCorrente().partita.moves({ verbose: true });
     let num = getScacchieraCorrente().partita.history().length + 1;
     for (let i = 0; i < mosse.length; i++) {
-        console.log(mosse[i]);
         if (mossa === mosse[i].from + mosse[i].to + (mosse[i].promotion ? mosse[i].promotion : '')) {
             mossa = mosse[i].san + (mosse[i].promotion ? mosse[i].promotion : '');
             break;
@@ -390,6 +391,18 @@ function terminaPartitaMultiplayer() {
     aggiornaStatoMultiplayer('terminata');
 }
 
+function indietro() {
+    getScacchieraCorrente().indietro();
+}
+
+function avanti() {
+    getScacchieraCorrente().avanti();
+}
+
+function ritorna() {
+    getScacchieraCorrente().ritorna();
+}
+
 mostraSezioneGioca("giocaComputer");
 buttNuovaPartitaComputer.addEventListener("click", () => mostraSezioneGioca("giocaComputer"));
 buttNuovaPartitaSolo.addEventListener("click", () => mostraSezioneGioca("giocaSolo"));
@@ -402,12 +415,30 @@ eloStockfish.oninput = () => {
 }
 
 
-// Seleziona tutti gli elementi con la classe 'miaClasse'
 var elementi = document.getElementsByClassName('modalitàGioca');
-
-// Aggiungi il listener a ciascun elemento
 for (var i = 0; i < elementi.length; i++) {
     elementi[i].addEventListener('change', function () {
         mostraSezioneGioca(this.value);
+    });
+}
+
+var elementi = document.getElementsByClassName('indietro');
+for (var i = 0; i < elementi.length; i++) {
+    elementi[i].addEventListener('click', function () {
+        indietro();
+    });
+}
+
+var elementi = document.getElementsByClassName('avanti');
+for (var i = 0; i < elementi.length; i++) {
+    elementi[i].addEventListener('click', function () {
+        avanti();
+    });
+}
+
+var elementi = document.getElementsByClassName('ritorna');
+for (var i = 0; i < elementi.length; i++) {
+    elementi[i].addEventListener('click', function () {
+        ritorna();
     });
 }

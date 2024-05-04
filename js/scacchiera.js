@@ -28,6 +28,7 @@ class Scacchiera {
         this.casellaCliccata = null;
         this.celle = {};
         this.pezzi = {};
+        this.mosseIndietro = [];
 
         // Crea la tavola e la scacchiera
         this.aggiorna(id_div);
@@ -120,6 +121,7 @@ class Scacchiera {
     }
 
     _aggiungiListener() { // Aggiunge i listener per il movimento del mouse e il click sulle caselle
+        if (this.mosseIndietro.length > 0) return;
         for (let casella in this.celle) {
             let cella = this.celle[casella];
             cella.addEventListener("mouseover", () => this.onOver(casella));
@@ -234,7 +236,13 @@ class Scacchiera {
         }
     }
 
+    mioTurno() { // Restituisce true se è il turno del giocatore
+        return this.orientamento === this.partita.turn();
+    }
+
     eseguiMossa(mossa) { // Esegue la mossa TODO: da rivedere quando la mossa non è legale in nebbia
+
+        if (!this.possiedo(mossa.slice(0, 2)) && this.mosseIndietro.length > 0) this.ritorna();
 
         // RImuoce le selezioni dalle caselle
         this.rimuoviSelezioni();
@@ -553,5 +561,26 @@ class Scacchiera {
             return 'p';
         }
         return null;
+    }
+
+    indietro() {
+        let mossa = this.partita.undo();
+        if (mossa !== null) this.mosseIndietro.push(mossa);
+        this.aggiorna();
+    }
+
+    avanti() {
+        if (this.mosseIndietro.length === 0) return;
+        let mossa = this.mosseIndietro.pop();
+        console.log(mossa);
+        this.eseguiMossa(mossa['from'] + mossa['to'] + (mossa['promotion'] ? mossa['promotion'] : ''));
+        console.log(this.mosseIndietro);
+        this.aggiorna();
+    }
+
+    ritorna() {
+        while (this.mosseIndietro.length > 0) {
+            this.avanti();
+        }
     }
 }
