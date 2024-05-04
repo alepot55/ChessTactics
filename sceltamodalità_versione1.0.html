@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chess Tactics</title>
+  <link rel="icon" type="image/x-icon" href="/assets/icone/logo.ico">
+  <link rel="stylesheet" type="text/css" href="css/sceltamodalità.css">
+  <link rel="stylesheet" type="text/css" href="css/stile.css">
+  <link rel="stylesheet" type="text/css" href="css/scacchiera.css">
+  
+  
+
+</head>
+
+<body>
+    
+  <header>
+    <link rel="stylesheet" type="text/css" href="css/navbar.css">
+    <nav class="navbar">
+      <ul class="nav_menu">
+        <li class="nav_item">
+          <a href="index.html" class="nav_link"><img src="assets/icone/feather/home.svg"><span>Home</span></a>
+        </li>
+        <li class="nav_item">
+          <a href="problemi.html" class="nav_link"><img src="assets/icone/feather/shuffle.svg"><span>Problemi</span></a>
+        </li>
+        <li class="nav_item selezionato">
+          <a href="gioca.html" class="nav_link"><img src="assets/icone/feather/play.svg"><span>Gioca</span></a>
+        </li>
+        <li class="nav_item">
+          <a href="profilo.html" class="nav_link"><img src="assets/icone/feather/user.svg"><span>Profilo</span></a>
+        </li>
+      </ul>
+      <button id="btnNotte"><span>Notte</span> </button>
+    </nav>
+  </header>
+
+    <p>Scegli la modalità di gioco:</p>
+    <div class = "container sceltamodalità" >
+        <div class = "custom-card">
+            <div class = "img-box">
+                <img src = "assets/sceltamodalità/vscomputer_image.jpeg"> 
+            </div>
+            <div class = "custom-content">
+                <h2>Gioca contro il computer</h2>
+                <p> Sfida l'intelligenza artificiale a diverse 
+                  difficoltà per migliorare le tue abilità e apprendere 
+                  nuove strategie.
+                    
+                </p>
+                <a href="">Clicca qui</a>
+            </div>
+        </div>
+        <div class = "custom-card">
+            <div class = "img-box">
+              <img src = "assets/sceltamodalità/multiplayer_image.jpeg"> 
+            </div>
+            <div class = "custom-content">
+                <h2>Gioca contro un avversario</h2>
+                <p> Entra nell'arena virtuale degli scacchi sul nostro sito e 
+                  sfida giocatori di tutto il mondo. Metti alla prova le tue 
+                  abilità strategiche in partite in tempo reale
+                   e competi per la vittoria.
+                </p>
+                <a href="">Clicca qui</a>
+            </div>
+        </div>
+        <div class = "custom-card">
+            <div class = "img-box">
+              <img src = "assets/sceltamodalità/singleplayer_image.jpeg"> 
+            </div>
+            <div class = "custom-content">
+                <h2>Gioca da solo</h2>
+                <p>Affronta la sfida degli scacchi in solitaria, 
+                  mettendo alla prova le tue abilità contro te stesso. 
+                  Migliora la tua strategia, la tua concentrazione e 
+                  la tua capacità di pianificazione giocando da solo.
+                </p>
+                <a href="">Clicca qui</a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
+<script src="js/funzioni.js"></script>
+<script src="js/scacchiera.js"></script>
+<script src="js/gioca.js"></script>
+
+</html>
