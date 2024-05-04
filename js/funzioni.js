@@ -146,3 +146,12 @@ document.getElementById("btnEspandi").addEventListener("click", () => {
     document.documentElement.style.setProperty('--nav_aperta', get("nav_aperta") == "true" ? 1 : 0);
 
 });
+
+const scrollContainers = document.getElementsByClassName("sceltamodalità");
+
+for (let i = 0; i < scrollContainers.length; i++) {
+    scrollContainers[i].addEventListener("wheel", (evt) => {
+        evt.preventDefault();
+        scrollContainers[i].scrollLeft += evt.deltaY;
+    });
+}

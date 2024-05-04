@@ -13,8 +13,8 @@
 }
 
 body {
-    transition: padding-left calc(var(--timing) * var(--spostaBody)) ease;
-    padding-left: calc(var(--spessore) * (2  +  2*var(--nav_aperta)));
+    transition: margin-left calc(var(--timing) * var(--spostaBody)) ease;
+    margin-left: calc(var(--spessore) * (2  +  2*var(--nav_aperta)));
 }
 
 #btnNotte {
@@ -191,7 +191,7 @@ a {
     }
 
     body {
-        padding-left: 2vw;
+        margin-left: 2vw;
         padding-bottom: calc(var(--spessore) + 2vw);
     }
 

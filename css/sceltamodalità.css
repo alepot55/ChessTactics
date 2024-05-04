@@ -1,0 +1,112 @@
+:root {
+    --altezzaDiv: 480px;
+    --altezzaCard: 200px;
+    --larghezzaCard: 300px;
+}
+
+
+.sceltamodalità {
+    width: 100%;
+    height: var(--altezzaDiv);
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    overflow-y: hidden;
+    gap: calc(var(--larghezzaCard) * 0.1);
+    scrollbar-width: none;
+}
+
+
+.custom-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: var(--larghezzaCard);
+    height: var(--altezzaCard);
+    background: light-dark(white, var(--secondario));
+    border-radius: 20px;
+    transition: 0.5s;
+    padding: 20px;
+}
+
+.custom-card:hover {
+    height: calc(var(--altezzaCard) * 1.3);
+}
+
+.img-box {
+    position: relative;
+    width: calc(var(--larghezzaCard) * 0.9);
+    height: calc(var(--altezzaCard) * 0.9);
+    transition: 0.5s;
+}
+
+.custom-card:hover .img-box {
+    transform: translateY(-120px);
+    scale: 0.8;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+}
+
+.img-box img {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
+
+.custom-card .custom-content {
+    opacity: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    transition: 0.5s;
+}
+
+.custom-card:hover .custom-content {
+    transform: translateY(-110px);
+    opacity: 1;
+    height: fit-content;
+}
+
+.custom-card .custom-content h2 {
+    font-size: 18px;
+    color: light-dark(black, white);
+}
+
+.custom-card .custom-content p {
+    color: light-dark(black, white);
+}
+
+
+@media (max-width: 768px) {
+
+    .sceltamodalità {
+        width: var(--larghezzaCard)*1.5;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sceltamodalità .img-box {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .custom-card {
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .custom-card .custom-content {
+        opacity: 1;
+        transform: none;
+        color: black;
+    }
+
+    .custom-card:hover .custom-content {
+        transform: none;
+    }
+
+}
