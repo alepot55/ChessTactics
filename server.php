@@ -259,7 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $azione = $_POST['operazione'];
     $dati = $azione($_POST);
 
-    file_put_contents('data\utenti.json', json_encode($utenti));
-    file_put_contents('data\partite.json', json_encode($partite));
+    file_put_contents('data/utenti.json', json_encode($utenti));
+    file_put_contents('data/partite.json', json_encode($partite));
     echo json_encode($dati);
 }
