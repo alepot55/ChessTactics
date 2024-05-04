@@ -209,6 +209,7 @@ a {
     }
 
     .navbar #logo {
+        position: absolute;
         width: 0;
         visibility: hidden;
     }
