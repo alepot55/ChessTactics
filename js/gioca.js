@@ -18,9 +18,6 @@ let coloreUtente = null;
 const buttStopRicercaMultiplayer = document.getElementById("stopRicercaMultiplayer");
 const buttNuovaPartitaMultiplayer = document.getElementById("nuovaPartitaMultiplayer");
 const buttTerminaPartitaMultiplayer = document.getElementById("terminaPartitaMultiplayer");
-const buttGiocaComputer = document.getElementById("giocaComputerButton");
-const buttGiocaSolo = document.getElementById("giocaSoloButton");
-const buttGiocaMultiplayer = document.getElementById("giocaMultiplayerButton");
 const buttNuovaPartitaComputer = document.getElementById("nuovaPartitaComputer");
 const buttNuovaPartitaSolo = document.getElementById("nuovaPartitaSolo");
 
@@ -34,6 +31,28 @@ const eloStockfish = document.getElementById("eloStockfish");
 let scacchieraGiocaComputer = new Scacchiera('scacchieraComputer', DEFAULT_POSITION_WHITE, true, get('temaPezzi'), get('colore'), continuaMossaComputer, true);
 let scacchieraGiocaSolo = new Scacchiera('scacchieraSolo', DEFAULT_POSITION_WHITE, true, get('temaPezzi'), get('colore'), continuaMossaSolo, true);
 let scacchieraGiocaMultiplayer = new Scacchiera('scacchieraMultiplayer', '', true, get('temaPezzi'), get('colore'), continuaMossaMultiplayer, true);
+
+function getScacchieraCorrente() {
+    return sezioneCorrente === "giocaComputer" ? scacchieraGiocaComputer : sezioneCorrente === "giocaSolo" ? scacchieraGiocaSolo : scacchieraGiocaMultiplayer;
+}
+
+function aggiungiMossa(mossa) {
+    let mosse = getScacchieraCorrente().partita.moves({ verbose: true });
+    let num = getScacchieraCorrente().partita.history().length + 1;
+    for (let i = 0; i < mosse.length; i++) {
+        console.log(mosse[i]);
+        if (mossa === mosse[i].from + mosse[i].to + (mosse[i].promotion ? mosse[i].promotion : '')) {
+            mossa = mosse[i].san + (mosse[i].promotion ? mosse[i].promotion : '');
+            break;
+        }
+    }
+    let elem = document.getElementById(sezioneCorrente + "Mosse");
+    if (elem.innerText === "") {
+        elem.innerText = num + ") " + mossa;
+    } else {
+        elem.innerText += "\n" + num + ") " + mossa;
+    }
+}
 
 function mostraTempoUtente(tempo) {
     document.getElementById("tempoUtente").innerText = tempo.toFixed(1);
@@ -82,6 +101,8 @@ function aggiornaScacchieraGioca(idScacchiera, posizione = DEFAULT_POSITION_WHIT
 // Funzione per proseguire la mossa nella sezione gioca da solo
 function continuaMossaSolo(mossa) {
 
+    aggiungiMossa(mossa);
+
     setTimeout(function () {
         if (scacchieraGiocaSolo.statoPartita() !== null) {
             messaggioSolo.innerText = "Partita terminata!";
@@ -98,6 +119,8 @@ function continuaMossaSolo(mossa) {
 // Funzione per proseguire la mossa nella sezione gioca contro il computer
 function continuaMossaComputer(mossa) {
 
+    aggiungiMossa(mossa);
+
     setTimeout(function () {
 
         if (scacchieraGiocaComputer.statoPartita() !== null) {
@@ -113,6 +136,7 @@ function continuaMossaComputer(mossa) {
         stockfish.onmessage = function (event) {
             if (event.data.startsWith('bestmove')) {
                 mossa = event.data.split(' ')[1];
+                aggiungiMossa(mossa);
                 scacchieraGiocaComputer.eseguiMossa(mossa);
                 if (scacchieraGiocaComputer.statoPartita() !== null) {
                     messaggioComputer.innerText = scacchieraGiocaComputer.statoPartita() === 'p' ? "Patta!" : scacchieraGiocaComputer.statoPartita() === 'b' ? "Hai perso!" : "Hai vinto!";
@@ -126,6 +150,7 @@ function continuaMossaComputer(mossa) {
 
 // Funzione per proseguire la mossa nella sezione gioca Multiplayer
 function continuaMossaMultiplayer(mossa) {
+    aggiungiMossa(mossa);
     setTimeout(() => aspettaMossa(mossa), 0);
     return true;
 }
@@ -157,6 +182,7 @@ async function aspettaMossa(mossa, invia = true) {
     } else if (datiRicevuti['mossa'] === mossa) {
         setTimeout(() => aspettaMossa(mossa, false), tempIntervallo);
     } else {
+        aggiungiMossa(datiRicevuti['mossa']);
         scacchieraGiocaMultiplayer.eseguiMossa(datiRicevuti['mossa']);
         aggiornaStatoMultiplayer('mioTurno');
     }
@@ -365,9 +391,6 @@ function terminaPartitaMultiplayer() {
 }
 
 mostraSezioneGioca("giocaComputer");
-buttGiocaComputer.addEventListener("click", () => mostraSezioneGioca("giocaComputer"));
-buttGiocaSolo.addEventListener("click", () => mostraSezioneGioca("giocaSolo"));
-buttGiocaMultiplayer.addEventListener("click", () => mostraSezioneGioca("giocaMultiplayer"));
 buttNuovaPartitaComputer.addEventListener("click", () => mostraSezioneGioca("giocaComputer"));
 buttNuovaPartitaSolo.addEventListener("click", () => mostraSezioneGioca("giocaSolo"));
 buttStopRicercaMultiplayer.addEventListener("click", () => annullaRicercaMultiplayer());
@@ -376,4 +399,15 @@ buttTerminaPartitaMultiplayer.addEventListener("click", () => terminaPartitaMult
 eloStockfish.oninput = () => {
     set('eloStockfish', eloStockfish.value);
     document.getElementById("valoreEloStockfish").innerText = eloStockfish.value;
+}
+
+
+// Seleziona tutti gli elementi con la classe 'miaClasse'
+var elementi = document.getElementsByClassName('modalitàGioca');
+
+// Aggiungi il listener a ciascun elemento
+for (var i = 0; i < elementi.length; i++) {
+    elementi[i].addEventListener('change', function () {
+        mostraSezioneGioca(this.value);
+    });
 }

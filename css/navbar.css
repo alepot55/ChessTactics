@@ -4,11 +4,12 @@
     --spacer: 1rem;
     --textNav: #fff;
     --linkHeight: calc(var(--spacer) * 3.5);
-    --spessore: max(4vw, 68px);
+    --spessore: max(4vw, 72px);
     --timing: 500ms;
     --transition: var(--timing) ease all;
     --nav_aperta: 0;
     --dimIcone: 28px;
+    --margineLink: 15px;
 }
 
 body {
@@ -67,6 +68,25 @@ body {
     overflow: hidden;
 }
 
+.navbar #logo {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding: 10px;
+    padding-left: calc(var(--spessore) * 0.5 - 24.5px);
+    background: #eaedf2;
+    margin: 10px;
+    margin-bottom: 50px;
+    border-radius: var(--borderRadius);
+    color: #3d5165;
+}
+
+.navbar #logo img {
+    width: 30px;
+    border-radius: var(--borderRadius);  
+    margin-right: calc(var(--spessore) * 0.6 - 20px);  
+}
+
 .nav_aperta {
     width: calc(var(--spessore) * 3);
 }
@@ -89,13 +109,14 @@ body {
 }
 
 .nav_item {
-    height: var(--spessore);
-    width: 100%;
+    height: calc(var(--spessore) * 0.8);
+    width: calc(100% - var(--margineLink));
     display: flex;
     align-items: center;
     justify-content: center;
     transition: var(--transition);
-    margin: 10px 5px;
+    margin: 5px 5px;
+    border-radius: var(--borderRadius);
 }
 
 .nav_link {
@@ -105,13 +126,14 @@ body {
     width: 100%;
     color: var(--textNav);
     transition: var(--transition);
-    padding-left: calc(var(--spessore)/2 - var(--dimIcone) / 2);
+    padding-left: calc(var(--spessore)/2 - var(--dimIcone) / 2 - var(--margineLink) / 2);
 }
 
 .nav_link span {
     position: absolute;
     opacity: 1;
     margin-left: calc(var(--spessore) - 10px);
+    color: var(--secondario);
 }
 
 .nav_link img {
@@ -120,15 +142,10 @@ body {
     filter: invert(var(--notte));
 }
 
-.nav_aperta span {
-    color: var(--secondario);
-    opacity: 1;
-}
 
 .nav_item:hover {
     background: var(--secondario);
     color: var(--primario);
-    border-radius: 0;
     transition: var(--transition);
 }
 
@@ -175,6 +192,7 @@ a {
 
     body {
         padding-left: 2vw;
+        padding-bottom: calc(var(--spessore) + 2vw);
     }
 
     .navbar {
@@ -190,6 +208,11 @@ a {
         align-items: center;
     }
 
+    .navbar #logo {
+        width: 0;
+        visibility: hidden;
+    }
+
     .nav_menu {
         width: calc(100% - 15px);
         flex-direction: row;
@@ -197,7 +220,7 @@ a {
     }
 
     .nav_item {
-        height: 100%;
+        height: calc(100% - var(--margineLink));
         width: calc(var(--linkHeight) * 2);
     }
 

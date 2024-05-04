@@ -1,5 +1,5 @@
 :root {
-    --dimensioneTavolaAltezza: min(calc(100vw * 0.8), 600px, calc(100vh * 0.8));
+    --dimensioneTavolaAltezza: min(calc(100vw * 0.8), calc(100vh * 0.8));
     --dimensioneTavolaLarghezza: calc(var(--dimensioneTavolaAltezza) * 0.98);
     --dimensioneScacchieraAltezza: calc(var(--dimensioneTavolaAltezza) * 0.94);
     --dimensioneScacchieraLarghezza: calc(var(--dimensioneTavolaLarghezza) * 0.94);

@@ -15,7 +15,10 @@
   <header>
     <link rel="stylesheet" type="text/css" href="css/navbar.css">
     <nav class="navbar">
-      <div id="btnEspandi"><img src="assets/icone/figma/CaretRight.svg"> </div>
+
+      <div id="logo"> <img src="assets/icone/logo_semplice.png " alt="logo"> <span>ChessTactics</span> </div>
+
+      <div id="btnEspandi"><img src="assets/icone/figma/CaretDoubleRight.svg"> </div>
 
       <ul class="nav_menu">
         <li class="nav_item">
@@ -26,6 +29,9 @@
         </li>
         <li class="nav_item selezionato">
           <a href="gioca.html" class="nav_link"><img src="assets/icone/figma/Sword.svg"><span>Gioca</span></a>
+        </li>
+        <li class="nav_item">
+          <a href="" class="nav_link"><img src="assets/icone/figma/Trophy.svg"><span>Classifica</span></a>
         </li>
         <li class="nav_item">
           <a href="profilo.html" class="nav_link"><img src="assets/icone/figma/User.svg"><span>Profilo</span></a>
@@ -39,65 +45,84 @@
   </header>
   <main>
 
-    <p>Scegli la modalità di gioco:</p>
-    <div class="container">
-      <button id="giocaComputerButton" class="button_1">Gioca con il Computer</button>
-      <button id="giocaSoloButton" class="button_1">Gioca da Solo</button>
-      <button id="giocaMultiplayerButton" class="button_1">Gioca con un Altro Giocatore</button>
-    </div>
-
     <div id="giocaComputer">
-      <h2>Gioca con il Computer</h2>
       <div class="container">
         <div id="scacchieraComputer" class="scacchiera"></div>
         <div class="comandi">
+          <p>Scegli la modalità di gioco:</p>
+          <select class="modalitàGioca" name="modalità">
+            <option value="giocaComputer">Computer</option>
+            <option value="giocaSolo">Solo</option>
+            <option value="giocaMultiplayer">Multiplayer</option>
+          </select><br>
+          <h2>Gioca con il Computer</h2>
 
           <input type="range" min="1" max="4000" value="50" id="eloStockfish">
           <label for="eloStockfish">Elo Stockfish: <span id="valoreEloStockfish">50</span></label><br>
           <p id="risultatoComputer"></p>
           <button id="nuovaPartitaComputer" class="button_1"> Nuova Partita</button>
           <p id="messaggioComputer"></p>
+          <p id="giocaComputerMosse"></p>
         </div>
       </div>
     </div>
 
     <div id="giocaSolo">
-      <h2>Gioca da Solo</h2>
       <div class="container">
         <div id="scacchieraSolo" class="scacchiera"></div>
         <div class="comandi">
-
+          <p>Scegli la modalità di gioco:</p>
+          <select class="modalitàGioca" name="modalità">
+            <option value="giocaComputer">Computer</option>
+            <option value="giocaSolo">Solo</option>
+            <option value="giocaMultiplayer">Multiplayer</option>
+          </select><br>
+          <h2>Gioca da Solo</h2>
           <p id="risultatoSolo"></p>
           <button id="nuovaPartitaSolo" class="button_1">Nuova Partita</button>
           <p id="messaggioSolo"></p>
+          <p id="giocaSoloMosse"></p>
         </div>
       </div>
     </div>
 
     <div id="giocaMultiplayer">
-      <h2>Gioca con un Altro Giocatore</h2>
-
       <div class="container">
-        <p id="tempoAvversario"></p>
-        <div id="scacchieraMultiplayer" class="scacchiera"></div>
-        <p id="tempoUtente"></p>
 
         <div class="comandi">
-          <select id="modalitàMultiplayer" name="modalitàMultiplayer">
-            <option value="normale">Normale</option>
-            <option value="pezziNascosti">Pezzi Nascosti</option>
-            <option value="nebbia">Nebbia</option>
-          </select><br>
 
-          <input type="text" id="codiceMultiplayer" name="codiceMultiplayer"
-            placeholder="Inserisci il codice della partita"><br>
-          <button id="nuovaPartitaMultiplayer" class="button_1">Nuova Partita</button>
-          <button id="stopRicercaMultiplayer" class="button_1">Annulla</button>
-          <button id="terminaPartitaMultiplayer" class="button_1">Termina partita</button>
-          <p id="messaggioMultiplayer"></p>
+          <p id="tempoAvversario"></p>
+          <div id="scacchieraMultiplayer" class="scacchiera"></div>
+          <p id="tempoUtente"></p>
+          <div class="comandi">
+
+
+            <div class="comandi">
+              <p>Scegli la modalità di gioco:</p>
+              <select class="modalitàGioca" name="modalità">
+                <option value="giocaComputer">Computer</option>
+                <option value="giocaSolo">Solo</option>
+                <option value="giocaMultiplayer">Multiplayer</option>
+              </select><br>
+              <h2>Gioca con un Altro Giocatore</h2>
+
+              <select id="modalitàMultiplayer" name="modalitàMultiplayer">
+                <option value="normale">Normale</option>
+                <option value="pezziNascosti">Pezzi Nascosti</option>
+                <option value="nebbia">Nebbia</option>
+              </select><br>
+
+              <input type="text" id="codiceMultiplayer" name="codiceMultiplayer"
+                placeholder="Inserisci il codice della partita"><br>
+              <button id="nuovaPartitaMultiplayer" class="button_1"><img
+                  src="assets/icone/figma/MagnifyingGlass.svg"></button>
+              <button id="stopRicercaMultiplayer" class="button_1">Annulla</button>
+              <button id="terminaPartitaMultiplayer" class="button_1"><img src="assets/icone/figma/Flag.svg"> </button>
+              <p id="messaggioMultiplayer"></p>
+              <p id="giocaMultiplayerMosse"></p>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
 
 
