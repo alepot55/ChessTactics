@@ -8,9 +8,15 @@ header("Access-Control-Allow-Headers: Content-Type");
 $problemi = array_map('str_getcsv', file('data/problemi/puzzles.csv'));
 //shuffle($problemi);
 
+//connessione col database
+$dbconn = pg_connect("host=localhost port=5432 dbname=dbChessTactics user=postgres password=filpostg") or die("Could not connect: " . pg_last_error());
+
+
 // Carica l'array di utenti dal file
 $utenti = json_decode(file_get_contents('data/utenti.json'), true);
 $partite = json_decode(file_get_contents('data/partite.json'), true);
+
+
 
 // Funzione per verificare che la password abbia almeno 8 caratteri e contenga almeno un numero
 function passwordValida($password) {
@@ -18,8 +24,22 @@ function passwordValida($password) {
     return strlen($password) >= 8 && preg_match('/[0-9]/', $password);
 }
 
+
+
 // Funzione per sommare un punteggio a un utente
 function sommaPunteggio($utenti, $username, $punteggio) {
+    $query = "UPDATE utenti SET punteggio = punteggio + $punteggio WHERE username = $username";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+
+    //restituisco il nuovo punteggio
+    $query = "SELECT punteggio FROM utenti WHERE username = $username";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+
+    return $ret["punteggio"];
+
+
+    /*
     foreach ($utenti as $key => $utente) {
         if ($utente['username'] === $username) {
             $utenti[$key]['punteggio'] += $punteggio;
@@ -31,19 +51,35 @@ function sommaPunteggio($utenti, $username, $punteggio) {
     file_put_contents('data\utenti.json', json_encode($utenti));
 
     return $punteggio;
+    */
+
 }
+
+
 
 // Funzione per calcolare la password dato un username
 function password($utenti, $username) {
+    $query = "SELECT pswd FROM utenti WHERE username = $username";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+
+    return $ret["pswd"];
+
+
+    /*
     foreach ($utenti as $utente) {
         if ($utente['username'] === $username) {
             return $utente['password'];
         }
     }
     return null;
+    */
 }
 
+
+
 function login($dati) {
+
     $username = $dati['username'];
     $password = $dati['password'];
     global $utenti;
@@ -61,9 +97,38 @@ function login($dati) {
     }
 
     return $dati;
+    
 }
 
+
+
 function registrazione($dati) {
+    $username = $dati['username'];
+    $password = $dati['password'];
+    $punteggio = $_POST['punteggio'];
+    $img = $dati['img'];                // ------------------------------ DA FARE: mettere in $dati anche l'immagine utente
+    global $utenti;
+    $dati = array();
+
+    $passwordTrovata = password($utenti, $username);
+
+    if (!passwordValida($password)) {
+        $dati['messaggio'] = ("La password deve contenere almeno 8 caratteri e un numero");
+    } else if ($passwordTrovata === null) {
+        $query = "INSERT INTO utenti VALUES ('{$username}', '{$password}', '{$punteggio}', '{$img}')";
+        $result = pg_query($query) or die("Query failed: " . pg_last_error());
+
+        $dati['messaggio'] = "Registrazione riuscita";
+        $dati['punteggio'] = $_POST['punteggio'];
+    } else {
+        $dati['messaggio'] = "Username già esistente";
+    }
+
+    return $dati;
+
+
+
+    /*
     $username = $dati['username'];
     $password = $dati['password'];
     global $utenti;
@@ -87,6 +152,7 @@ function registrazione($dati) {
     }
 
     return $dati;
+    */
 }
 
 function logout($dati) {
@@ -98,6 +164,26 @@ function logout($dati) {
 }
 
 function elimina($dati) {
+    $username = $dati['username'];
+    $password = $dati['password'];
+    global $utenti;
+    $dati = array();
+
+    $passwordTrovata = password($utenti, $username);
+
+    if ($passwordTrovata === $password) {
+        $query = "DELETE FROM utenti WHERE username = '{$username}'";
+        $result = pg_query($query) or die("Query failed: " . pg_last_error());
+
+        $dati['messaggio'] = "Account eliminato";
+    } else {
+        $dati['messaggio'] = "Password errata";
+    }
+
+    return $dati;
+
+
+    /*
     $username = $dati['username'];
     $password = $dati['password'];
     global $utenti;
@@ -119,9 +205,36 @@ function elimina($dati) {
     }
 
     return $dati;
+    */
 }
 
+
+
 function modifica($dati) {
+    $username = $dati['username'];
+    $nuovoUsername = $dati['nuovoUsername'];
+    $nuovaPassword = $dati['nuovaPassword'];
+    global $utenti;
+    $dati = array();
+
+    $passwordTrovata = password($utenti, $nuovoUsername);
+
+    // Modifica l'utente e la password
+    if ($passwordTrovata !== null && $nuovoUsername !== $username) {
+        $dati['messaggio'] = "Username già esistente";
+    } else if (!passwordValida($nuovaPassword)) {
+        $dati['messaggio'] = "La password deve contenere almeno 8 caratteri e un numero";
+    } else {
+        $query = "UPDATE utenti SET username = '{$nuovoUsername}' and pswd = '{$nuovaPassword}' WHERE username = '{$username}'";
+        $result = pg_query($query) or die("Query failed: " . pg_last_error());
+
+        $dati['messaggio'] = "Modifica effettuata";
+    }
+
+    return $dati;
+
+
+    /*
     $username = $dati['username'];
     $nuovoUsername = $dati['nuovoUsername'];
     $nuovaPassword = $dati['nuovaPassword'];
@@ -146,7 +259,12 @@ function modifica($dati) {
     }
 
     return $dati;
+    */
 }
+
+
+
+//---------------------------------------------------- sono arrivato fino qui ----------------------------------------------------------
 
 function problema($dati) {
     $indice = $dati['indice'];
@@ -253,6 +371,11 @@ function finePartita($dati) {
 
     return $dati;
 }
+
+//-------------------------------- DA FARE: aggiungere una funzione per ritornare il path dell'immagine profilo dell'utente
+// ...
+
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
