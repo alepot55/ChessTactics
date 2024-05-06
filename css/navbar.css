@@ -14,7 +14,7 @@
 
 body {
     transition: margin-left calc(var(--timing) * var(--spostaBody)) ease;
-    margin-left: calc(var(--spessore) * (2  +  2*var(--nav_aperta)));
+    margin-left: calc(var(--spacer) * 2 + var(--spessore) * (1  +  2*var(--nav_aperta)) + 2vw);
 }
 
 #btnNotte {
@@ -192,7 +192,6 @@ a {
 
     body {
         margin-left: 2vw;
-        padding-bottom: calc(var(--spessore) + 2vw);
     }
 
     .navbar {

@@ -21,6 +21,7 @@
 .tavola {
     width: var(--dimensioneTavolaLarghezza);
     height: var(--dimensioneTavolaAltezza);
+    min-width: var(--dimensioneTavolaLarghezza);
     border: var(--dimensioneBordo) solid var(--primario);
     background-color: var(--primario);
     border-radius: 10px;
@@ -122,4 +123,10 @@
     align-items: center;
     justify-content: center;
     z-index: 2;
+}
+
+@media screen and (max-width: 1200px) {
+    :root {
+        --dimensioneTavolaAltezza: min(calc(100vw * 0.90), calc(100vh * 0.8));
+    }
 }

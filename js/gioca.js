@@ -49,9 +49,9 @@ function aggiungiMossa(mossa) {
     }
     let elem = document.getElementById(sezioneCorrente + "Mosse");
     if (elem.innerText === "") {
-        elem.innerText = num + ") " + mossa;
+        elem.innerText = mossa;
     } else {
-        elem.innerText += "\n" + num + ") " + mossa;
+        elem.innerText += " " + mossa;
     }
 }
 
@@ -97,6 +97,8 @@ function aggiornaScacchieraGioca(idScacchiera, posizione = DEFAULT_POSITION_WHIT
         scacchiera.ribalta();
         aspettaMossa(null, false);
     }
+
+    document.getElementById(sezioneCorrente + "Mosse").innerText = "";
 }
 
 // Funzione per proseguire la mossa nella sezione gioca da solo
@@ -130,9 +132,10 @@ function continuaMossaComputer(mossa) {
         }
 
         stockfish.postMessage('uci');
-        stockfish.postMessage(`setoption name Skill Level value ${get('eloStockfish') / 4000 * 20}`);
+        stockfish.postMessage(`setoption name Skill Level value ${Math.ceil(get('eloStockfish') / 4000 * 20)}`);
+        console.log(Math.ceil(get('eloStockfish') / 4000 * 20));
         stockfish.postMessage(`position fen ${scacchieraGiocaComputer.partita.fen()}`);
-        stockfish.postMessage('go depth 10');
+        stockfish.postMessage(`go depth ${Math.ceil(get('eloStockfish') / 4000 * 20 / 2)}`);
 
         stockfish.onmessage = function (event) {
             if (event.data.startsWith('bestmove')) {

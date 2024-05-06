@@ -12,28 +12,35 @@
 }
 
 body {
+    height: 100%;
     background: light-dark(hsl(var(--colore), 60%, 94%), hsl(calc(var(--colore)), 17%, 8%));
     font-family: 'Open Sans', sans-serif;
 }
 
 .container {
     width: 100%;
-    height: 100vh;
     display: flex;
     align-items: center;
     flex-direction: row;
     justify-content: left;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 20px;
+    height: 98vh;
 }
 
 .comandi {
-    width: 300px;
+    right: 2%;
     display: flex;
     flex-direction: column;
     justify-self: start;
     gap: 13px;
+    min-width: 200px;
 }
+
+.partita {
+    width: fit-content;
+}
+
 
 .button_1 {
     /* Auto layout */
@@ -71,4 +78,19 @@ body {
 
 .button_1:disabled img {
     filter: invert(0.7);
+}
+
+@media screen and (max-width: 1200px){
+    .container {
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: nowrap;
+        gap: 0;
+    }
+
+    .comandi {
+        flex-direction: row;
+        height: fit-content;
+        gap: 0;
+    }
 }

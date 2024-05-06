@@ -51,7 +51,7 @@
         <div class="comandi">
           <p>Scegli la modalità di gioco:</p>
           <select class="modalitàGioca" name="modalità">
-            <option value="giocaComputer">Computer</option>
+            <option value="giocaComputer" selected>Computer</option>
             <option value="giocaSolo">Solo</option>
             <option value="giocaMultiplayer">Multiplayer</option>
           </select><br>
@@ -75,7 +75,7 @@
           <p>Scegli la modalità di gioco:</p>
           <select class="modalitàGioca" name="modalità">
             <option value="giocaComputer">Computer</option>
-            <option value="giocaSolo">Solo</option>
+            <option value="giocaSolo" selected>Solo</option>
             <option value="giocaMultiplayer">Multiplayer</option>
           </select><br>
           <p id="risultatoSolo"></p>
@@ -89,43 +89,43 @@
     <div id="giocaMultiplayer">
       <div class="container">
 
-        <div class="comandi">
+        <div class="partita">
 
           <p id="tempoAvversario"></p>
           <div id="scacchieraMultiplayer" class="scacchiera"></div>
           <p id="tempoUtente"></p>
-          <div class="comandi">
-
-
-            <div class="comandi">
-              <p>Scegli la modalità di gioco:</p>
-              <select class="modalitàGioca" name="modalità">
-                <option value="giocaComputer">Computer</option>
-                <option value="giocaSolo">Solo</option>
-                <option value="giocaMultiplayer">Multiplayer</option>
-              </select><br>
-              <button class="button_1 indietro"><img src="assets/icone/figma/CaretCircleLeft.svg"></button>
-              <button class="button_1 avanti"><img src="assets/icone/figma/CaretCircleRight.svg"></button>
-
-              <button class="button_1 avanti"><img src="assets/icone/figma/CaretCircleRight.svg"></button>
-
-              <select id="modalitàMultiplayer" name="modalitàMultiplayer">
-                <option value="normale">Normale</option>
-                <option value="pezziNascosti">Pezzi Nascosti</option>
-                <option value="nebbia">Nebbia</option>
-              </select><br>
-
-              <input type="text" id="codiceMultiplayer" name="codiceMultiplayer"
-                placeholder="Inserisci il codice della partita"><br>
-              <button id="nuovaPartitaMultiplayer" class="button_1"><img
-                  src="assets/icone/figma/MagnifyingGlass.svg"></button>
-              <button id="stopRicercaMultiplayer" class="button_1">Annulla</button>
-              <button id="terminaPartitaMultiplayer" class="button_1"><img src="assets/icone/figma/Flag.svg"> </button>
-              <p id="messaggioMultiplayer"></p>
-              <p id="giocaMultiplayerMosse"></p>
-            </div>
-          </div>
         </div>
+
+
+        <div class="comandi">
+          <p>Scegli la modalità di gioco:</p>
+          <select class="modalitàGioca" name="modalità">
+            <option value="giocaComputer">Computer</option>
+            <option value="giocaSolo">Solo</option>
+            <option value="giocaMultiplayer" selected>Multiplayer</option>
+          </select><br>
+          <button class="button_1 indietro"><img src="assets/icone/figma/CaretCircleLeft.svg"></button>
+          <button class="button_1 avanti"><img src="assets/icone/figma/CaretCircleRight.svg"></button>
+
+          <button class="button_1 avanti"><img src="assets/icone/figma/CaretCircleRight.svg"></button>
+
+          <select id="modalitàMultiplayer" name="modalitàMultiplayer">
+            <option value="normale">Normale</option>
+            <option value="pezziNascosti">Pezzi Nascosti</option>
+            <option value="nebbia">Nebbia</option>
+          </select><br>
+
+          <input type="text" id="codiceMultiplayer" name="codiceMultiplayer"
+            placeholder="Inserisci il codice della partita"><br>
+          <button id="nuovaPartitaMultiplayer" class="button_1"><img
+              src="assets/icone/figma/MagnifyingGlass.svg"></button>
+          <button id="stopRicercaMultiplayer" class="button_1">Annulla</button>
+          <button id="terminaPartitaMultiplayer" class="button_1"><img src="assets/icone/figma/Flag.svg"> </button>
+          <p id="messaggioMultiplayer"></p>
+          <p id="giocaMultiplayerMosse"></p>
+        </div>
+      </div>
+    </div>
 
 
 
