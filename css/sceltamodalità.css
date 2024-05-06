@@ -32,7 +32,7 @@
 }
 
 
-.custom-card {
+.custom-card:hover {
     height: calc(var(--altezzaCard) * 1.3);
 }
 
@@ -43,7 +43,7 @@
     transition: 0.5s;
 }
 
-.custom-card .img-box {
+.custom-card:hover .img-box {
     transform: translateY(-120px);
     scale: 0.8;
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
@@ -62,10 +62,9 @@
     flex-direction: column;
     text-align: center;
     transition: 0.5s;
-    overflow: hidden;
 }
 
-.custom-card .custom-content {
+.custom-card:hover .custom-content {
     transform: translateY(-110px);
     opacity: 1;
     height: fit-content;
