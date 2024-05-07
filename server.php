@@ -17,6 +17,8 @@ $utenti = json_decode(file_get_contents('data/utenti.json'), true);
 $partite = json_decode(file_get_contents('data/partite.json'), true);
 
 
+//------------------------------------------------------------------------------funzioni per gestione degli utenti
+
 
 // Funzione per verificare che la password abbia almeno 8 caratteri e contenga almeno un numero
 function passwordValida($password) {
@@ -28,11 +30,11 @@ function passwordValida($password) {
 
 // Funzione per sommare un punteggio a un utente
 function sommaPunteggio($utenti, $username, $punteggio) {
-    $query = "UPDATE utenti SET punteggio = punteggio + $punteggio WHERE username = $username";
+    $query = "UPDATE utenti SET punteggio = punteggio + $punteggio WHERE username = '{$username}'";
     $result = pg_query($query) or die("Query failed: " . pg_last_error());
 
     //restituisco il nuovo punteggio
-    $query = "SELECT punteggio FROM utenti WHERE username = $username";
+    $query = "SELECT punteggio FROM utenti WHERE username = '{$username}'";
     $result = pg_query($query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
 
@@ -59,11 +61,15 @@ function sommaPunteggio($utenti, $username, $punteggio) {
 
 // Funzione per calcolare la password dato un username
 function password($utenti, $username) {
-    $query = "SELECT pswd FROM utenti WHERE username = $username";
+    $query = "SELECT pswd FROM utenti WHERE username = '{$username}'";
     $result = pg_query($query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
+    $password = $ret["pswd"];
+    if ($password === null){
+        return null;
+    }
 
-    return $ret["pswd"];
+    return $password;
 
 
     /*
@@ -225,7 +231,7 @@ function modifica($dati) {
     } else if (!passwordValida($nuovaPassword)) {
         $dati['messaggio'] = "La password deve contenere almeno 8 caratteri e un numero";
     } else {
-        $query = "UPDATE utenti SET username = '{$nuovoUsername}' and pswd = '{$nuovaPassword}' WHERE username = '{$username}'";
+        $query = "UPDATE utenti SET username = '{$nuovoUsername}', pswd = '{$nuovaPassword}' WHERE username = '{$username}'";
         $result = pg_query($query) or die("Query failed: " . pg_last_error());
 
         $dati['messaggio'] = "Modifica effettuata";
@@ -264,7 +270,32 @@ function modifica($dati) {
 
 
 
-//---------------------------------------------------- sono arrivato fino qui ----------------------------------------------------------
+// funzione per ritornare il path dell'immagine profilo dell'utente
+function prendiImmagineProfilo($dati) {
+    $username = $dati['username'];
+    $dati = array();
+
+    $query = "SELECT * FROM utenti WHERE username = '{$username}'";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+    $immagine = $ret["img"];
+
+    if (immagine !== null){
+        $dati['messaggio'] = "Immagine profilo trovata";
+        $dati['ret'] = $immagine;                               //immagine da restituire    
+    }
+    else{
+        $dati['messaggio'] = "Profilo non trovato";
+    }
+
+    return $dati;
+
+}
+
+
+
+//------------------------------------------------------------------------------funzioni per gestione delle partite
+
 
 function problema($dati) {
     $indice = $dati['indice'];
@@ -276,7 +307,54 @@ function problema($dati) {
     return $dati;
 }
 
+
+
 function creaPartita($dati) {
+    $username = $dati['username'];
+    $protezione = $dati['protezione'];
+    global $partite;
+    $dati = array();
+
+    $query = "SELECT * FROM partite WHERE giocatore1 is not null and giocatore2 is null and protezione = '{$protezione}' LIMIT 1";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+    $cod = $ret["codice"];
+    if ($cod !== null){  //il risultato non è vuoto
+        $codice = $cod;
+        
+        $query = "UPDATE partite SET giocatore2 = '{$username}' WHERE (codice, giocatore1, giocatore2, ultimaMossa, protezione) is in (SELECT * FROM partite WHERE giocatore1 is not null and giocatore2 is null and protezione = '{$protezione}' LIMIT 1)";
+        $result = pg_query($query) or die("Query failed: " . pg_last_error());
+
+        $dati['codice'] = $codice;
+        $dati['colore'] = 'b';
+        $dati['iniziata'] = true;
+        return $dati;
+    }
+
+
+
+    $query = "SELECT * FROM partite ORDER BY codice DESC";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+    $c = $ret["codice"];
+    if ($c === null){
+        $codice = 0;
+    }
+    else{
+        $codice = $c + 1;
+    }
+
+    $query = "INSERT INTO partite VALUES ('{$codice}', '{$username}', NULL, NULL, '{$protezione}')";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+
+    $dati['codice'] = $codice;
+    $dati['colore'] = 'w';
+    $dati['iniziata'] = false;
+
+    return $dati;
+
+
+    /*
     $username = $dati['username'];
     $protezione = $dati['protezione'];
     global $partite;
@@ -308,9 +386,36 @@ function creaPartita($dati) {
     $dati['iniziata'] = false;
 
     return $dati;
+    */
 }
 
+
+
 function aspettaGiocatori($dati) {
+    global $partite;
+    $codice = intval($dati['codice']);
+    $dati = array();
+
+    $query = "SELECT * FROM partite WHERE codice = '{$codice}'";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+    $g1 = $ret["giocatore1"];
+    $g2 = $ret["giocatore2"];
+    if ($g1 === null){
+        $dati['annullata'] = true;
+    }
+    else if ($g2 !== null){
+        $dati['iniziata'] = true;
+    }
+    else{
+        $dati['iniziata'] = false;
+    }
+    $dati['giocatore2'] = $g2;
+
+    return $dati;
+
+
+    /*
     global $partite;
     $codice = intval($dati['codice']);
     $dati = array();
@@ -325,9 +430,24 @@ function aspettaGiocatori($dati) {
     $dati['giocatore2'] = $partite[$codice]['giocatore2'];
 
     return $dati;
+    */
 }
 
+
+
 function faiMossa($dati) {
+    global $partite;
+    $codice = intval($dati['codice']);
+    $mossa = $dati['mossa'];
+    $dati = array();
+
+    $query = "UPDATE partite SET ultimaMossa = '{$mossa}' WHERE codice = '{$codice}'";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+
+    return $dati;
+
+    
+    /*
     global $partite;
     $codice = intval($dati['codice']);
     $mossa = $dati['mossa'];
@@ -336,9 +456,35 @@ function faiMossa($dati) {
     $partite[$codice]['ultimaMossa'] = $mossa;
 
     return $dati;
+    */
 }
 
 function aspettaMossa($dati) {
+    global $partite;
+    $codice = intval($dati['codice']);
+    $dati = array();
+
+    $query = "SELECT * FROM partite WHERE codice = '{$codice}'";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+    $mossa = $ret["ultimaMossa"];
+
+    $dati['mossa'] = $mossa;
+
+    $g1 = $ret["giocatore1"];
+    $g2 = $ret["giocatore2"];
+
+    if ($g1 === null && $g2 === null){
+        $dati['annullata'] = true;
+    }
+    else{
+        $dati['annullata'] = false;
+    }
+
+    return $dati;
+
+
+    /*
     global $partite;
     $codice = intval($dati['codice']);
     $dati = array();
@@ -353,6 +499,7 @@ function aspettaMossa($dati) {
     }
 
     return $dati;
+    */
 }
 
 function annullaPartita($dati) {
@@ -364,16 +511,25 @@ function finePartita($dati) {
     $codice = intval($dati['codice']);
     $dati = array();
 
+    $query = "UPDATE partite SET giocatore1 = NULL, giocatore2 = NULL ultimaMossa = NULL, protezione = NULL WHERE codice = '{$codice}'";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+
+    return $dati;
+    
+    
+    /*
+    global $partite;
+    $codice = intval($dati['codice']);
+    $dati = array();
+
     $partite[$codice]['giocatore1'] = null;
     $partite[$codice]['giocatore2'] = null;
     $partite[$codice]['ultimaMossa'] = null;
     $partite[$codice]['protezione'] = null;
 
     return $dati;
+    */
 }
-
-//-------------------------------- DA FARE: aggiungere una funzione per ritornare il path dell'immagine profilo dell'utente
-// ...
 
 
 
@@ -382,7 +538,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $azione = $_POST['operazione'];
     $dati = $azione($_POST);
 
-    file_put_contents('data/utenti.json', json_encode($utenti));
-    file_put_contents('data/partite.json', json_encode($partite));
+    //file_put_contents('data/utenti.json', json_encode($utenti));
+    //file_put_contents('data/partite.json', json_encode($partite));
     echo json_encode($dati);
 }
