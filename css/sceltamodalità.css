@@ -1,7 +1,9 @@
 :root {
-    --altezzaDiv: 480px;
-    --altezzaCard: 200px;
-    --larghezzaCard: 300px;
+    --altezzaDiv: 500px;
+    --altezzaCard: 55%;
+    --larghezzaCard: 100%;
+    --maxAltezzaCard: 360px;
+    --maxLarghezzaCard: 360px;
 }
 
 
@@ -10,37 +12,52 @@
     height: var(--altezzaDiv);
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     overflow-y: hidden;
-    gap: calc(var(--larghezzaCard) * 0.1);
-    scrollbar-width: none;
+    overflow-x: hidden;
+    
 }
 
 
 .custom-card {
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
-    width: var(--larghezzaCard);
+
+    max-width: var(--maxLarghezzaCard);
+    max-height: var(--maxAltezzaCard);
+
+    width: 100%;
     height: var(--altezzaCard);
-    background: light-dark(white, var(--primario));
+
+    background: light-dark(grey, var(--primario));
     border-radius: var(--borderRadius);
     transition: 0.5s;
     padding: 13px;
+    margin: 10px;
+
 }
 
 
 .custom-card:hover {
-    height: calc(var(--altezzaCard) * 1.3);
+    height: calc(var(--altezzaCard) * 1.5);
 }
 
 .img-box {
-    position: relative;
-    width: calc(var(--larghezzaCard) * 0.9);
-    height: calc(var(--altezzaCard) * 0.9);
+    
+    position: absolute;
+    width: calc(var(--larghezzaCard) * 0.75);
+    height: calc(var(--larghezzaCard) * 0.75);
+    border-radius: var(--borderRadius);
     transition: 0.5s;
+    top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .custom-card:hover .img-box {
@@ -50,13 +67,13 @@
 }
 
 .img-box img {
-    width: 100%;
+    width: auto;
     height: 100%;
-    border-radius: var(--borderRadius);
 }
 
 .custom-card .custom-content {
-    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0.5s;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -65,18 +82,25 @@
 }
 
 .custom-card:hover .custom-content {
-    transform: translateY(-110px);
-    opacity: 1;
-    height: fit-content;
+
+    visibility: visible;
+    top: 35%;
+    height: 100%;
+}
+
+.container .custom-card:not(:hover) .custom-content {
+    transition: 0s;
 }
 
 .custom-card .custom-content h2 {
     font-size: 18px;
     color: light-dark(black, white);
+    text-align: center;
 }
 
 .custom-card .custom-content p {
     color: light-dark(black, white);
+    text-align: center;
 }
 
 
