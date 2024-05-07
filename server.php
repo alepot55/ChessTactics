@@ -8,6 +8,12 @@ header("Access-Control-Allow-Headers: Content-Type");
 $problemi = array_map('str_getcsv', file('data/problemi/puzzles.csv'));
 //shuffle($problemi);
 
+$host = "localhost";
+$dbname = "dbChessTactics";
+$dbuser = "postgres";
+$dbpass = "filpostg";
+$porta = 5432;
+
 //connessione col database
 $dbconn = pg_connect("host=localhost port=5432 dbname=dbChessTactics user=postgres password=filpostg") or die("Could not connect: " . pg_last_error());
 
