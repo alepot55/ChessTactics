@@ -78,7 +78,7 @@
     position: relative;
     text-align: center;
     top: 75%; /*Se metto la scritta più in basso quando non è visibile, poi quando lo diventa c'è l'effetto della scritta che sale*/
-    transition: visibility 0s;
+    transition: visibility 0s; /*tempo da visible a hidden*/
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -91,7 +91,7 @@
     visibility: visible;
     top: 50%;
     height: 100%;
-    transition: 0.5s;
+    transition: 0.5s; /*tempo da hidden a visible*/
 }
 
 .container .custom-card:not(:hover) .custom-content {
