@@ -7,7 +7,7 @@ const timerAvversario = new Timer(mostraTempoAvversario, 60);
 const stockfish = new Worker('node_modules/stockfish.js/stockfish.js');
 
 // Variabili 
-let sezioneCorrente = "giocaComputer";
+let sezioneCorrente = null;
 let idScacchieraCorrente = "scacchieraComputer";
 let modalitàMultiplayer = 'normale';
 let codicePartita = null;
@@ -406,7 +406,25 @@ function ritorna() {
     getScacchieraCorrente().ritorna();
 }
 
-mostraSezioneGioca("giocaComputer");
+
+//Main
+
+window.onload = function() { //Questa funzione serve per impostare al caricamento della pagina la modalità di gioco selezionata in index.html
+    // Ottieni il parametro 'selected' dall'URL
+    const params = new URLSearchParams(window.location.search);
+    const selectedValue = params.get('selected');
+
+    // Se c'è un valore, selezionalo nel menu a tendina
+    if (selectedValue) {
+        document.getElementsByClassName("modalitàGioca").value = selectedValue;
+        console.log(sezioneCorrente);
+        mostraSezioneGioca(selectedValue);
+    }
+    else{
+        mostraSezioneGioca("giocaComputer");
+    }
+}
+
 buttNuovaPartitaComputer.addEventListener("click", () => mostraSezioneGioca("giocaComputer"));
 buttNuovaPartitaSolo.addEventListener("click", () => mostraSezioneGioca("giocaSolo"));
 buttStopRicercaMultiplayer.addEventListener("click", () => annullaRicercaMultiplayer());

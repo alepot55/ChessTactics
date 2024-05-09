@@ -52,7 +52,7 @@
 
   <link rel="stylesheet" type="text/css" href="css/sceltamodalità.css">
   <div class = "sceltamodalità" >
-      <div class = "custom-card">
+      <div class = "custom-card" id = "computer">
           <div class = "img-box">
               <img src = "assets/immagini/vscomputer_image.jpeg"> 
           </div>
@@ -65,18 +65,18 @@
               </p>
           </div>
       </div>
-      <div class = "custom-card">
+      <div class = "custom-card" id = "multiplayer">
           <div class = "img-box">
             <img src = "assets/immagini/multiplayer_image.jpeg"> 
           </div>
           <div class = "custom-content">
               <h2>Gioca contro un avversario</h2>
               <p> Entra nell'arena virtuale degli scacchi e 
-                sfida giocatori di tutto il mondo.
+                sfida giocatori di tutto il mondo. 
               </p>
           </div>
       </div>
-      <div class = "custom-card">
+      <div class = "custom-card" id ="solo">
           <div class = "img-box">
             <img src = "assets/immagini/singleplayer_image.jpeg"> 
           </div>
@@ -92,9 +92,30 @@
   </main>
 
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 <script src="js/funzioni.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
+<script>
+  // Seleziona gli elementi <div> tramite il loro id e aggiunge loro l'evento "click" che porta alla pagina gioca.html
+  const cardComputer = document.getElementById("computer");
+  const cardMultiplayer = document.getElementById("multiplayer");
+  const cardSolo = document.getElementById("solo");
+
+  // Aggiungi un gestore di eventi di click a ciascun div
+  cardComputer.addEventListener("click", function() {
+    redirectToDropdown('giocaComputer');
+  });
+
+  cardMultiplayer.addEventListener("click", function() {
+    redirectToDropdown('giocaMultiplayer');
+  });
+
+  cardSolo.addEventListener("click", function() {
+    redirectToDropdown('giocaSolo');
+  });
+
+  function redirectToDropdown(value) {
+    window.location.href = 'gioca.html?selected=' + encodeURIComponent(value);
+  }
+</script>
 
 </html>
