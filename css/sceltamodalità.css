@@ -21,6 +21,8 @@
 
 
 .custom-card {
+    cursor: pointer;
+
     position: relative;
     display: flex;
     flex-direction: column;
@@ -73,36 +75,50 @@
 
 .custom-card .custom-content {
     visibility: hidden;
-    transition: visibility 0.5s;
     position: relative;
+    text-align: center;
+    top: 75%; /*Se metto la scritta più in basso quando non è visibile, poi quando lo diventa c'è l'effetto della scritta che sale*/
+    transition: visibility 0s;
     display: flex;
     flex-direction: column;
-    text-align: center;
-    transition: 0.5s;
+    box-sizing: border-box;
+
+    
 }
 
 .custom-card:hover .custom-content {
 
     visibility: visible;
-    top: 35%;
+    top: 50%;
     height: 100%;
+    transition: 0.5s;
 }
 
 .container .custom-card:not(:hover) .custom-content {
-    transition: 0s;
+    
+   
+
 }
 
 .custom-card .custom-content h2 {
     font-size: 18px;
     color: light-dark(black, white);
     text-align: center;
+    margin-bottom: -1%;
 }
+
 
 .custom-card .custom-content p {
     color: light-dark(black, white);
     text-align: center;
 }
+@media (min-width: 768px) and (max-width: 900px) {
 
+    .custom-card .custom-content {
+
+        font-size: 0.9rem;
+    }
+}
 
 @media (max-width: 768px) {
 
