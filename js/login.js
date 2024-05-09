@@ -114,3 +114,15 @@ document.getElementById("resetPreferenze").addEventListener('click', function ()
 });
 
 aggiornaProfilo();
+
+
+
+// codice per caricare immagine profilo-----------------------------------------------------------------
+
+function caricaImmagine(event){
+    var file = event.target.files[0];
+    console.log(event.target.files[0]);
+    var reader = new FileReader();
+    reader.onload = function(e){document.getElementById(immagineProfilo).src=e.target.result;};
+    reader.readAsDataURL(file);
+}

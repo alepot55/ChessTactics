@@ -7,6 +7,7 @@
   <title>Puzzle di Scacchi</title>
   <link rel="icon" type="image/x-icon" href="/assets/icone/logo.ico">
   <link rel="stylesheet" type="text/css" href="css/stile.css">
+  <link rel="stylesheet" type="text/css" href="css/profilo.css">
 </head>
 
 <body>
@@ -41,22 +42,30 @@
       </div>
     </nav>
   </header>
+
   <main>
-    <div id="preferenzeUtente">
-      <h2>Preferenze Utente</h2>
-      <label for="temaPezzi">Tema pedine:</label><br>
-      <select id="temaPezzi" name="temaPezzi">
-        <option value="default">Default</option>
-        <option value="simple">Simple</option>
-        <option value="marshmallow">Marshmallow</option>
-        <option value="horsey">Horsey</option>
-      </select><br>
-      <label for="temaScacchiera">Tema scacchiera:</label><br>
-      <select id="temaScacchiera" name="temaScacchiera">
-        <input type="range" id="colore" min="0" max="360" />
-      </select><br>
-      <button id="salvaPreferenze" class="bottone">Applica</button>
-      <button id="resetPreferenze" class="bottone">Reset</button>
+    
+    <div class="flexbox">
+      <img id="immagineProfilo" src="./assets/immagini/profilo_default.png" onclick="document.getElementById('fileInput').click();">
+      <input type="file" id="fileInput" style="display: none;" onchange="caricaImmagine(event)">
+
+
+      <div id="preferenzeUtente">
+        <h2>Preferenze Utente</h2>
+        <label for="temaPezzi" class="etichetta">Tema pedine:</label><br>
+        <select id="temaPezzi" name="temaPezzi">
+          <option value="default">Default</option>
+          <option value="simple">Simple</option>
+          <option value="marshmallow">Marshmallow</option>
+          <option value="horsey">Horsey</option>
+        </select><br>
+        <label for="temaScacchiera" class="etichetta">Tema scacchiera:</label><br>
+        <select id="temaScacchiera" name="temaScacchiera">
+          <input type="range" id="colore" min="0" max="360" />
+        </select><br>
+        <button id="salvaPreferenze" class="bottone">Applica</button>
+        <button id="resetPreferenze" class="bottone">Reset</button>
+      </div>
     </div>
 
     <div id="profiloUtente">
@@ -68,9 +77,9 @@
 
     <div id="modificaProfilo">
       <h2>Modifica Profilo</h2>
-      <label for="nuovoUsername">Nuovo nome utente:</label><br>
+      <label for="nuovoUsername" class="etichetta">Nuovo nome utente:</label><br>
       <input type="text" id="nuovoUsername" name="nuovoUsername"><br>
-      <label for="nuovaPassword">Nuova password:</label><br>
+      <label for="nuovaPassword" class="etichetta">Nuova password:</label><br>
       <input type="password" id="nuovaPassword" name="nuovaPassword"><br>
       <input type="submit" id="modificaButton" value="Modifica" class="bottone">
       <p id="rispostaModifica"></p>
@@ -78,7 +87,7 @@
 
     <div id="eliminaProfilo">
       <h2>Elimina Profilo</h2>
-      <label for="passwordElimina">Password:</label><br>
+      <label for="passwordElimina" class="etichetta">Password:</label><br>
       <input type="password" id="passwordElimina" name="passwordElimina"><br>
       <input type="submit" id="eliminaButton" value="Elimina">
       <p id="rispostaElimina"></p>
@@ -87,9 +96,9 @@
     <div id="accediProfilo">
       <h2>Accedi / Registrati</h2>
       <form id="loginForm">
-        <label for="username">Nome utente:</label><br>
+        <label for="username" class="etichetta">Nome utente:</label><br>
         <input type="text" id="usernameAccedi" name="usernameAccedi"><br>
-        <label for="password">Password:</label><br>
+        <label for="password" class="etichetta">Password:</label><br>
         <input type="password" id="passwordAccedi" name="passwordAccedi"><br>
         <input type="submit" id="loginButton" value="Accedi" class="bottone">
         <input type="submit" id="registerButton" value="Registrati" class="bottone">

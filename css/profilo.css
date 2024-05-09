@@ -1,0 +1,53 @@
+
+
+h2 {
+    text-transform: uppercase;
+}
+
+.etichetta {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.flexbox {
+    display: flex;
+    align-items: center;
+    gap: 20%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-grow: 1;
+}
+
+#immagineProfilo {
+    border-radius: 50%;
+    text-align: left;
+    width: 20%;
+    height: 20%;
+}
+
+/* Per schermi con width >= 1024px */
+@media (min-width: 1024px) {
+    .etichetta {
+        font-size: large;
+    }
+    h2 {
+        font-size: xx-large;
+    }
+}
+/* Per schermi con width compresa fra 768px e 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .etichetta {
+        font-size: medium;
+    }
+    h2 {
+        font-size: x-large;
+    }
+}
+/* Per schermi con width <= 767px */
+@media (max-width: 767px) {
+    .etichetta {
+        font-size: small;
+    }
+    h2 {
+        font-size: large;
+    }
+}
