@@ -2,12 +2,17 @@
     --def-border-radius: 10px;
 }
 
+main{
+    width: 100%;
+    height: 100%;
+}
+
 h2 {
     text-transform: uppercase;
 }
 
 .etichetta {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .flexbox {
@@ -33,7 +38,7 @@ h2 {
     width: fit-content;
     height: fit-content;
 
-    background: hsl(calc(var(--colore) + 30), 53%, 41%);;;
+    background: hsl(calc(var(--colore) + 30), 53%, 41%);
     border-radius: var(--def-border-radius);
     border: 0px;
     transition: background 0.3s ease;
@@ -94,4 +99,16 @@ h2 {
     h2 {
         font-size: large;
     }
+}
+
+
+
+#profiloUtente{
+    color: hsl(calc(var(--colore) + 30), 53%, 41%);
+    
+    
+}
+
+#profUsr{
+    color: black;
 }

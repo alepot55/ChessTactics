@@ -42,7 +42,10 @@
       </div>
     </nav>
   </header>
+
+
   <main>
+
     <div class="flexbox">
       <img id="immagineProfilo" src="">
 
@@ -59,8 +62,8 @@
         <select id="temaScacchiera" name="temaScacchiera">
           <input type="range" id="colore" min="0" max="360" />
         </select><br>
-        <button id="salvaPreferenze" class="bottone">Applica</button>
-        <button id="resetPreferenze" class="bottone">Reset</button>
+        <button id="salvaPreferenze" class="btn">Applica</button>
+        <button id="resetPreferenze" class="btn">Reset</button>
       </div>
 
       <div>
@@ -85,10 +88,10 @@
     </div>
 
     <div id="profiloUtente">
-      <h2>Profilo Utente</h2>
-      <p>Nome utente: <span id="usernameProfilo"></span></p>
+      <h2 id="profUsr">Profilo Utente</h2>
+      <p>Username: <span id="usernameProfilo"></span></p>
       <p>Punteggio: <span id="punteggioProfilo"></span></p>
-      <button id="logoutButton" class="bottone">Logout</button>
+      <button id="logoutButton" class="btn">Logout</button>
     </div>
 
     <div id="modificaProfilo">
@@ -97,7 +100,7 @@
       <input type="text" id="nuovoUsername" name="nuovoUsername"><br>
       <label for="nuovaPassword">Nuova password:</label><br>
       <input type="password" id="nuovaPassword" name="nuovaPassword"><br>
-      <input type="submit" id="modificaButton" value="Modifica" class="bottone">
+      <input type="submit" id="modificaButton" value="Modifica" class="btn">
       <p id="rispostaModifica"></p>
     </div>
 
@@ -105,7 +108,7 @@
       <h2>Elimina Profilo</h2>
       <label for="passwordElimina">Password:</label><br>
       <input type="password" id="passwordElimina" name="passwordElimina"><br>
-      <input type="submit" id="eliminaButton" value="Elimina">
+      <input type="submit" id="eliminaButton" value="Elimina" class="btn">
       <p id="rispostaElimina"></p>
     </div>
 
@@ -116,8 +119,8 @@
         <input type="text" id="usernameAccedi" name="usernameAccedi"><br>
         <label for="password">Password:</label><br>
         <input type="password" id="passwordAccedi" name="passwordAccedi"><br>
-        <input type="submit" id="loginButton" value="Accedi" class="bottone">
-        <input type="submit" id="registerButton" value="Registrati" class="bottone">
+        <input type="submit" id="loginButton" value="Accedi" class="btn">
+        <input type="submit" id="registerButton" value="Registrati" class="btn">
         <p id="rispostaAccedi"></p>
       </form>
     </div>

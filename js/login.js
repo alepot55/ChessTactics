@@ -128,6 +128,9 @@ async function aggiornaProfilo() {
                   break;
                 case '9':
                   s = './assets/immaginiProfilo/usr9.jpg';
+                  break;
+                default:
+                  s = './assets/immaginiProfilo/profilo_default.png';
             }
         }
     }
