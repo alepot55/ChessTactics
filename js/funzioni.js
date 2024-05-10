@@ -1,4 +1,4 @@
-const indirizzoServer = `server.php`;
+const indirizzoServer = `http://localhost:3000/server.php`;
 const tempoCookie = 60 * 60 * 24 * 30;
 
 modNotte = false;
