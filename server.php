@@ -286,7 +286,7 @@ function prendiImmagineProfilo($dati) {
     $ret = pg_fetch_assoc($result);
     $immagine = $ret["img"];
 
-    if (immagine !== null){
+    if ($immagine !== null){
         $dati['messaggio'] = "Immagine profilo trovata";
         $dati['ret'] = $immagine;                               //immagine da restituire    
     }
