@@ -89,6 +89,15 @@ function aggiornaProfilo() {
     document.getElementById('profiloUtente').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('modificaProfilo').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('eliminaProfilo').style.display = utenteLoggato ? 'block' : 'none';
+
+    if (utenteLoggato){
+        var s = '';     // inviare dati al server per poter recuperare  l'immagine profilo scelta
+    }
+    else{
+        var s = './assets/immagini/profilo_default.png';
+    }
+    document.getElementById('immagineProfilo').src = s;
+
     document.getElementById('usernameProfilo').innerHTML = get('username');
     document.getElementById('punteggioProfilo').innerHTML = punteggioUtente;
 }
