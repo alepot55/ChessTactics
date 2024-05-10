@@ -7,6 +7,7 @@
   <title>Puzzle di Scacchi</title>
   <link rel="icon" type="image/x-icon" href="/assets/icone/logo.ico">
   <link rel="stylesheet" type="text/css" href="css/stile.css">
+  <link rel="stylesheet" type="text/css" href="css/profilo.css">
 </head>
 
 <body>
@@ -42,21 +43,45 @@
     </nav>
   </header>
   <main>
-    <div id="preferenzeUtente">
-      <h2>Preferenze Utente</h2>
-      <label for="temaPezzi">Tema pedine:</label><br>
-      <select id="temaPezzi" name="temaPezzi">
-        <option value="default">Default</option>
-        <option value="simple">Simple</option>
-        <option value="marshmallow">Marshmallow</option>
-        <option value="horsey">Horsey</option>
-      </select><br>
-      <label for="temaScacchiera">Tema scacchiera:</label><br>
-      <select id="temaScacchiera" name="temaScacchiera">
-        <input type="range" id="colore" min="0" max="360" />
-      </select><br>
-      <button id="salvaPreferenze" class="bottone">Applica</button>
-      <button id="resetPreferenze" class="bottone">Reset</button>
+    <div class="flexbox">
+      <img id="immagineProfilo" src="">
+
+      <div id="preferenzeUtente">
+        <h2>Preferenze Utente</h2>
+        <label for="temaPezzi" class="etichetta">Tema pedine:</label><br>
+        <select id="temaPezzi" name="temaPezzi">
+          <option value="default">Default</option>
+          <option value="simple">Simple</option>
+          <option value="marshmallow">Marshmallow</option>
+          <option value="horsey">Horsey</option>
+        </select><br>
+        <label for="temaScacchiera" class="etichetta">Tema scacchiera:</label><br>
+        <select id="temaScacchiera" name="temaScacchiera">
+          <input type="range" id="colore" min="0" max="360" />
+        </select><br>
+        <button id="salvaPreferenze" class="bottone">Applica</button>
+        <button id="resetPreferenze" class="bottone">Reset</button>
+      </div>
+
+      <div>
+        <button class="btn" id="bottoneModificaImg" onclick="openPopup()">Modifica immagine profilo</button>
+        <div class="popup" id="img-window">
+          <h2>selezionare immagine profilo:</h2>
+          <img class = "popup-img" src="./assets/immaginiProfilo/usr1.jpg" onclick="caricaImmagine('1');">
+          <img class = "popup-img" src="./assets/immaginiProfilo/usr2.jpg" onclick="caricaImmagine('2');">
+          <img class = "popup-img" src="./assets/immaginiProfilo/usr3.jpg" onclick="caricaImmagine('3');">
+          <img class = "popup-img" src="./assets/immaginiProfilo/usr4.jpg" onclick="caricaImmagine('4');">
+          <img class = "popup-img" src="./assets/immaginiProfilo/usr5.jpg" onclick="caricaImmagine('5');">
+          <img class = "popup-img" src="./assets/immaginiProfilo/usr6.jpg" onclick="caricaImmagine('6');">
+          <img class = "popup-img" src="./assets/immaginiProfilo/usr7.jpg" onclick="caricaImmagine('7');">
+          <img class = "popup-img" src="./assets/immaginiProfilo/usr8.jpg" onclick="caricaImmagine('8');">
+          <img class = "popup-img" src="./assets/immaginiProfilo/usr9.jpg" onclick="caricaImmagine('9');">
+          <p>clicca su una delle immagini per selezionarla</p>
+          <button class="btn" onclick="closePopup()">OK</button>
+        </div>
+
+      </div>
+
     </div>
 
     <div id="profiloUtente">

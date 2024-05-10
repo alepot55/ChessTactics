@@ -83,12 +83,60 @@ async function modificaProfiloUtente(evento) {
     document.getElementById('rispostaModifica').innerHTML = datiRicevuti['messaggio'];
 }
 
-function aggiornaProfilo() {
+async function aggiornaProfilo() {
     let utenteLoggato = get('username') != null;
     document.getElementById('accediProfilo').style.display = utenteLoggato ? 'none' : 'block';
     document.getElementById('profiloUtente').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('modificaProfilo').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('eliminaProfilo').style.display = utenteLoggato ? 'block' : 'none';
+    document.getElementById('bottoneModificaImg').style.display = utenteLoggato ? 'block' : 'none';
+
+    if (utenteLoggato){     // inviare dati al server per poter recuperare  l'immagine profilo scelta
+        let datiDaInviare = {
+            username: get('username'),
+            operazione: 'prendiImmagineProfilo'
+        };
+    
+        let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
+    
+        if (datiRicevuti['messaggio'] == 'Immagine profilo trovata') {
+            console.log("immagine presa: ", datiRicevuti['ret']);       //debug
+            switch (datiRicevuti['ret']) {
+                case '1':
+                  s = './assets/immaginiProfilo/usr1.jpg';
+                  break;
+                case '2':
+                  s = './assets/immaginiProfilo/usr2.jpg';
+                  break;
+                case '3':
+                  s = './assets/immaginiProfilo/usr3.jpg';
+                  break;
+                case '4':
+                  s = './assets/immaginiProfilo/usr4.jpg';
+                  break;
+                case '5':
+                  s = './assets/immaginiProfilo/usr5.jpg';
+                  break;
+                case '6':
+                  s = './assets/immaginiProfilo/usr6.jpg';
+                  break;
+                case '7':
+                  s = './assets/immaginiProfilo/usr7.jpg';
+                  break;
+                case '8':
+                  s = './assets/immaginiProfilo/usr8.jpg';
+                  break;
+                case '9':
+                  s = './assets/immaginiProfilo/usr9.jpg';
+            }
+        }
+    }
+    else{
+        var s = './assets/immaginiProfilo/profilo_default.png';
+    }
+    console.log("path immagine: ", s);
+    document.getElementById('immagineProfilo').src = s;
+
     document.getElementById('usernameProfilo').innerHTML = get('username');
     document.getElementById('punteggioProfilo').innerHTML = punteggioUtente;
 }
@@ -114,3 +162,36 @@ document.getElementById("resetPreferenze").addEventListener('click', function ()
 });
 
 aggiornaProfilo();
+
+
+
+// codice per immagine profilo-----------------------------------------------------------------
+
+async function caricaImmagine(x){
+
+    let datiDaInviare = {
+        username: get('username'),
+        immagine: x,
+        operazione: 'setImmagineProfilo'
+    };
+
+    let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
+
+    if (datiRicevuti['messaggio'] == 'Immagine profilo caricata') {
+        //console.log("Immagine caricata nel server");
+        aggiornaProfilo();
+    }
+    
+    closePopup();
+}
+
+
+function openPopup(){
+    let popup = document.getElementById("img-window");
+    popup.classList.add("open-popup");
+}
+
+function closePopup(){
+    let popup = document.getElementById("img-window");
+    popup.classList.remove("open-popup");
+}
