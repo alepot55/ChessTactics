@@ -118,7 +118,7 @@ function registrazione($dati) {
     $username = $dati['username'];
     $password = $dati['password'];
     $punteggio = $_POST['punteggio'];
-    $img = '';   //alla registrazione un utente ha l'immagine di default
+    $img = 'def';   //alla registrazione un utente ha l'immagine di default
     global $utenti;
     $dati = array();
 

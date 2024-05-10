@@ -95,14 +95,43 @@ async function aggiornaProfilo() {
             username: get('username'),
             operazione: 'prendiImmagineProfilo'
         };
+
+        console.log("richiesta immagine");
     
         let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
 
-        console.log("richiesa immagine", datiRicevuti);
+        console.log("dati ricevuti: ", datiRicevuti);         //debug
     
         if (datiRicevuti['messaggio'] == 'Immagine profilo trovata') {
-            var s = datiRicevuti['ret'];
-            console.log("immagine presa: ", s);
+            console.log("immagine presa: ", datiRicevuti['ret']);       //debug
+            switch (datiRicevuti['ret']) {
+                case '1':
+                  s = '.asset/immaginiProfilo/usr1.png';
+                  break;
+                case '2':
+                  s = '.asset/immaginiProfilo/usr2.png';
+                  break;
+                case '3':
+                  s = '.asset/immaginiProfilo/usr3.png';
+                  break;
+                case '4':
+                  s = '.asset/immaginiProfilo/usr4.png';
+                  break;
+                case '5':
+                  s = '.asset/immaginiProfilo/usr5.png';
+                  break;
+                case '6':
+                  s = '.asset/immaginiProfilo/usr6.png';
+                  break;
+                case '7':
+                  s = '.asset/immaginiProfilo/usr7.png';
+                  break;
+                case '8':
+                  s = '.asset/immaginiProfilo/usr8.png';
+                  break;
+                case '9':
+                  s = '.asset/immaginiProfilo/usr9.png';
+            }
         }
     }
     else{
@@ -138,21 +167,24 @@ aggiornaProfilo();
 
 
 
-// codice immagine profilo-----------------------------------------------------------------
+// codice per immagine profilo-----------------------------------------------------------------
 
-async function caricaImmagine(){
+async function caricaImmagine(x){
+
     let datiDaInviare = {
         username: get('username'),
-        immagine: '',       //inserire path dell'immagine scelta
+        immagine: x,
         operazione: 'setImmagineProfilo'
     };
 
     let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
 
     if (datiRicevuti['messaggio'] == 'Immagine profilo caricata') {
-        var s = datiRicevuti['ret'];
-        console.log("Immagine caricata: ", s);
+        console.log("Immagine caricata");
+        aggiornaProfilo();
     }
+    
+    closePopup();
 }
 
 
