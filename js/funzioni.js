@@ -63,18 +63,18 @@ async function inviaDatiAlServer(dati, evento = null) {
     if (evento !== null) evento.preventDefault();
 
     // Invia i dati al server e attendi la risposta
-    let risposta = await $.ajax({
-        url: indirizzoServer,
-        type: 'POST',
-        data: dati,
-        dataType: 'json'
+    let risposta = await fetch(indirizzoServer, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(dati).toString()
     });
 
     // Se la risposta è ok, restituisci i dati ricevuti
-    if (risposta) {
-        return risposta;
+    if (risposta.ok) {
+        return await risposta.json();
     }
 }
+
 
 function set(campo, valore) {
     document.cookie = campo + "=" + valore + "; max-age=" + tempoCookie;
