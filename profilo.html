@@ -48,77 +48,123 @@
 
     <div class="flexbox">
       <img id="immagineProfilo" src="">
+        
 
-      <div id="preferenzeUtente">
-        <h2>Preferenze Utente</h2>
-        <label for="temaPezzi" class="etichetta">Tema pedine:</label><br>
-        <select id="temaPezzi" name="temaPezzi">
-          <option value="default">Default</option>
-          <option value="simple">Simple</option>
-          <option value="marshmallow">Marshmallow</option>
-          <option value="horsey">Horsey</option>
-        </select><br>
-        <label for="temaScacchiera" class="etichetta">Tema scacchiera:</label><br>
-        <select id="temaScacchiera" name="temaScacchiera">
-          <input type="range" id="colore" min="0" max="360" />
-        </select><br>
-        <button id="salvaPreferenze" class="btn">Applica</button>
-        <button id="resetPreferenze" class="btn">Reset</button>
-      </div>
+      <div class="settore" id="preferenzeUtente">
+        <h2>Preferenze Utente:</h2>
+        <div>
+          <p>
+            <!--
+            <label for="temaPezzi" class="etichetta">Tema pedine:</label>
+            <div class="dropdown" id="temaPezzi" name="temaPezzi">
+              <div class="select">
+                <span class="selected">Default</span>
+                <div class="caret"></div>
+              </div>
+              <ul class="menu">
+                <li class="active" value="default">Default</li>
+                <li value="simple">Simple</li>
+                <li value="marshmallow">Marshmallow</li>
+                <li value="horsey">Horsey</li>
+              </ul>
+            </div>
+            -->
 
-      <div>
-        <button class="btn" id="bottoneModificaImg" onclick="openPopup()">Modifica immagine profilo</button>
-        <div class="popup" id="img-window">
-          <h2>selezionare immagine profilo:</h2>
-          <img class = "popup-img" src="./assets/immaginiProfilo/usr1.jpg" onclick="caricaImmagine('1');">
-          <img class = "popup-img" src="./assets/immaginiProfilo/usr2.jpg" onclick="caricaImmagine('2');">
-          <img class = "popup-img" src="./assets/immaginiProfilo/usr3.jpg" onclick="caricaImmagine('3');">
-          <img class = "popup-img" src="./assets/immaginiProfilo/usr4.jpg" onclick="caricaImmagine('4');">
-          <img class = "popup-img" src="./assets/immaginiProfilo/usr5.jpg" onclick="caricaImmagine('5');">
-          <img class = "popup-img" src="./assets/immaginiProfilo/usr6.jpg" onclick="caricaImmagine('6');">
-          <img class = "popup-img" src="./assets/immaginiProfilo/usr7.jpg" onclick="caricaImmagine('7');">
-          <img class = "popup-img" src="./assets/immaginiProfilo/usr8.jpg" onclick="caricaImmagine('8');">
-          <img class = "popup-img" src="./assets/immaginiProfilo/usr9.jpg" onclick="caricaImmagine('9');">
-          <p>clicca su una delle immagini per selezionarla</p>
-          <button class="btn" onclick="closePopup()">OK</button>
+            <!-- il nuovo dropdown (sopra) non funiona, bisogna farlo funzionare invece di quello di sotto (brutto) -->
+
+
+            <label for="temaPezzi" class="etichetta">Tema pedine:</label><br>
+            <select class="btn btn-dropdown" id="temaPezzi" name="temaPezzi">
+              <option value="default">Default</option>
+              <option value="simple">Simple</option>
+              <option value="marshmallow">Marshmallow</option>
+              <option value="horsey">Horsey</option>
+            </select>
+
+
+          </p>
+          <p>
+            <label for="colore" class="etichetta">Tema scacchiera:</label><br>
+            <input type="range" id="colore" min="0" max="360" />
+          </p>
+          <p>
+            <button id="salvaPreferenze" class="btn">Applica</button>
+            <button id="resetPreferenze" class="btn">Reset</button>
+          </p>
         </div>
 
       </div>
 
     </div>
 
-    <div id="profiloUtente">
-      <h2 id="profUsr">Profilo Utente</h2>
-      <p>Username: <span id="usernameProfilo"></span></p>
-      <p>Punteggio: <span id="punteggioProfilo"></span></p>
-      <button id="logoutButton" class="btn">Logout</button>
+    <p></p>
+    <button class="btn" id="bottoneModificaImg" onclick="openPopup()">Cambia immagine</button>
+    <div class="popup" id="img-window">
+      <h2>selezionare immagine profilo:</h2>
+      <img class = "popup-img" src="./assets/immaginiProfilo/usr1.jpg" onclick="caricaImmagine('1');">
+      <img class = "popup-img" src="./assets/immaginiProfilo/usr2.jpg" onclick="caricaImmagine('2');">
+      <img class = "popup-img" src="./assets/immaginiProfilo/usr3.jpg" onclick="caricaImmagine('3');">
+      <img class = "popup-img" src="./assets/immaginiProfilo/usr4.jpg" onclick="caricaImmagine('4');">
+      <img class = "popup-img" src="./assets/immaginiProfilo/usr5.jpg" onclick="caricaImmagine('5');">
+      <img class = "popup-img" src="./assets/immaginiProfilo/usr6.jpg" onclick="caricaImmagine('6');">
+      <img class = "popup-img" src="./assets/immaginiProfilo/usr7.jpg" onclick="caricaImmagine('7');">
+      <img class = "popup-img" src="./assets/immaginiProfilo/usr8.jpg" onclick="caricaImmagine('8');">
+      <img class = "popup-img" src="./assets/immaginiProfilo/usr9.jpg" onclick="caricaImmagine('9');">
+      <p>clicca su una delle immagini per selezionarla</p>
+      <button class="btn" onclick="closePopup()">OK</button>
     </div>
 
-    <div id="modificaProfilo">
-      <h2>Modifica Profilo</h2>
-      <label for="nuovoUsername">Nuovo nome utente:</label><br>
-      <input type="text" id="nuovoUsername" name="nuovoUsername"><br>
-      <label for="nuovaPassword">Nuova password:</label><br>
-      <input type="password" id="nuovaPassword" name="nuovaPassword"><br>
-      <input type="submit" id="modificaButton" value="Modifica" class="btn">
-      <p id="rispostaModifica"></p>
+
+    <div class="flexbox">
+      <div class="settore" id="profiloUtente">
+        <h2>Profilo Utente</h2>
+        <p>Username: <span id="usernameProfilo"></span></p>
+        <p>Punteggio: <span id="punteggioProfilo"></span></p>
+        <button id="logoutButton" class="btn">Logout</button>
+      </div>
+
+      <div class="flexbox-1">
+        <div class="settore" id="modificaProfilo">
+          <h2>Modifica Profilo:</h2>
+          <p>
+            <label for="nuovoUsername">Nuovo nome utente:</label>
+            <input type="text" class="user-input" id="nuovoUsername" name="nuovoUsername"><br>
+          </p>
+          <p>
+            <label for="nuovaPassword">Nuova password:</label>
+            <input type="password" class="user-input" id="nuovaPassword" name="nuovaPassword"><br>
+          </p>
+          <p>
+            <input type="submit" id="modificaButton" value="Modifica" class="btn">
+          </p>
+          <p id="rispostaModifica"></p>
+        </div>
+  
+        <div class="settore" id="eliminaProfilo">
+          <h2>Elimina Profilo:</h2>
+          <label for="passwordElimina">Password:</label>
+          <input type="password" class="user-input" id="passwordElimina" name="passwordElimina"><br>
+          <p>
+            <input type="submit" id="eliminaButton" value="Elimina" class="btn">
+          </p>
+          <p id="rispostaElimina"></p>
+        </div>  
+      </div>
     </div>
 
-    <div id="eliminaProfilo">
-      <h2>Elimina Profilo</h2>
-      <label for="passwordElimina">Password:</label><br>
-      <input type="password" id="passwordElimina" name="passwordElimina"><br>
-      <input type="submit" id="eliminaButton" value="Elimina" class="btn">
-      <p id="rispostaElimina"></p>
-    </div>
+    
 
     <div id="accediProfilo">
       <h2>Accedi / Registrati</h2>
       <form id="loginForm">
-        <label for="username">Nome utente:</label><br>
-        <input type="text" id="usernameAccedi" name="usernameAccedi"><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="passwordAccedi" name="passwordAccedi"><br>
+        <p>
+          <label for="username">Nome utente:</label>
+          <input type="text" class="user-input" id="usernameAccedi" name="usernameAccedi"><br>
+        </p>
+        <p>
+          <label for="password">Password:</label>
+          <input type="password" class="user-input" id="passwordAccedi" name="passwordAccedi"><br>
+        </p>
         <input type="submit" id="loginButton" value="Accedi" class="btn">
         <input type="submit" id="registerButton" value="Registrati" class="btn">
         <p id="rispostaAccedi"></p>
@@ -134,5 +180,40 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
 <script src="js/funzioni.js"></script>
 <script src="js/login.js"></script>
+
+
+
+
+
+<!-- script per il nuovo dropdown menu -->
+<script>
+  const dropdowns = document.querySelectorAll('.dropdown');
+
+  dropdowns.forEach(dropdown => {
+    const select = dropdown.querySelector('.select');
+    const caret = dropdown.querySelector('.caret');
+    const menu = dropdown.querySelector('.menu');
+    const options = dropdown.querySelectorAll('.menu li');
+    const selected = dropdown.querySelector('.selected');
+
+    select.addEventListener('click', () => {
+      select.classList.toggle('select-clicked');
+      caret.classList.toggle('caret-rotate');
+      menu.classList.toggle('menu-open');
+    });
+
+    options.forEach(option => {
+      option.addEventListener('click', () => {
+        selected.innerText = option.innerText;
+        select.classList.remove('select-clicked');
+        caret.classList.remove('caret-rotate');
+        menu.classList.remove('menu-open');
+        options.forEach(option => {option.classList.remove('active');});
+        option.classList.add('active');
+      });
+    });
+
+  });
+</script>
 
 </html>
