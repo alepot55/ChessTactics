@@ -2,8 +2,8 @@
     --altezzaDiv: 500px;
     --altezzaCard: 55%;
     --larghezzaCard: 100%;
-    --maxAltezzaCard: 360px;
-    --maxLarghezzaCard: 360px;
+    --maxLarghezzaCardSmallScreen: 360px;
+    --maxAltezzaCardSmallScreen: 280px;
 }
 
 
@@ -14,6 +14,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    min-width: none;
 
 }
 
@@ -27,12 +28,12 @@
     justify-content: flex-start;
     align-items: center;
 
-    max-width: var(--maxLarghezzaCard);
-    max-height: var(--maxAltezzaCard);
+    
 
     width: var(--larghezzaCard);
     min-width: 0; /*Serve per evitare che la navbar si sovrapponga alle card quando lo schermo è piccolo*/
     height: var(--altezzaCard);
+    min-height: 0;
 
     background: light-dark(grey, var(--primario));
     border-radius: var(--borderRadius);
@@ -92,9 +93,8 @@
 
 }
 
-.custom-card .custom-content h2 {
+.custom-card .custom-content h3 {
 
-    font-size: 18px;
     color: light-dark(black, white);
     text-align: center;
     
@@ -119,29 +119,56 @@
 @media (max-width: 992px) {
 
     .sceltamodalità {
-        width: var(--larghezzaCard)*1.5;
+        max-width: var(--maxLarghezzaCardSmallScreen);
         height: 100%;
         display: flex;
         flex-direction: column;
-    }
-
-    .sceltamodalità .img-box {
-        position: absolute;
-        opacity: 0;
+    
+        
     }
 
     .custom-card {
+        max-height: var(--maxAltezzaCardSmallScreen);
         justify-content: center;
+        flex-direction: row;
+    
+    }
+
+    .custom-card .img-box {
+
+        position: relative;
+        height: 75%;
+        width: 50%;
+        margin-left: -5px;
+        margin-right: 10px;
+        
+        
+    }
+
+    .custom-card:hover .img-box {
+        transform: none;
+        scale: 1;
     }
 
     .custom-card .custom-content {
-        opacity: 1;
-        transform: none;
-        color: black;
+
+        width: 50%;
+        position: relative;
+        
     }
 
-    .custom-card .custom-content {
+    .custom-card:hover .custom-content {
         transform: none;
+        
     }
 
+    .custom-card .custom-content h3 {
+        text-align: end;
+    } 
+
+    .custom-card .custom-content p {
+    
+        visibility: visible;
+        text-align: end;
+    }
 }
