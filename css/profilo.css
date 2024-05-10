@@ -1,4 +1,6 @@
-
+:root{
+    --def-border-radius: 10px;
+}
 
 h2 {
     text-transform: uppercase;
@@ -22,6 +24,48 @@ h2 {
     text-align: left;
     width: 20%;
     height: 20%;
+}
+
+.btn{
+    padding: 8px 16px;
+    gap: 4px;
+
+    width: fit-content;
+    height: fit-content;
+
+    background: hsl(calc(var(--colore) + 30), 53%, 41%);;;
+    border-radius: var(--def-border-radius);
+    border: 0px;
+    transition: background 0.3s ease;
+    font-size: medium;
+    color: white;
+}
+
+.popup{
+    width: fit-content;
+    height: fit-content;
+    background: white;
+    border-radius: var(--def-border-radius);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    text-align: center;
+    padding: 0 3% 3%;
+    color: black;
+
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+}
+.open-popup{
+    visibility: visible;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-img{
+    width: 15%;
+    height: 15%;
 }
 
 /* Per schermi con width >= 1024px */

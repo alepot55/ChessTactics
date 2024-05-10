@@ -83,18 +83,30 @@ async function modificaProfiloUtente(evento) {
     document.getElementById('rispostaModifica').innerHTML = datiRicevuti['messaggio'];
 }
 
-function aggiornaProfilo() {
+async function aggiornaProfilo() {
     let utenteLoggato = get('username') != null;
     document.getElementById('accediProfilo').style.display = utenteLoggato ? 'none' : 'block';
     document.getElementById('profiloUtente').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('modificaProfilo').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('eliminaProfilo').style.display = utenteLoggato ? 'block' : 'none';
 
-    if (utenteLoggato){
-        var s = '';     // inviare dati al server per poter recuperare  l'immagine profilo scelta
+    if (utenteLoggato){     // inviare dati al server per poter recuperare  l'immagine profilo scelta
+        let datiDaInviare = {
+            username: get('username'),
+            operazione: 'prendiImmagineProfilo'
+        };
+    
+        let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
+
+        console.log("richiesa immagine", datiRicevuti);
+    
+        if (datiRicevuti['messaggio'] == 'Immagine profilo trovata') {
+            var s = datiRicevuti['ret'];
+            console.log("immagine presa: ", s);
+        }
     }
     else{
-        var s = './assets/immagini/profilo_default.png';
+        var s = './assets/immaginiProfilo/profilo_default.png';
     }
     document.getElementById('immagineProfilo').src = s;
 
@@ -126,12 +138,30 @@ aggiornaProfilo();
 
 
 
-// codice per caricare immagine profilo-----------------------------------------------------------------
+// codice immagine profilo-----------------------------------------------------------------
 
-function caricaImmagine(event){
-    var file = event.target.files[0];
-    console.log(event.target.files[0]);
-    var reader = new FileReader();
-    reader.onload = function(e){document.getElementById("immagineProfilo").src = e.target.result;};
-    reader.readAsDataURL(file);
+async function caricaImmagine(){
+    let datiDaInviare = {
+        username: get('username'),
+        immagine: '',       //inserire path dell'immagine scelta
+        operazione: 'setImmagineProfilo'
+    };
+
+    let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
+
+    if (datiRicevuti['messaggio'] == 'Immagine profilo caricata') {
+        var s = datiRicevuti['ret'];
+        console.log("Immagine caricata: ", s);
+    }
+}
+
+
+function openPopup(){
+    let popup = document.getElementById("img-window");
+    popup.classList.add("open-popup");
+}
+
+function closePopup(){
+    let popup = document.getElementById("img-window");
+    popup.classList.remove("open-popup");
 }

@@ -118,7 +118,7 @@ function registrazione($dati) {
     $username = $dati['username'];
     $password = $dati['password'];
     $punteggio = $_POST['punteggio'];
-    $img = $dati['img'];                // ------------------------------ DA FARE: mettere in $dati anche l'immagine utente
+    $img = '';   //alla registrazione un utente ha l'immagine di default
     global $utenti;
     $dati = array();
 
@@ -296,6 +296,21 @@ function prendiImmagineProfilo($dati) {
 
     return $dati;
 
+}
+
+// imposta immagine profilo utente
+function setImmagineProfilo($dati){
+    $username = $dati['username'];
+    $immagine = $dati['immagine'];
+    $dati = array();
+
+    $query = "UPDATE utenti SET img = '{$immagine}'  WHERE username = '{$username}'";
+    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    
+    $dati['messaggio'] = "Immagine profilo caricata";
+    $dati['ret'] = $immagine;
+    
+    return $dati;
 }
 
 
