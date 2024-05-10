@@ -35,7 +35,7 @@
     height: var(--altezzaCard);
     min-height: 0;
 
-    background: light-dark(grey, var(--primario));
+    background: var(--primario);
     border-radius: var(--borderRadius);
     transition: 0.5s;
     padding: 13px;
