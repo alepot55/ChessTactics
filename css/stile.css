@@ -35,12 +35,17 @@ body {
     justify-self: start;
     gap: 13px;
     min-width: 200px;
+    margin-top: 20px;
 }
 
 .partita {
     width: fit-content;
 }
 
+.comandi p {
+
+   
+}
 
 .button_1 {
     /* Auto layout */
@@ -54,7 +59,7 @@ body {
     width: fit-content;
     height: 45px;
 
-    background: hsl(calc(var(--colore) + 30), 53%, 41%);;;
+    background: hsl(calc(var(--colore) + 30), 53%, 41%);
     border-radius: 4px;
     border: 0px;
     transition: background 0.3s ease;

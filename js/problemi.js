@@ -1,3 +1,4 @@
+
 var indice = 0;
 var soluzione = null;
 var casellaCliccata = null;
@@ -20,7 +21,7 @@ function aggiornaScacchieraProblemi(problema) {
 
     // Fai la prima mossa
     let mossa = ottieniProssimaMossa();
-    window.setTimeout(() => scacchieraProblemi.eseguiMossa(mossa), 700);
+    window.setTimeout(() => scacchieraProblemi.eseguiMossa(mossa), 700); //Serve ad eseguire la funzione "() => scacchieraProblemi.eseguiMossa(mossa)" dopo 700ms
 }
 
 // Funzione che restituisce la prossima mossa da eseguire
@@ -28,6 +29,14 @@ function ottieniProssimaMossa(aggiorna = true) {
     let mossa = soluzione.split(' ')[0];
     if (aggiorna) soluzione = soluzione.slice(mossa.length + 1);
     return mossa;
+}
+
+//Funzione che modifica il contenuto dei bottoni iniziali
+async function bottoneIniziale() {
+
+    document.getElementById("aggiornaProblema").innerHTML = "Prossimo Problema<img src='assets/icone/figma/ArrowClockwise.svg'></img>";
+    document.getElementById("risolviProblema").style.display = "inline";
+    return caricaProblema();
 }
 
 // Carica il problema successivo e aggiorna la scacchiera
@@ -118,6 +127,6 @@ function risolvi() {
     window.setTimeout(() => scacchieraProblemi.eseguiMossa(mossa), 700);
 }
 
-caricaProblema();
-bottoneAggiorna.addEventListener('click', function () { caricaProblema(); });
+document.getElementById("risolviProblema").style.display = "none"; //Nasconde il bottone "suggerimenti" prima dell'inizio del problema
+bottoneAggiorna.addEventListener('click', function () { bottoneIniziale(); });
 bottoneRisolvi.addEventListener('click', function () { risolvi(); });
