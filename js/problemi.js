@@ -35,7 +35,7 @@ function ottieniProssimaMossa(aggiorna = true) {
 async function bottoneIniziale() {
 
     document.getElementById("aggiornaProblema").innerHTML = "Prossimo Problema<img src='assets/icone/figma/ArrowClockwise.svg'></img>";
-    document.getElementById("risolviProblema").style.display = "inline";
+    document.getElementById("risolviProblema").style.display = "flex";
     return caricaProblema();
 }
 
