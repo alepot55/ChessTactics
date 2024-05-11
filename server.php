@@ -6,16 +6,16 @@ header("Access-Control-Allow-Methods: GET, POST");
 header("Access-Control-Allow-Headers: Content-Type");
 
 $problemi = array_map('str_getcsv', file('data/problemi/puzzles.csv'));
-//shuffle($problemi);
+shuffle($problemi);
 
 $host = "localhost";
 $dbname = "dbChessTactics";
 $dbuser = "postgres";
-$dbpass = "filpostg";
-$porta = 5432;
+$dbpass = "fabrizio1973";
+$port = 5433;
 
 //connessione col database
-$dbconn = pg_connect("host=localhost port=5432 dbname=dbChessTactics user=postgres password=filpostg") or die("Could not connect: " . pg_last_error());
+$dbconn = pg_connect("host=localhost port=5433 dbname=dbChessTactics user=postgres password=fabrizio1973") or die("Could not connect: " . pg_last_error());
 
 
 // Carica l'array di utenti dal file
@@ -36,12 +36,13 @@ function passwordValida($password) {
 
 // Funzione per sommare un punteggio a un utente
 function sommaPunteggio($utenti, $username, $punteggio) {
+    global $dbconn;
     $query = "UPDATE utenti SET punteggio = punteggio + $punteggio WHERE username = '{$username}'";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
     //restituisco il nuovo punteggio
     $query = "SELECT punteggio FROM utenti WHERE username = '{$username}'";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
 
     return $ret["punteggio"];
@@ -67,8 +68,9 @@ function sommaPunteggio($utenti, $username, $punteggio) {
 
 // Funzione per calcolare la password dato un username
 function password($utenti, $username) {
+    global $dbconn;
     $query = "SELECT pswd FROM utenti WHERE username = '{$username}'";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
     $password = $ret["pswd"];
     if ($password === null){
@@ -115,6 +117,7 @@ function login($dati) {
 
 
 function registrazione($dati) {
+    global $dbconn;
     $username = $dati['username'];
     $password = $dati['password'];
     $punteggio = $_POST['punteggio'];
@@ -128,7 +131,7 @@ function registrazione($dati) {
         $dati['messaggio'] = ("La password deve contenere almeno 8 caratteri e un numero");
     } else if ($passwordTrovata === null) {
         $query = "INSERT INTO utenti VALUES ('{$username}', '{$password}', '{$punteggio}', '{$img}')";
-        $result = pg_query($query) or die("Query failed: " . pg_last_error());
+        $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
         $dati['messaggio'] = "Registrazione riuscita";
         $dati['punteggio'] = $_POST['punteggio'];
@@ -176,6 +179,7 @@ function logout($dati) {
 }
 
 function elimina($dati) {
+    global $dbconn;
     $username = $dati['username'];
     $password = $dati['password'];
     global $utenti;
@@ -185,7 +189,7 @@ function elimina($dati) {
 
     if ($passwordTrovata === $password) {
         $query = "DELETE FROM utenti WHERE username = '{$username}'";
-        $result = pg_query($query) or die("Query failed: " . pg_last_error());
+        $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
         $dati['messaggio'] = "Account eliminato";
     } else {
@@ -223,6 +227,7 @@ function elimina($dati) {
 
 
 function modifica($dati) {
+    global $dbconn;
     $username = $dati['username'];
     $nuovoUsername = $dati['nuovoUsername'];
     $nuovaPassword = $dati['nuovaPassword'];
@@ -238,7 +243,7 @@ function modifica($dati) {
         $dati['messaggio'] = "La password deve contenere almeno 8 caratteri e un numero";
     } else {
         $query = "UPDATE utenti SET username = '{$nuovoUsername}', pswd = '{$nuovaPassword}' WHERE username = '{$username}'";
-        $result = pg_query($query) or die("Query failed: " . pg_last_error());
+        $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
         $dati['messaggio'] = "Modifica effettuata";
     }
@@ -278,11 +283,12 @@ function modifica($dati) {
 
 // funzione per ritornare il path dell'immagine profilo dell'utente
 function prendiImmagineProfilo($dati) {
+    global $dbconn;
     $username = $dati['username'];
     $dati = array();
 
     $query = "SELECT * FROM utenti WHERE username = '{$username}'";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
     $immagine = $ret["img"];
 
@@ -300,12 +306,13 @@ function prendiImmagineProfilo($dati) {
 
 // imposta immagine profilo utente
 function setImmagineProfilo($dati){
+    global $dbconn;
     $username = $dati['username'];
     $immagine = $dati['immagine'];
     $dati = array();
 
     $query = "UPDATE utenti SET img = '{$immagine}'  WHERE username = '{$username}'";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     
     $dati['messaggio'] = "Immagine profilo caricata";
     $dati['ret'] = $immagine;
@@ -331,20 +338,21 @@ function problema($dati) {
 
 
 function creaPartita($dati) {
+    global $dbconn;
     $username = $dati['username'];
     $protezione = $dati['protezione'];
     global $partite;
     $dati = array();
 
     $query = "SELECT * FROM partite WHERE giocatore1 is not null and giocatore2 is null and protezione = '{$protezione}' LIMIT 1";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
     $cod = $ret["codice"];
     if ($cod !== null){  //il risultato non è vuoto
         $codice = $cod;
         
         $query = "UPDATE partite SET giocatore2 = '{$username}' WHERE (codice, giocatore1, giocatore2, ultimaMossa, protezione) is in (SELECT * FROM partite WHERE giocatore1 is not null and giocatore2 is null and protezione = '{$protezione}' LIMIT 1)";
-        $result = pg_query($query) or die("Query failed: " . pg_last_error());
+        $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
         $dati['codice'] = $codice;
         $dati['colore'] = 'b';
@@ -355,7 +363,7 @@ function creaPartita($dati) {
 
 
     $query = "SELECT * FROM partite ORDER BY codice DESC";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
     $c = $ret["codice"];
     if ($c === null){
@@ -366,7 +374,7 @@ function creaPartita($dati) {
     }
 
     $query = "INSERT INTO partite VALUES ('{$codice}', '{$username}', NULL, NULL, '{$protezione}')";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
     $dati['codice'] = $codice;
     $dati['colore'] = 'w';
@@ -413,12 +421,13 @@ function creaPartita($dati) {
 
 
 function aspettaGiocatori($dati) {
+    global $dbconn;
     global $partite;
     $codice = intval($dati['codice']);
     $dati = array();
 
     $query = "SELECT * FROM partite WHERE codice = '{$codice}'";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
     $g1 = $ret["giocatore1"];
     $g2 = $ret["giocatore2"];
@@ -457,13 +466,14 @@ function aspettaGiocatori($dati) {
 
 
 function faiMossa($dati) {
+    global $dbconn;
     global $partite;
     $codice = intval($dati['codice']);
     $mossa = $dati['mossa'];
     $dati = array();
 
     $query = "UPDATE partite SET ultimaMossa = '{$mossa}' WHERE codice = '{$codice}'";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
     return $dati;
 
@@ -481,12 +491,13 @@ function faiMossa($dati) {
 }
 
 function aspettaMossa($dati) {
+    global $dbconn;
     global $partite;
     $codice = intval($dati['codice']);
     $dati = array();
 
     $query = "SELECT * FROM partite WHERE codice = '{$codice}'";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
     $mossa = $ret["ultimaMossa"];
 
@@ -528,12 +539,13 @@ function annullaPartita($dati) {
 }
 
 function finePartita($dati) {
+    global $dbconn;
     global $partite;
     $codice = intval($dati['codice']);
     $dati = array();
 
     $query = "UPDATE partite SET giocatore1 = NULL, giocatore2 = NULL ultimaMossa = NULL, protezione = NULL WHERE codice = '{$codice}'";
-    $result = pg_query($query) or die("Query failed: " . pg_last_error());
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
     return $dati;
     
