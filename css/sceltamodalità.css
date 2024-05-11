@@ -118,11 +118,17 @@
 
 @media (max-width: 992px) {
 
+    main {
+
+        font-size: x-small;
+    }
+
     .sceltamodalità {
         max-width: var(--maxLarghezzaCardSmallScreen);
         height: 100%;
         display: flex;
         flex-direction: column;
+        justify-content: center;
     
         
     }
@@ -170,5 +176,12 @@
     
         visibility: visible;
         text-align: end;
+    }
+}
+
+@media (min-width: 2560px){
+
+    main {
+        font-size: x-large;
     }
 }
