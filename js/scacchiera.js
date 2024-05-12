@@ -248,7 +248,7 @@ class Scacchiera {
         this.rimuoviSelezioni();
 
         // Esegue la mossa 
-        let res = this.partita.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: mossa.length === 5 && mossa[4] in "rbqn" ? mossa[4] : undefined });
+        let res = this.partita.move({ from: mossa.slice(0, 2), to: mossa.slice(2, 4), promotion: mossa.length === 5 && "rbqn".includes(mossa[4]) ? mossa[4] : undefined });
 
         // Se la mossa non è stata eseguita in nebbia
         if (res == null && this.nebbia) {

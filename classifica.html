@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Chess Tactics</title>
+        <link rel="icon" type="image/x-icon" href="/assets/icone/logo.ico">
+        <link rel="stylesheet" type="text/css" href="css/stile.css">
+
+    </head>
+
+    <body>
+        <header>
+            <link rel="stylesheet" type="text/css" href="css/navbar.css">
+
+            <nav class="navbar">
+
+                <div id="logo"> <img src="assets/icone/logo_semplice.png " alt="logo"> <span>ChessTactics</span> </div>
+                <div id="btnEspandi"><img src="assets/icone/figma/CaretDoubleRight.svg"> </div>
+
+                <ul class="nav_menu">
+                    <li class="nav_item">
+                        <a class="nav_link"><img src="assets/icone/figma/House.svg"><span>Home</span></a>
+                    </li>
+                    <li class="nav_item">
+                        <a href="problemi.html" class="nav_link"><img
+                                src="assets/icone/figma/Strategy.svg"><span>Problemi</span></a>
+                    </li>
+                    <li class="nav_item">
+                        <a href="gioca.html" class="nav_link"><img
+                                src="assets/icone/figma/Sword.svg"><span>Gioca</span></a>
+                    </li>
+                    <li class="nav_item selezionato">
+                        <a href="classifica.html" class="nav_link"><img src="assets/icone/figma/Trophy.svg"><span>Classifica</span></a>
+                    </li>
+                    <li class="nav_item">
+                        <a href="profilo.html" class="nav_link"><img
+                                src="assets/icone/figma/User.svg"><span>Profilo</span></a>
+                    </li>
+                </ul>
+
+                <div id="btnNotte">
+                    <img id="sole" src="assets/icone/figma/Sun.svg">
+                    <img id="luna" src="assets/icone/figma/Moon.svg">
+
+                </div>
+
+            </nav>
+        </header>
+
+        <main>
+
+            <div id="classifica">
+                <h2>Classifica</h2>
+                <table class="tabellone">
+                </table>
+            </div>
+
+            <div id="partite">
+                <h2>Le tue partite</h2>
+                <table class="cronologia">
+                </table>
+            </div>
+
+        </main>
+    </body>
+
+    <script src="js/funzioni.js"></script>
+    <script src="js/classifica.js"></script>
+
+    </html>

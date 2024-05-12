@@ -39,10 +39,6 @@ $credenziali = $cred["ale"];
 //connessione col database
 $dbconn = pg_connect("host={$credenziali['host']} dbname={$credenziali['dbname']} user={$credenziali['dbuser']} password={$credenziali['dbpass']} port={$credenziali['port']}") or die('Could not connect: ' . pg_last_error());
 
-// Carica l'array di utenti dal file
-$utenti = json_decode(file_get_contents('data/utenti.json'), true);
-$partite = json_decode(file_get_contents('data/partite.json'), true);
-
 //------------------------------------------------------------------------------funzioni per gestione degli utenti
 
 // Funzione per verificare che la password abbia almeno 8 caratteri e contenga almeno un numero
@@ -52,7 +48,7 @@ function passwordValida($password) {
 }
 
 // Funzione per calcolare la password dato un username
-function password($utenti, $username) {
+function password($username) {
     global $dbconn;
     $query = "SELECT pswd FROM utenti WHERE username = '{$username}'";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
@@ -63,20 +59,10 @@ function password($utenti, $username) {
     }
 
     return $password;
-
-
-    /*
-    foreach ($utenti as $utente) {
-        if ($utente['username'] === $username) {
-            return $utente['password'];
-        }
-    }
-    return null;
-    */
 }
 
 // Funzione per calcolare il punteggio dato un username
-function punteggio($utenti, $username) {
+function punteggio($username) {
     global $dbconn;
     $query = "SELECT punteggio FROM utenti WHERE username = '{$username}'";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
@@ -94,16 +80,15 @@ function login($dati) {
 
     $username = $dati['username'];
     $password = $dati['password'];
-    global $utenti;
     $dati = array();
 
-    $passwordTrovata = password($utenti, $username);
+    $passwordTrovata = password($username);
 
     if ($passwordTrovata === null) {
         $dati['messaggio'] = "Utente non registrato";
     } else if ($passwordTrovata === $password) {
         $dati['messaggio'] = "Login riuscito";
-        $dati['punteggio'] = punteggio($utenti, $username);
+        $dati['punteggio'] = punteggio($username);
     } else {
         $dati['messaggio'] = "Password errata";
     }
@@ -118,10 +103,9 @@ function registrazione($dati) {
     $password = $dati['password'];
     $punteggio = 0;
     $img = 'def';   //alla registrazione un utente ha l'immagine di default
-    global $utenti;
     $dati = array();
 
-    $passwordTrovata = password($utenti, $username);
+    $passwordTrovata = password($username);
 
     if (!passwordValida($password)) {
         $dati['messaggio'] = ("La password deve contenere almeno 8 caratteri e un numero");
@@ -136,34 +120,6 @@ function registrazione($dati) {
     }
 
     return $dati;
-
-
-
-    /*
-    $username = $dati['username'];
-    $password = $dati['password'];
-    global $utenti;
-    $dati = array();
-
-    $passwordTrovata = password($utenti, $username);
-
-    if (!passwordValida($password)) {
-        $dati['messaggio'] = ("La password deve contenere almeno 8 caratteri e un numero");
-    } else if ($passwordTrovata === null) {
-        $nuovoUtente = array(
-            'username' => $username,
-            'password' => $password,
-            'punteggio' => $_POST['punteggio']
-        );
-        array_push($utenti, $nuovoUtente);
-        $dati['messaggio'] = "Registrazione riuscita";
-        $dati['punteggio'] = $_POST['punteggio'];
-    } else {
-        $dati['messaggio'] = "Username già esistente";
-    }
-
-    return $dati;
-    */
 }
 
 // funzione per effettuare il logout
@@ -180,10 +136,9 @@ function elimina($dati) {
     global $dbconn;
     $username = $dati['username'];
     $password = $dati['password'];
-    global $utenti;
     $dati = array();
 
-    $passwordTrovata = password($utenti, $username);
+    $passwordTrovata = password($username);
 
     if ($passwordTrovata === $password) {
         $query = "DELETE FROM utenti WHERE username = '{$username}'";
@@ -195,31 +150,6 @@ function elimina($dati) {
     }
 
     return $dati;
-
-
-    /*
-    $username = $dati['username'];
-    $password = $dati['password'];
-    global $utenti;
-    $dati = array();
-
-    $passwordTrovata = password($utenti, $username);
-
-    if ($passwordTrovata === $password) {
-        // Rimuovi l'utente dall'array
-        foreach ($utenti as $key => $utente) {
-            if ($utente['username'] === $username) {
-                unset($utenti[$key]);
-            }
-        }
-
-        $dati['messaggio'] = "Account eliminato";
-    } else {
-        $dati['messaggio'] = "Password errata";
-    }
-
-    return $dati;
-    */
 }
 
 // funzione per modificare username e password
@@ -228,10 +158,9 @@ function modifica($dati) {
     $username = $dati['username'];
     $nuovoUsername = $dati['nuovoUsername'];
     $nuovaPassword = $dati['nuovaPassword'];
-    global $utenti;
     $dati = array();
 
-    $passwordTrovata = password($utenti, $nuovoUsername);
+    $passwordTrovata = password($nuovoUsername);
 
     // Modifica l'utente e la password
     if ($passwordTrovata !== null && $nuovoUsername !== $username) {
@@ -246,34 +175,6 @@ function modifica($dati) {
     }
 
     return $dati;
-
-
-    /*
-    $username = $dati['username'];
-    $nuovoUsername = $dati['nuovoUsername'];
-    $nuovaPassword = $dati['nuovaPassword'];
-    global $utenti;
-    $dati = array();
-
-    $passwordTrovata = password($utenti, $nuovoUsername);
-
-    // Modifica l'utente e la password
-    if ($passwordTrovata !== null && $nuovoUsername !== $username) {
-        $dati['messaggio'] = "Username già esistente";
-    } else if (!passwordValida($nuovaPassword)) {
-        $dati['messaggio'] = "La password deve contenere almeno 8 caratteri e un numero";
-    } else {
-        foreach ($utenti as $key => $utente) {
-            if ($utente['username'] === $username) {
-                $utenti[$key]['username'] = $nuovoUsername;
-                $utenti[$key]['password'] = $nuovaPassword;
-            }
-        }
-        $dati['messaggio'] = "Modifica effettuata";
-    }
-
-    return $dati;
-    */
 }
 
 // funzione per ritornare il path dell'immagine profilo dell'utente
@@ -340,17 +241,16 @@ function creaPartita($dati) {
     global $dbconn;
     $username = $dati['username'];
     $protezione = $dati['protezione'];
-    global $partite;
     $dati = array();
 
-    $query = "SELECT * FROM partite WHERE giocatore1 is not null and giocatore2 is null and protezione = '{$protezione}' LIMIT 1";
+    $query = "SELECT * FROM partite WHERE giocatore1 = '{$username}'and incorso = true";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
-    $cod = $ret["codice"];
-    if ($cod !== null) {  //il risultato non è vuoto
-        $codice = $cod;
+    $codice = $ret["codice"];
 
-        $query = "UPDATE partite SET giocatore2 = '{$username}' WHERE (codice, giocatore1, giocatore2, ultimaMossa, protezione) is in (SELECT * FROM partite WHERE giocatore1 is not null and giocatore2 is null and protezione = '{$protezione}' LIMIT 1)";
+    if ($codice !== null) {  //il risultato non è vuoto
+
+        $query = "UPDATE partite SET giocatore2 = '{$username}' WHERE codice = '{$codice}'";
         $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
         $dati['codice'] = $codice;
@@ -359,19 +259,17 @@ function creaPartita($dati) {
         return $dati;
     }
 
-
-
     $query = "SELECT * FROM partite ORDER BY codice DESC";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
-    $c = $ret["codice"];
-    if ($c === null) {
+    $codice = $ret["codice"];
+    if ($codice === null) {
         $codice = 0;
     } else {
-        $codice = $c + 1;
+        $codice = $codice + 1;
     }
 
-    $query = "INSERT INTO partite VALUES ('{$codice}', '{$username}', NULL, NULL, '{$protezione}')";
+    $query = "INSERT INTO partite VALUES ('{$codice}', '{$username}', NULL, NULL, '{$protezione}', true)";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
     $dati['codice'] = $codice;
@@ -379,55 +277,19 @@ function creaPartita($dati) {
     $dati['iniziata'] = false;
 
     return $dati;
-
-
-    /*
-    $username = $dati['username'];
-    $protezione = $dati['protezione'];
-    global $partite;
-    $dati = array();
-
-    foreach ($partite as $partita) {
-        if ($partita['giocatore1'] !== null && $partita['giocatore2'] === null && $partita['protezione'] === $protezione) {
-            $codice = intval($partita['codice']);
-            $partite[$codice]['giocatore2'] = $username;
-            $dati['codice'] = $codice;
-            $dati['colore'] = 'b';
-            $dati['iniziata'] = true;
-            return $dati;
-        }
-    }
-
-
-    $codice = count($partite);
-    $nuovaPartita = array(
-        'codice' => $codice,
-        'giocatore1' => $username,
-        'giocatore2' => null,
-        'ultimaMossa' => null,
-        'protezione' => $protezione
-    );
-    array_push($partite, $nuovaPartita);
-    $dati['codice'] = $codice;
-    $dati['colore'] = 'w';
-    $dati['iniziata'] = false;
-
-    return $dati;
-    */
 }
 
 function aspettaGiocatori($dati) {
     global $dbconn;
-    global $partite;
     $codice = intval($dati['codice']);
     $dati = array();
 
     $query = "SELECT * FROM partite WHERE codice = '{$codice}'";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
-    $g1 = $ret["giocatore1"];
+    $incorso = $ret["incorso"];
     $g2 = $ret["giocatore2"];
-    if ($g1 === null) {
+    if ($incorso === 'f') {
         $dati['annullata'] = true;
     } else if ($g2 !== null) {
         $dati['iniziata'] = true;
@@ -435,31 +297,13 @@ function aspettaGiocatori($dati) {
         $dati['iniziata'] = false;
     }
     $dati['giocatore2'] = $g2;
+    $dati['incorso'] = $incorso;
 
     return $dati;
-
-
-    /*
-    global $partite;
-    $codice = intval($dati['codice']);
-    $dati = array();
-
-    if ($partite[$codice]['giocatore1'] === null) {
-        $dati['annullata'] = true;
-    } else if ($partite[$codice]['giocatore2'] !== null) {
-        $dati['iniziata'] = true;
-    } else {
-        $dati['iniziata'] = false;
-    }
-    $dati['giocatore2'] = $partite[$codice]['giocatore2'];
-
-    return $dati;
-    */
 }
 
 function faiMossa($dati) {
     global $dbconn;
-    global $partite;
     $codice = intval($dati['codice']);
     $mossa = $dati['mossa'];
     $dati = array();
@@ -467,62 +311,39 @@ function faiMossa($dati) {
     $query = "UPDATE partite SET ultimaMossa = '{$mossa}' WHERE codice = '{$codice}'";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
+    $query = "SELECT * FROM mosse ORDER BY numero_mossa DESC LIMIT 1";
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+    $numero_mossa = $ret["numero_mossa"];
+
+    $numero_mossa = $numero_mossa + 1;
+
+    $query = "INSERT INTO mosse VALUES ('{$codice}', '{$mossa}', '{$numero_mossa}')";
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+
     return $dati;
-
-
-    /*
-    global $partite;
-    $codice = intval($dati['codice']);
-    $mossa = $dati['mossa'];
-    $dati = array();
-
-    $partite[$codice]['ultimaMossa'] = $mossa;
-
-    return $dati;
-    */
 }
 
 function aspettaMossa($dati) {
     global $dbconn;
-    global $partite;
     $codice = intval($dati['codice']);
     $dati = array();
 
     $query = "SELECT * FROM partite WHERE codice = '{$codice}'";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
-    $mossa = $ret["ultimaMossa"];
+    $mossa = $ret["ultimamossa"];
 
     $dati['mossa'] = $mossa;
 
-    $g1 = $ret["giocatore1"];
-    $g2 = $ret["giocatore2"];
-
-    if ($g1 === null && $g2 === null) {
+    $incorso = $ret["incorso"];
+    if ($incorso === 'f') {
         $dati['annullata'] = true;
     } else {
         $dati['annullata'] = false;
     }
 
     return $dati;
-
-
-    /*
-    global $partite;
-    $codice = intval($dati['codice']);
-    $dati = array();
-
-    $mossa = $partite[$codice]['ultimaMossa'];
-    $dati['mossa'] = $mossa;
-
-    if ($partite[$codice]['giocatore1'] === null && $partite[$codice]['giocatore2'] === null) {
-        $dati['annullata'] = true;
-    } else {
-        $dati['annullata'] = false;
-    }
-
-    return $dati;
-    */
 }
 
 function annullaPartita($dati) {
@@ -531,28 +352,13 @@ function annullaPartita($dati) {
 
 function finePartita($dati) {
     global $dbconn;
-    global $partite;
     $codice = intval($dati['codice']);
     $dati = array();
 
-    $query = "UPDATE partite SET giocatore1 = NULL, giocatore2 = NULL ultimaMossa = NULL, protezione = NULL WHERE codice = '{$codice}'";
+    $query = "UPDATE partite SET incorso = false WHERE codice = '{$codice}'";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
     return $dati;
-
-
-    /*
-    global $partite;
-    $codice = intval($dati['codice']);
-    $dati = array();
-
-    $partite[$codice]['giocatore1'] = null;
-    $partite[$codice]['giocatore2'] = null;
-    $partite[$codice]['ultimaMossa'] = null;
-    $partite[$codice]['protezione'] = null;
-
-    return $dati;
-    */
 }
 
 // -----------------------------------------------------------------------------funzioni per gestione dei problemi
@@ -567,12 +373,53 @@ function problema($dati) {
     return $dati;
 }
 
+// -----------------------------------------------------------------------------funzioni per gestione delle classifiche
+
+function classifica($dati) {
+    global $dbconn;
+    $dati = array();
+
+    $query = "SELECT * FROM utenti ORDER BY punteggio DESC";
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+    $classifica = array();
+    while ($row = pg_fetch_assoc($result)) {
+        $classifica[] = $row;
+    }
+
+    $dati['classifica'] = $classifica;
+
+    return $dati;
+}
+
+// funzioni che restituisce le partite giocate da un utente
+function partiteGiocate($dati) {
+    global $dbconn;
+    $username = $dati['username'];
+    $dati = array();
+
+    $query = "SELECT * FROM partite WHERE giocatore1 = '{$username}' OR giocatore2 = '{$username}'";
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+    $partite = array();
+    while ($row = pg_fetch_assoc($result)) {
+        if ($username === $row['giocatore1']) {
+            $avversario = $row['giocatore2'];
+        } else {
+            $avversario = $row['giocatore1'];
+        }
+        $row['avversario'] = $avversario;
+        $row['punteggio_avversario'] = punteggio($avversario);
+        $partite[] = $row;
+    }
+
+    $dati['partite'] = $partite;
+    
+
+    return $dati;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $azione = $_POST['operazione'];
     $dati = $azione($_POST);
-
-    //file_put_contents('data/utenti.json', json_encode($utenti));
-    //file_put_contents('data/partite.json', json_encode($partite));
     echo json_encode($dati);
 }

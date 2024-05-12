@@ -61,6 +61,8 @@ class Timer {
 // Invia i dati al server e restituisci la risposta
 async function inviaDatiAlServer(dati, evento = null) {
 
+    console.log(dati['operazione']);
+
     // Evita il comportamento di default del form (ricaricamento della pagina)
     if (evento !== null) evento.preventDefault();
 
@@ -73,7 +75,9 @@ async function inviaDatiAlServer(dati, evento = null) {
 
     // Se la risposta è ok, restituisci i dati ricevuti
     if (risposta.ok) {
-        return await risposta.json();
+        let datiRicevuti = await risposta.json();
+        console.log(datiRicevuti);
+        return datiRicevuti;
     }
 }
 
@@ -114,7 +118,7 @@ function getStockfishMove(fen, elo) {
 }
 
 // Funzione per aggiungere punti al profilo dell'utente
-function aggiungiPunti(punti) {
+async function aggiungiPunti(punti) {
 
     if (get('username') == null || get('username') == 'null') return;
 
@@ -124,7 +128,9 @@ function aggiungiPunti(punti) {
         operazione: 'aggiungiPunti'
     }
 
-    inviaDatiAlServer(datiDaInviare);
+    let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
+
+    set('punteggio', parseInt(datiRicevuti['punteggio']));
 }
 
 if (get("temaPezzi") == null) {
