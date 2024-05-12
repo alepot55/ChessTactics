@@ -1,6 +1,7 @@
 nomeUtente = null;
 punteggioUtente = 0;
 var root = document.documentElement;
+const dropdowns = document.querySelectorAll('.dropdown');
 
 async function gestisciAccessoProfilo(tipoOperazione, evento) {
     let nomeUtenteInput = document.getElementById('usernameAccedi').value;
@@ -91,50 +92,50 @@ async function aggiornaProfilo() {
     document.getElementById('eliminaProfilo').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('bottoneModificaImg').style.display = utenteLoggato ? 'block' : 'none';
 
-    if (utenteLoggato){     // inviare dati al server per poter recuperare  l'immagine profilo scelta
+    if (utenteLoggato) {     // inviare dati al server per poter recuperare  l'immagine profilo scelta
         let datiDaInviare = {
             username: get('username'),
             operazione: 'prendiImmagineProfilo'
         };
-    
+
         let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
-    
+
         if (datiRicevuti['messaggio'] == 'Immagine profilo trovata') {
             console.log("immagine presa: ", datiRicevuti['ret']);       //debug
             switch (datiRicevuti['ret']) {
                 case '1':
-                  s = './assets/immaginiProfilo/usr1.jpg';
-                  break;
+                    s = './assets/immaginiProfilo/usr1.jpg';
+                    break;
                 case '2':
-                  s = './assets/immaginiProfilo/usr2.jpg';
-                  break;
+                    s = './assets/immaginiProfilo/usr2.jpg';
+                    break;
                 case '3':
-                  s = './assets/immaginiProfilo/usr3.jpg';
-                  break;
+                    s = './assets/immaginiProfilo/usr3.jpg';
+                    break;
                 case '4':
-                  s = './assets/immaginiProfilo/usr4.jpg';
-                  break;
+                    s = './assets/immaginiProfilo/usr4.jpg';
+                    break;
                 case '5':
-                  s = './assets/immaginiProfilo/usr5.jpg';
-                  break;
+                    s = './assets/immaginiProfilo/usr5.jpg';
+                    break;
                 case '6':
-                  s = './assets/immaginiProfilo/usr6.jpg';
-                  break;
+                    s = './assets/immaginiProfilo/usr6.jpg';
+                    break;
                 case '7':
-                  s = './assets/immaginiProfilo/usr7.jpg';
-                  break;
+                    s = './assets/immaginiProfilo/usr7.jpg';
+                    break;
                 case '8':
-                  s = './assets/immaginiProfilo/usr8.jpg';
-                  break;
+                    s = './assets/immaginiProfilo/usr8.jpg';
+                    break;
                 case '9':
-                  s = './assets/immaginiProfilo/usr9.jpg';
-                  break;
+                    s = './assets/immaginiProfilo/usr9.jpg';
+                    break;
                 default:
-                  s = './assets/immaginiProfilo/profilo_default.png';
+                    s = './assets/immaginiProfilo/profilo_default.png';
             }
         }
     }
-    else{
+    else {
         var s = './assets/immaginiProfilo/profilo_default.png';
     }
     console.log("path immagine: ", s);
@@ -143,6 +144,65 @@ async function aggiornaProfilo() {
     document.getElementById('usernameProfilo').innerHTML = get('username');
     document.getElementById('punteggioProfilo').innerHTML = punteggioUtente;
 }
+
+// codice per immagine profilo -----------------------------------------------------------------
+
+async function caricaImmagine(x) {
+
+    let datiDaInviare = {
+        username: get('username'),
+        immagine: x,
+        operazione: 'setImmagineProfilo'
+    };
+
+    let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
+
+    if (datiRicevuti['messaggio'] == 'Immagine profilo caricata') {
+        //console.log("Immagine caricata nel server");
+        aggiornaProfilo();
+    }
+
+    closePopup();
+}
+
+function openPopup() {
+    let popup = document.getElementById("img-window");
+    popup.classList.add("open-popup");
+}
+
+function closePopup() {
+    let popup = document.getElementById("img-window");
+    popup.classList.remove("open-popup");
+}
+
+// codice per dropdown -----------------------------------------------------------------
+dropdowns.forEach(dropdown => {
+    const select = dropdown.querySelector('.select');
+    const caret = dropdown.querySelector('.caret');
+    const menu = dropdown.querySelector('.menu');
+    const options = dropdown.querySelectorAll('.menu li');
+    const selected = dropdown.querySelector('.selected');
+
+    select.addEventListener('click', () => {
+        select.classList.toggle('select-clicked');
+        caret.classList.toggle('caret-rotate');
+        menu.classList.toggle('menu-open');
+    });
+
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            selected.innerText = option.innerText;
+            select.classList.remove('select-clicked');
+            caret.classList.remove('caret-rotate');
+            menu.classList.remove('menu-open');
+            options.forEach(option => { option.classList.remove('active'); });
+            option.classList.add('active');
+        });
+    });
+
+});
+
+// altro -----------------------------------------------------------------
 
 document.getElementById('loginButton').addEventListener('click', (evento) => gestisciAccessoProfilo('login', evento));
 document.getElementById('registerButton').addEventListener('click', (evento) => gestisciAccessoProfilo('registrazione', evento));
@@ -165,36 +225,3 @@ document.getElementById("resetPreferenze").addEventListener('click', function ()
 });
 
 aggiornaProfilo();
-
-
-
-// codice per immagine profilo-----------------------------------------------------------------
-
-async function caricaImmagine(x){
-
-    let datiDaInviare = {
-        username: get('username'),
-        immagine: x,
-        operazione: 'setImmagineProfilo'
-    };
-
-    let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
-
-    if (datiRicevuti['messaggio'] == 'Immagine profilo caricata') {
-        //console.log("Immagine caricata nel server");
-        aggiornaProfilo();
-    }
-    
-    closePopup();
-}
-
-
-function openPopup(){
-    let popup = document.getElementById("img-window");
-    popup.classList.add("open-popup");
-}
-
-function closePopup(){
-    let popup = document.getElementById("img-window");
-    popup.classList.remove("open-popup");
-}

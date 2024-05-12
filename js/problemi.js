@@ -34,7 +34,7 @@ function ottieniProssimaMossa(aggiorna = true) {
 //Funzione che modifica il contenuto dei bottoni iniziali
 async function bottoneIniziale() {
 
-    document.getElementById("aggiornaProblema").innerHTML = "Prossimo Problema<img src='assets/icone/figma/ArrowClockwise.svg'></img>";
+    document.getElementById("aggiornaProblema").innerHTML = "Prossimo<img src='assets/icone/figma/ArrowClockwise.svg'></img>";
     document.getElementById("risolviProblema").style.display = "flex";
     return caricaProblema();
 }

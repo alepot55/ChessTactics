@@ -175,45 +175,7 @@
   </main>
 
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
 <script src="js/funzioni.js"></script>
 <script src="js/login.js"></script>
-
-
-
-
-
-<!-- script per il nuovo dropdown menu -->
-<script>
-  const dropdowns = document.querySelectorAll('.dropdown');
-
-  dropdowns.forEach(dropdown => {
-    const select = dropdown.querySelector('.select');
-    const caret = dropdown.querySelector('.caret');
-    const menu = dropdown.querySelector('.menu');
-    const options = dropdown.querySelectorAll('.menu li');
-    const selected = dropdown.querySelector('.selected');
-
-    select.addEventListener('click', () => {
-      select.classList.toggle('select-clicked');
-      caret.classList.toggle('caret-rotate');
-      menu.classList.toggle('menu-open');
-    });
-
-    options.forEach(option => {
-      option.addEventListener('click', () => {
-        selected.innerText = option.innerText;
-        select.classList.remove('select-clicked');
-        caret.classList.remove('caret-rotate');
-        menu.classList.remove('menu-open');
-        options.forEach(option => {option.classList.remove('active');});
-        option.classList.add('active');
-      });
-    });
-
-  });
-</script>
-
 </html>

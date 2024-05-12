@@ -14,18 +14,8 @@
 
 body {
     transition: margin-left calc(var(--timing) * var(--spostaBody)) ease;
-    margin-left: calc(var(--spacer) * 2 + var(--spessore) * (1  +  2*var(--nav_aperta)) + 2vw);
-    margin-right: calc(var(--spacer) / (1  +  2*var(--nav_aperta)) + 2vw*(1 - var(--nav_aperta)));
-    display: flex;
-    align-items: center;
-    flex-direction: column;  
-}
-
-main {
-
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+    margin-left: calc(var(--spacer) * 2 + var(--spessore) * (1 + 2*var(--nav_aperta)) + 2vw);
+    margin-right: calc(var(--spacer) / (1 + 2*var(--nav_aperta)) + 2vw*(1 - var(--nav_aperta)));
 }
 
 #btnNotte {
@@ -57,7 +47,7 @@ main {
 #btnEspandi img {
     width: max(9%, 21px);
     height: auto;
-    margin-right: calc(var(--spessore) * 0.5 - max(9%, 21px) / 2); 
+    margin-right: calc(var(--spessore) * 0.5 - max(9%, 21px) / 2);
     transition: var(--transition);
 }
 
@@ -94,8 +84,8 @@ main {
 
 .navbar #logo img {
     width: 30px;
-    border-radius: var(--borderRadius);  
-    margin-right: calc(var(--spessore) * 0.6 - 20px);  
+    border-radius: var(--borderRadius);
+    margin-right: calc(var(--spessore) * 0.6 - 20px);
 }
 
 .nav_aperta {
@@ -177,7 +167,7 @@ main {
     background: var(--secondario);
     color: var(--primario);
     transition: 0;
-    
+
 }
 
 .selezionato img {
@@ -202,15 +192,12 @@ a {
     }
 
     body {
-        
         margin-left: calc(var(--spacer) + 8vw);
         margin-right: calc(var(--spacer) + 8vw);
         padding-bottom: calc(var(--spessore) + var(--spacer));
-
     }
 
     .navbar {
-        
         z-index: 10;
         top: auto;
         bottom: var(--spacer);
