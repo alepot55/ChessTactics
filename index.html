@@ -60,7 +60,7 @@
           <img src="assets/immagini/vscomputer_image.jpeg">
         </div>
         <div class="custom-content">
-          <h3>GIOCA CONTRO IL COMPUTER</h3>
+          <h3>Gioca contro il computer</h3>
           <p> Sfida il computer a diverse
             difficoltà per migliorare le tue abilità e apprendere
             nuove strategie.
@@ -72,7 +72,7 @@
           <img src="assets/immagini/multiplayer_image.jpeg">
         </div>
         <div class="custom-content">
-          <h3>GIOCA CONTRO UN AVVERSARIO</h3>
+          <h3>Gioca contro un avversario</h3>
           <p> Entra nell'arena virtuale degli scacchi e
             sfida giocatori di tutto il mondo.
           </p>
@@ -83,7 +83,7 @@
           <img src="assets/immagini/singleplayer_image.jpeg">
         </div>
         <div class="custom-content">
-          <h3>GIOCA DA SOLO</h3>
+          <h3>Gioca da solo</h3>
           <p>Affronta la sfida degli scacchi in solitaria,
             mettendo alla prova le tue abilità contro te stesso.
           </p>
@@ -94,28 +94,5 @@
 </body>
 
 <script src="js/funzioni.js"></script>
-<script>
-  // Seleziona gli elementi <div> tramite il loro id e aggiunge loro l'evento "click" che porta alla pagina gioca.html
-  const cardComputer = document.getElementById("computer");
-  const cardMultiplayer = document.getElementById("multiplayer");
-  const cardSolo = document.getElementById("solo");
-
-  // Aggiungi un gestore di eventi di click a ciascun div
-  cardComputer.addEventListener("click", function () {
-    redirectToDropdown('giocaComputer');
-  });
-
-  cardMultiplayer.addEventListener("click", function () {
-    redirectToDropdown('giocaMultiplayer');
-  });
-
-  cardSolo.addEventListener("click", function () {
-    redirectToDropdown('giocaSolo');
-  });
-
-  function redirectToDropdown(value) {
-    window.location.href = 'gioca.html?selected=' + encodeURIComponent(value);
-  }
-</script>
 
 </html>

@@ -39,54 +39,17 @@ $credenziali = $cred["ale"];
 //connessione col database
 $dbconn = pg_connect("host={$credenziali['host']} dbname={$credenziali['dbname']} user={$credenziali['dbuser']} password={$credenziali['dbpass']} port={$credenziali['port']}") or die('Could not connect: ' . pg_last_error());
 
-
 // Carica l'array di utenti dal file
 $utenti = json_decode(file_get_contents('data/utenti.json'), true);
 $partite = json_decode(file_get_contents('data/partite.json'), true);
 
-
 //------------------------------------------------------------------------------funzioni per gestione degli utenti
-
 
 // Funzione per verificare che la password abbia almeno 8 caratteri e contenga almeno un numero
 function passwordValida($password) {
     return true; // poi da togliere
     return strlen($password) >= 8 && preg_match('/[0-9]/', $password);
 }
-
-
-
-// Funzione per sommare un punteggio a un utente
-function sommaPunteggio($utenti, $username, $punteggio) {
-    global $dbconn;
-    $query = "UPDATE utenti SET punteggio = punteggio + $punteggio WHERE username = '{$username}'";
-    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
-
-    //restituisco il nuovo punteggio
-    $query = "SELECT punteggio FROM utenti WHERE username = '{$username}'";
-    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
-    $ret = pg_fetch_assoc($result);
-
-    return $ret["punteggio"];
-
-
-    /*
-    foreach ($utenti as $key => $utente) {
-        if ($utente['username'] === $username) {
-            $utenti[$key]['punteggio'] += $punteggio;
-            $punteggio = $utenti[$key]['punteggio'];
-        }
-    }
-
-    // Salva l'array di utenti nel file
-    file_put_contents('data\utenti.json', json_encode($utenti));
-
-    return $punteggio;
-    */
-
-}
-
-
 
 // Funzione per calcolare la password dato un username
 function password($utenti, $username) {
@@ -95,7 +58,7 @@ function password($utenti, $username) {
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
     $password = $ret["pswd"];
-    if ($password === null){
+    if ($password === null) {
         return null;
     }
 
@@ -112,8 +75,21 @@ function password($utenti, $username) {
     */
 }
 
+// Funzione per calcolare il punteggio dato un username
+function punteggio($utenti, $username) {
+    global $dbconn;
+    $query = "SELECT punteggio FROM utenti WHERE username = '{$username}'";
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+    $punteggio = $ret["punteggio"];
+    if ($punteggio === null) {
+        return null;
+    }
 
+    return $punteggio;
+}
 
+// Funzione per effettuare il login
 function login($dati) {
 
     $username = $dati['username'];
@@ -127,22 +103,20 @@ function login($dati) {
         $dati['messaggio'] = "Utente non registrato";
     } else if ($passwordTrovata === $password) {
         $dati['messaggio'] = "Login riuscito";
-        $dati['punteggio'] = sommaPunteggio($utenti, $username, $_POST['punteggio']);
+        $dati['punteggio'] = punteggio($utenti, $username);
     } else {
         $dati['messaggio'] = "Password errata";
     }
 
     return $dati;
-    
 }
 
-
-
+// funzione per registrare un nuovo utente
 function registrazione($dati) {
     global $dbconn;
     $username = $dati['username'];
     $password = $dati['password'];
-    $punteggio = $_POST['punteggio'];
+    $punteggio = 0;
     $img = 'def';   //alla registrazione un utente ha l'immagine di default
     global $utenti;
     $dati = array();
@@ -156,7 +130,7 @@ function registrazione($dati) {
         $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
         $dati['messaggio'] = "Registrazione riuscita";
-        $dati['punteggio'] = $_POST['punteggio'];
+        $dati['punteggio'] = 0;
     } else {
         $dati['messaggio'] = "Username già esistente";
     }
@@ -192,6 +166,7 @@ function registrazione($dati) {
     */
 }
 
+// funzione per effettuare il logout
 function logout($dati) {
     $dati = array();
 
@@ -200,6 +175,7 @@ function logout($dati) {
     return $dati;
 }
 
+// funzione per eliminare l'account
 function elimina($dati) {
     global $dbconn;
     $username = $dati['username'];
@@ -246,8 +222,7 @@ function elimina($dati) {
     */
 }
 
-
-
+// funzione per modificare username e password
 function modifica($dati) {
     global $dbconn;
     $username = $dati['username'];
@@ -301,8 +276,6 @@ function modifica($dati) {
     */
 }
 
-
-
 // funzione per ritornare il path dell'immagine profilo dell'utente
 function prendiImmagineProfilo($dati) {
     global $dbconn;
@@ -314,20 +287,18 @@ function prendiImmagineProfilo($dati) {
     $ret = pg_fetch_assoc($result);
     $immagine = $ret["img"];
 
-    if ($immagine !== null){
+    if ($immagine !== null) {
         $dati['messaggio'] = "Immagine profilo trovata";
         $dati['ret'] = $immagine;                               //immagine da restituire    
-    }
-    else{
+    } else {
         $dati['messaggio'] = "Profilo non trovato";
     }
 
     return $dati;
-
 }
 
 // imposta immagine profilo utente
-function setImmagineProfilo($dati){
+function setImmagineProfilo($dati) {
     global $dbconn;
     $username = $dati['username'];
     $immagine = $dati['immagine'];
@@ -335,29 +306,35 @@ function setImmagineProfilo($dati){
 
     $query = "UPDATE utenti SET img = '{$immagine}'  WHERE username = '{$username}'";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
-    
+
     $dati['messaggio'] = "Immagine profilo caricata";
     $dati['ret'] = $immagine;
-    
+
     return $dati;
 }
 
-
-
-//------------------------------------------------------------------------------funzioni per gestione delle partite
-
-
-function problema($dati) {
-    $indice = $dati['indice'];
-    global $problemi;
+// Funzione per aggiungere punti all'utente
+function aggiungiPunti($dati) {
+    global $dbconn;
+    $username = $dati['username'];
+    $punti = $dati['punti'];
     $dati = array();
 
-    $dati['problema'] = $problemi[$indice];
+    $query = "UPDATE utenti SET punteggio = punteggio + $punti WHERE username = '{$username}'";
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+
+    $query = "SELECT punteggio FROM utenti WHERE username = '{$username}'";
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+    $punteggio = $ret["punteggio"];
+
+    $dati['messaggio'] = "Punti aggiunti";
+    $dati['punteggio'] = $punteggio;
 
     return $dati;
 }
 
-
+//------------------------------------------------------------------------------funzioni per gestione delle partite
 
 function creaPartita($dati) {
     global $dbconn;
@@ -370,9 +347,9 @@ function creaPartita($dati) {
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
     $cod = $ret["codice"];
-    if ($cod !== null){  //il risultato non è vuoto
+    if ($cod !== null) {  //il risultato non è vuoto
         $codice = $cod;
-        
+
         $query = "UPDATE partite SET giocatore2 = '{$username}' WHERE (codice, giocatore1, giocatore2, ultimaMossa, protezione) is in (SELECT * FROM partite WHERE giocatore1 is not null and giocatore2 is null and protezione = '{$protezione}' LIMIT 1)";
         $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
@@ -388,10 +365,9 @@ function creaPartita($dati) {
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
     $c = $ret["codice"];
-    if ($c === null){
+    if ($c === null) {
         $codice = 0;
-    }
-    else{
+    } else {
         $codice = $c + 1;
     }
 
@@ -440,8 +416,6 @@ function creaPartita($dati) {
     */
 }
 
-
-
 function aspettaGiocatori($dati) {
     global $dbconn;
     global $partite;
@@ -453,13 +427,11 @@ function aspettaGiocatori($dati) {
     $ret = pg_fetch_assoc($result);
     $g1 = $ret["giocatore1"];
     $g2 = $ret["giocatore2"];
-    if ($g1 === null){
+    if ($g1 === null) {
         $dati['annullata'] = true;
-    }
-    else if ($g2 !== null){
+    } else if ($g2 !== null) {
         $dati['iniziata'] = true;
-    }
-    else{
+    } else {
         $dati['iniziata'] = false;
     }
     $dati['giocatore2'] = $g2;
@@ -485,8 +457,6 @@ function aspettaGiocatori($dati) {
     */
 }
 
-
-
 function faiMossa($dati) {
     global $dbconn;
     global $partite;
@@ -499,7 +469,7 @@ function faiMossa($dati) {
 
     return $dati;
 
-    
+
     /*
     global $partite;
     $codice = intval($dati['codice']);
@@ -528,10 +498,9 @@ function aspettaMossa($dati) {
     $g1 = $ret["giocatore1"];
     $g2 = $ret["giocatore2"];
 
-    if ($g1 === null && $g2 === null){
+    if ($g1 === null && $g2 === null) {
         $dati['annullata'] = true;
-    }
-    else{
+    } else {
         $dati['annullata'] = false;
     }
 
@@ -570,8 +539,8 @@ function finePartita($dati) {
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
     return $dati;
-    
-    
+
+
     /*
     global $partite;
     $codice = intval($dati['codice']);
@@ -586,7 +555,17 @@ function finePartita($dati) {
     */
 }
 
+// -----------------------------------------------------------------------------funzioni per gestione dei problemi
 
+function problema($dati) {
+    $indice = $dati['indice'];
+    global $problemi;
+    $dati = array();
+
+    $dati['problema'] = $problemi[$indice];
+
+    return $dati;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

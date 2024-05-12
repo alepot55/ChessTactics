@@ -16,7 +16,6 @@ async function gestisciAccessoProfilo(tipoOperazione, evento) {
     let datiDaInviare = {
         username: nomeUtenteInput,
         password: passwordInput,
-        punteggio: punteggioUtente,
         operazione: tipoOperazione
     };
 
@@ -24,13 +23,11 @@ async function gestisciAccessoProfilo(tipoOperazione, evento) {
 
     if (datiRicevuti['messaggio'] == 'Login riuscito' || datiRicevuti['messaggio'] == 'Registrazione riuscita') {
         set('username', nomeUtenteInput);
-        set('punteggio', passwordInput);
+        set('punteggio', datiRicevuti['punteggio']);
         aggiornaProfilo();
     } else {
         document.getElementById('rispostaAccedi').innerHTML = datiRicevuti['messaggio'];
     }
-
-    console.log(get('username'));
 }
 
 async function eseguiLogout(evento) {
@@ -101,7 +98,6 @@ async function aggiornaProfilo() {
         let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
 
         if (datiRicevuti['messaggio'] == 'Immagine profilo trovata') {
-            console.log("immagine presa: ", datiRicevuti['ret']);       //debug
             switch (datiRicevuti['ret']) {
                 case '1':
                     s = './assets/immaginiProfilo/usr1.jpg';
@@ -138,11 +134,10 @@ async function aggiornaProfilo() {
     else {
         var s = './assets/immaginiProfilo/profilo_default.png';
     }
-    console.log("path immagine: ", s);
     document.getElementById('immagineProfilo').src = s;
 
     document.getElementById('usernameProfilo').innerHTML = get('username');
-    document.getElementById('punteggioProfilo').innerHTML = punteggioUtente;
+    document.getElementById('punteggioProfilo').innerHTML = get('punteggio');
 }
 
 // codice per immagine profilo -----------------------------------------------------------------

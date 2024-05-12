@@ -3,6 +3,7 @@ const tempoCookie = 60 * 60 * 24 * 30;
 
 modNotte = false;
 
+// Funzione per cambiare il tema della pagina
 function cambiaModNotte(flag = null) {
     if (flag == null) {
         flag = get("notte") == "false" ? true : false;
@@ -15,6 +16,7 @@ function cambiaModNotte(flag = null) {
     set("notte", flag);
 }
 
+// Classe per gestire un timer
 class Timer {
     constructor(callback, seconds) {
         this.callback = callback;
@@ -75,11 +77,12 @@ async function inviaDatiAlServer(dati, evento = null) {
     }
 }
 
-
+// Funzione per impostare e ottenere i cookie
 function set(campo, valore) {
     document.cookie = campo + "=" + valore + "; max-age=" + tempoCookie;
 }
 
+// Funzione per ottenere i cookie
 function get(campo) {
     if (!document.cookie.includes(campo)) return null;
     let user = document.cookie.split(campo + '=')[1].split(';')[0];
@@ -87,6 +90,7 @@ function get(campo) {
     return user;
 }
 
+// Funzione per ottenere la mossa consigliata da Stockfish
 function getStockfishMove(fen, elo) {
     console.log(fen, elo);
     stockfish.postMessage('uci');
@@ -107,6 +111,20 @@ function getStockfishMove(fen, elo) {
     };
 
     return mossa
+}
+
+// Funzione per aggiungere punti al profilo dell'utente
+function aggiungiPunti(punti) {
+
+    if (get('username') == null || get('username') == 'null') return;
+
+    let datiDaInviare = {
+        username: get('username'),
+        punti: punti,
+        operazione: 'aggiungiPunti'
+    }
+
+    inviaDatiAlServer(datiDaInviare);
 }
 
 if (get("temaPezzi") == null) {

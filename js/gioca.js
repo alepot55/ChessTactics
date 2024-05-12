@@ -258,6 +258,7 @@ function mostraSezioneGioca(sezione) {
 }
 
 function vittoriaPartitaMultiplayer() {
+    aggiungiPunti(10);
     messaggioMultiplayer.innerText = "Hai vinto!";
 }
 

@@ -167,7 +167,7 @@ body {
     background: var(--secondario);
     color: var(--primario);
     transition: 0;
-
+    pointer-events: none;
 }
 
 .selezionato img {

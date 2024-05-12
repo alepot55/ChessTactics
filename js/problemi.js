@@ -91,6 +91,9 @@ function mossaSbagliata() {
 // Funzione per quando l'utente completa il puzzle
 function vittoria() {
     document.getElementById('descrizione').textContent = 'Complimenti hai completato il puzzle!';
+
+    // Aggiungi punti all'utente
+    aggiungiPunti(1);
 }
 
 // Funzione per quando l'utente esegue una mossa corretta
@@ -106,6 +109,9 @@ function mossaGiusta() {
 
     // Altrimenti mostra un messaggio di conferma
     document.getElementById('descrizione').textContent = 'Esatto, continua così!';
+
+    // Aggiungi punti all'utente
+    aggiungiPunti(1);
 
 }
 
