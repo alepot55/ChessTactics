@@ -8,14 +8,36 @@ header("Access-Control-Allow-Headers: Content-Type");
 $problemi = array_map('str_getcsv', file('data/problemi/puzzles.csv'));
 shuffle($problemi);
 
-$host = "localhost";
-$dbname = "dbChessTactics";
-$dbuser = "postgres";
-$dbpass = "fabrizio1973";
-$port = 5433;
+// Credenziali di ognuno: mettere le proprie credenziali e modificare solo quale si vuole usare
+$cred = array(
+    "ale" => array(
+        "host" => "localhost",
+        "dbname" => "dbChessTactics",
+        "dbuser" => "postgres",
+        "dbpass" => "alepot55",
+        "port" => 5432
+    ),
+    "filo" => array(
+        "host" => "localhost",
+        "dbname" => "dbChessTactics",
+        "dbuser" => "postgres",
+        "dbpass" => "password",
+        "port" => 5432
+    ),
+    "marco" => array(
+        "host" => "localhost",
+        "dbname" => "dbChessTactics",
+        "dbuser" => "postgres",
+        "dbpass" => "fabrizio1973",
+        "port" => 5433
+    )
+);
+
+// Scegliere le credenziali da usare
+$credenziali = $cred["ale"];
 
 //connessione col database
-$dbconn = pg_connect("host=localhost port=5433 dbname=dbChessTactics user=postgres password=fabrizio1973") or die("Could not connect: " . pg_last_error());
+$dbconn = pg_connect("host={$credenziali['host']} dbname={$credenziali['dbname']} user={$credenziali['dbuser']} password={$credenziali['dbpass']} port={$credenziali['port']}") or die('Could not connect: ' . pg_last_error());
 
 
 // Carica l'array di utenti dal file

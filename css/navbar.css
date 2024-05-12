@@ -18,8 +18,7 @@ body {
     margin-right: calc(var(--spacer) / (1  +  2*var(--nav_aperta)) + 2vw*(1 - var(--nav_aperta)));
     display: flex;
     align-items: center;
-    flex-direction: column;
-    
+    flex-direction: column;  
 }
 
 main {
