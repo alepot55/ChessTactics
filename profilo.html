@@ -74,7 +74,7 @@
 
 
             <label for="temaPezzi" class="etichetta">Tema pedine:</label><br>
-            <select class="btn btn-dropdown" id="temaPezzi" name="temaPezzi">
+            <select class="button_1 button_1-dropdown" id="temaPezzi" name="temaPezzi">
               <option value="default">Default</option>
               <option value="simple">Simple</option>
               <option value="marshmallow">Marshmallow</option>
@@ -88,8 +88,8 @@
             <input type="range" id="colore" min="0" max="360" />
           </p>
           <p>
-            <button id="salvaPreferenze" class="btn">Applica</button>
-            <button id="resetPreferenze" class="btn">Reset</button>
+            <button id="salvaPreferenze" class="button_1">Applica</button>
+            <button id="resetPreferenze" class="button_1">Reset</button>
           </p>
         </div>
 
@@ -98,7 +98,7 @@
     </div>
 
     <p></p>
-    <button class="btn" id="bottoneModificaImg" onclick="openPopup()">Cambia immagine</button>
+    <button class="button_1" id="bottoneModificaImg" onclick="openPopup()">Cambia immagine</button>
     <div class="popup" id="img-window">
       <h2>selezionare immagine profilo:</h2>
       <img class="popup-img" src="./assets/immaginiProfilo/usr1.jpg" onclick="caricaImmagine('1');">
@@ -111,7 +111,7 @@
       <img class="popup-img" src="./assets/immaginiProfilo/usr8.jpg" onclick="caricaImmagine('8');">
       <img class="popup-img" src="./assets/immaginiProfilo/usr9.jpg" onclick="caricaImmagine('9');">
       <p>clicca su una delle immagini per selezionarla</p>
-      <button class="btn" onclick="closePopup()">OK</button>
+      <button class="button_1" onclick="closePopup()">OK</button>
     </div>
 
 
@@ -120,7 +120,7 @@
         <h2>Profilo Utente</h2>
         <p>Username: <span id="usernameProfilo"></span></p>
         <p>Punteggio: <span id="punteggioProfilo"></span></p>
-        <button id="logoutButton" class="btn">Logout</button>
+        <button id="logoutButton" class="button_1">Logout</button>
       </div>
 
       <div class="flexbox-1">
@@ -135,7 +135,7 @@
             <input type="password" class="user-input" id="nuovaPassword" name="nuovaPassword"><br>
           </p>
           <p>
-            <input type="submit" id="modificaButton" value="Modifica" class="btn">
+            <input type="submit" id="modificaButton" value="Modifica" class="button_1">
           </p>
           <p id="rispostaModifica"></p>
         </div>
@@ -145,7 +145,7 @@
           <label for="passwordElimina">Password:</label>
           <input type="password" class="user-input" id="passwordElimina" name="passwordElimina"><br>
           <p>
-            <input type="submit" id="eliminaButton" value="Elimina" class="btn">
+            <input type="submit" id="eliminaButton" value="Elimina" class="button_1">
           </p>
           <p id="rispostaElimina"></p>
         </div>
@@ -165,8 +165,8 @@
           <label for="password">Password:</label>
           <input type="password" class="user-input" id="passwordAccedi" name="passwordAccedi"><br>
         </p>
-        <input type="submit" id="loginButton" value="Accedi" class="btn">
-        <input type="submit" id="registerButton" value="Registrati" class="btn">
+        <input type="submit" id="loginButton" value="Accedi" class="button_1">
+        <input type="submit" id="registerButton" value="Registrati" class="button_1">
         <p id="rispostaAccedi"></p>
       </form>
     </div>
