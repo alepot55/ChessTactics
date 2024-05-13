@@ -12,6 +12,7 @@ create table partite(
     ultimaMossa varchar(5),
     protezione varchar(30),
     inCorso boolean,
+    vittoria integer,
     constraint fk1 foreign key (giocatore1) references utenti(username) on update cascade,
     constraint fk2 foreign key (giocatore2) references utenti(username) on update cascade
 )

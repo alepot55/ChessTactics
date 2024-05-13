@@ -258,15 +258,36 @@ function mostraSezioneGioca(sezione) {
 }
 
 function vittoriaPartitaMultiplayer() {
+    let datiDaInviare = {
+        operazione: 'finePartita',
+        username: get('username'),
+        codice: codicePartita,
+        vittoria: 1
+    }
+    inviaDatiAlServer(datiDaInviare);
     aggiungiPunti(10);
     messaggioMultiplayer.innerText = "Hai vinto!";
 }
 
 function sconfittaPartitaMultiplayer() {
+    let datiDaInviare = {
+        operazione: 'finePartita',
+        username: get('username'),
+        codice: codicePartita,
+        vittoria: 2
+    }
+    inviaDatiAlServer(datiDaInviare);
     messaggioMultiplayer.innerText = "Hai perso!";
 }
 
 function pattaPartitaMultiplayer() {
+    let datiDaInviare = {
+        operazione: 'finePartita',
+        username: get('username'),
+        codice: codicePartita,
+        vittoria: 0
+    }
+    inviaDatiAlServer(datiDaInviare);
     messaggioMultiplayer.innerText = "Patta!";
 }
 
@@ -278,7 +299,6 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             aggiornaScacchieraGioca(idScacchieraCorrente, '');
             document.getElementById("messaggioMultiplayer").innerText = "Benvenuto nella sezione Multiplayer! Clicca su 'Nuova Partita' per iniziare! Puoi giocare con un avversario casuale o con un amico inserendo un codice!";
             partitaInit = false;
-            codicePartita = null;
             coloreUtente = null;
             buttStopRicercaMultiplayer.style.display = "none";
             document.getElementById("codiceMultiplayer").value = "";
@@ -305,7 +325,6 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             scacchieraGiocaMultiplayer.termina();
             document.getElementById("messaggioMultiplayer").innerText = "Partita terminata!";
             partitaInit = false;
-            codicePartita = null;
             coloreUtente = null;
             document.getElementById("codiceMultiplayer").value = "";
             buttStopRicercaMultiplayer.style.display = "none";
@@ -317,7 +336,6 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             timerAvversario.stop();
             document.getElementById("messaggioMultiplayer").innerText = "Partita annullata!";
             partitaInit = false;
-            codicePartita = null;
             coloreUtente = null;
             document.getElementById("codiceMultiplayer").value = "";
             buttStopRicercaMultiplayer.style.display = "none";
@@ -340,12 +358,8 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             if (fine !== null) {
                 let colore = coloreUtente;
                 aggiornaStatoMultiplayer('terminata');
-                fine === colore ? vittoriaPartitaMultiplayer() : colore === 'p' ? pattaPartitaMultiplayer() : sconfittaPartitaMultiplayer();
-
-                inviaDatiAlServer({
-                    operazione: 'finePartita',
-                    codice: codicePartita
-                });
+                fine === colore ? vittoriaPartitaMultiplayer() : fine === 'p' ? pattaPartitaMultiplayer() : sconfittaPartitaMultiplayer();
+                codicePartita = null;
                 return false;
             }
             document.getElementById("messaggioMultiplayer").innerText = "Il tuo turno!";
@@ -357,7 +371,8 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             if (fine !== null) {
                 let colore = coloreUtente;
                 aggiornaStatoMultiplayer('terminata');
-                fine === colore ? vittoriaPartitaMultiplayer() : colore === 'p' ? pattaPartitaMultiplayer() : sconfittaPartitaMultiplayer();
+                fine === colore ? vittoriaPartitaMultiplayer() : fine === 'p' ? pattaPartitaMultiplayer() : sconfittaPartitaMultiplayer();
+                codicePartita = null;
                 return false;
             }
             document.getElementById("messaggioMultiplayer").innerText = "Turno dell'avversario...";
@@ -367,12 +382,13 @@ function aggiornaStatoMultiplayer(stato = 'default') {
     }
 }
 
-function annullaRicercaMultiplayer() {
+function annullaRicercaMultiplayer(stato = 'annullata') {
     inviaDatiAlServer({
         operazione: 'annullaPartita',
         username: get('username'),
         codice: codicePartita
     });
+    aggiornaStatoMultiplayer(stato);
 }
 
 function nuovaPartitaMultiplayer() {
@@ -385,14 +401,6 @@ function nuovaPartitaMultiplayer() {
     } else {
         creaPartitaeAspetta(modalitàMultiplayer + password);
     }
-}
-
-function terminaPartitaMultiplayer() {
-    inviaDatiAlServer({
-        operazione: 'finePartita',
-        codice: codicePartita
-    });
-    aggiornaStatoMultiplayer('terminata');
 }
 
 function indietro() {
@@ -430,7 +438,7 @@ buttNuovaPartitaComputer.addEventListener("click", () => mostraSezioneGioca("gio
 buttNuovaPartitaSolo.addEventListener("click", () => mostraSezioneGioca("giocaSolo"));
 buttStopRicercaMultiplayer.addEventListener("click", () => annullaRicercaMultiplayer());
 buttNuovaPartitaMultiplayer.addEventListener("click", () => nuovaPartitaMultiplayer());
-buttTerminaPartitaMultiplayer.addEventListener("click", () => terminaPartitaMultiplayer());
+buttTerminaPartitaMultiplayer.addEventListener("click", () => annullaRicercaMultiplayer('terminata'));
 eloStockfish.oninput = () => {
     set('eloStockfish', eloStockfish.value);
     document.getElementById("valoreEloStockfish").innerText = eloStockfish.value;

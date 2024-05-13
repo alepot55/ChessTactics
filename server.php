@@ -243,7 +243,7 @@ function creaPartita($dati) {
     $protezione = $dati['protezione'];
     $dati = array();
 
-    $query = "SELECT * FROM partite WHERE giocatore1 = '{$username}'and incorso = true";
+    $query = "SELECT * FROM partite WHERE giocatore1 IS NOT NULL and incorso = true";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
     $codice = $ret["codice"];
@@ -269,7 +269,7 @@ function creaPartita($dati) {
         $codice = $codice + 1;
     }
 
-    $query = "INSERT INTO partite VALUES ('{$codice}', '{$username}', NULL, NULL, '{$protezione}', true)";
+    $query = "INSERT INTO partite VALUES ('{$codice}', '{$username}', NULL, NULL, '{$protezione}', true, NULL)";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
     $dati['codice'] = $codice;
@@ -347,16 +347,45 @@ function aspettaMossa($dati) {
 }
 
 function annullaPartita($dati) {
-    return finePartita($dati);
+    global $dbconn;
+    $codice = intval($dati['codice']);
+    $query = "SELECT * FROM partite WHERE codice = '{$codice}'";
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+    $g2 = $ret["giocatore2"];
+    if ($g2 === null) {
+        $dati = array();
+        $query = "DELETE FROM partite WHERE codice = '{$codice}'";
+        $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+        return $dati;
+    } else {
+        $dati['vittoria'] = 2;
+        return finePartita($dati);
+    }
 }
 
 function finePartita($dati) {
     global $dbconn;
     $codice = intval($dati['codice']);
+    $vittoria = intval($dati['vittoria']);
+    $username = $dati['username'];
     $dati = array();
 
-    $query = "UPDATE partite SET incorso = false WHERE codice = '{$codice}'";
+    // Verifica se username è giocatore1 o giocatore2
+    $query = "SELECT * FROM partite WHERE codice = '{$codice}'";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+    $g2 = $ret["giocatore2"];
+    if ($g2 === $username) {
+        $vittoria = ($vittoria === 1) ? 2 : ($vittoria === 2 ? 1 : 0);
+    }
+
+    // incorso = false e vittoria = vittoria
+    $query = "UPDATE partite SET incorso = false, vittoria = '{$vittoria}' WHERE codice = '{$codice}'";
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+
+    $dati['vittoria'] = $vittoria;
+    $dati['codice'] = $codice;
 
     return $dati;
 }
@@ -397,22 +426,25 @@ function partiteGiocate($dati) {
     $username = $dati['username'];
     $dati = array();
 
-    $query = "SELECT * FROM partite WHERE giocatore1 = '{$username}' OR giocatore2 = '{$username}'";
+    $query = "SELECT * FROM partite WHERE giocatore1 = '{$username}' OR giocatore2 = '{$username}' ORDER BY codice DESC";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $partite = array();
     while ($row = pg_fetch_assoc($result)) {
         if ($username === $row['giocatore1']) {
             $avversario = $row['giocatore2'];
+            $vittoria = intval($row['vittoria']);
         } else {
             $avversario = $row['giocatore1'];
+            $vittoria = (intval($row['vittoria']) === 1) ? 2 : (intval($row['vittoria']) === 2 ? 1 : 0);
         }
         $row['avversario'] = $avversario;
         $row['punteggio_avversario'] = punteggio($avversario);
+        $row['vittoria'] = $vittoria;
         $partite[] = $row;
     }
 
     $dati['partite'] = $partite;
-    
+
 
     return $dati;
 }

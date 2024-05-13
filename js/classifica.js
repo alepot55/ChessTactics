@@ -47,9 +47,11 @@ async function aggiornaCronologia() {
 
     for (let partita of partite) {
         let riga = document.createElement('tr');
+        let vittoria = partita['vittoria'] === 1 ? 'Vittoria' : partita['vittoria'] === 0 ? 'Pareggio' : 'Sconfitta';
         riga.innerHTML = `
             <td>${partita['avversario']}</td>
             <td>${partita['punteggio_avversario']}</td>
+            <td>${vittoria}</td>
         `;
         cronologiaPartite.appendChild(riga);
     }
