@@ -46,7 +46,7 @@
     height: calc(var(--altezzaCard) * 1.5);
 }
 
-.img-box {
+.custom-card .img-box {
     
     height: 75%;
     width: auto;
@@ -111,6 +111,16 @@
     visibility: visible;
     transition: 0.5s;
 
+}
+
+.solve_chess_puzzles {
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: var(--altezzaDiv);
+    justify-content: flex-start;
+    text-align: center;
 }
 
 
@@ -185,3 +195,5 @@
         font-size: x-large;
     }
 }
+
+
