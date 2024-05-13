@@ -572,9 +572,7 @@ class Scacchiera {
     avanti() {
         if (this.mosseIndietro.length === 0) return;
         let mossa = this.mosseIndietro.pop();
-        console.log(mossa);
         this.eseguiMossa(mossa['from'] + mossa['to'] + (mossa['promotion'] ? mossa['promotion'] : ''));
-        console.log(this.mosseIndietro);
         this.aggiorna();
     }
 
@@ -582,5 +580,14 @@ class Scacchiera {
         while (this.mosseIndietro.length > 0) {
             this.avanti();
         }
+    }
+
+    inizio() {
+        let mossa = this.partita.undo();
+        while (mossa !== null) {
+            this.mosseIndietro.push(mossa);
+            mossa = this.partita.undo();
+        }
+        this.aggiorna();
     }
 }

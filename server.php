@@ -449,6 +449,33 @@ function partiteGiocate($dati) {
     return $dati;
 }
 
+// funzione che data una partita restituisce le mosse fatte
+function mossePartita($dati) {
+    global $dbconn;
+    $username = $dati['username'];
+    $codice = $dati['codice'];
+    $dati = array();
+
+    // prendi le mosse della partita
+    $query = "SELECT * FROM mosse WHERE codice = '{$codice}' ORDER BY numero_mossa";
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+    $mosse = array();
+    while ($row = pg_fetch_assoc($result)) {
+        $mosse[] = $row;
+    }
+
+    // prendi l'orientamento della scacchiera per username
+    $query = "SELECT * FROM partite WHERE codice = '{$codice}'";
+    $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
+    $ret = pg_fetch_assoc($result);
+    $orientamento = ($username === $ret['giocatore1']) ? 'w' : 'b';
+
+    $dati['orientamento'] = $orientamento;
+    $dati['mosse'] = $mosse;
+
+    return $dati;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $azione = $_POST['operazione'];

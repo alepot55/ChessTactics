@@ -415,6 +415,9 @@ function ritorna() {
     getScacchieraCorrente().ritorna();
 }
 
+function inizio() {
+    getScacchieraCorrente().inizio();
+}
 
 //Main
 
@@ -470,5 +473,12 @@ var elementi = document.getElementsByClassName('ritorna');
 for (var i = 0; i < elementi.length; i++) {
     elementi[i].addEventListener('click', function () {
         ritorna();
+    });
+}
+
+var elementi = document.getElementsByClassName('inizio');
+for (var i = 0; i < elementi.length; i++) {
+    elementi[i].addEventListener('click', function () {
+        inizio();
     });
 }

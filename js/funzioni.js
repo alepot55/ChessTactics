@@ -60,7 +60,7 @@ class Timer {
 
 // Invia i dati al server e restituisci la risposta
 async function inviaDatiAlServer(dati, evento = null) {
-    console.log(dati);
+
     // Evita il comportamento di default del form (ricaricamento della pagina)
     if (evento !== null) evento.preventDefault();
 
@@ -74,7 +74,6 @@ async function inviaDatiAlServer(dati, evento = null) {
     // Se la risposta è ok, restituisci i dati ricevuti
     if (risposta.ok) {
         let datiRicevuti = await risposta.json();
-        console.log(datiRicevuti);
         return datiRicevuti;
     }
 }
@@ -130,6 +129,7 @@ async function aggiungiPunti(punti) {
 
     set('punteggio', parseInt(datiRicevuti['punteggio']));
 }
+
 
 if (get("temaPezzi") == null) {
     set("temaPezzi", "simple");
