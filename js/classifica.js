@@ -42,8 +42,6 @@ async function rivedi(codice) {
     for (let mossa of datiRicevuti['mosse']) {
         scacchiera.eseguiMossa(mossa['mossa']);
     }
-
-    scacchiera.inizio();
 }
 
 async function aggiornaClassifica() {
