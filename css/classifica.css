@@ -1,0 +1,7 @@
+:root {
+    --dimensioneTavolaAltezza: 400px;
+}
+
+.container {
+    height: var(--dimensioneTavolaAltezza);
+}

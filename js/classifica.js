@@ -25,6 +25,8 @@ async function cronologia() {
 }
 
 async function rivedi(codice) {
+    document.getElementById('rivediPartita').style.display = 'block';
+    document.getElementById('rivediTitolo').innerText = `Partita ${codice}`;
     let datiDaInviare = {
         "operazione": "mossePartita",
         "codice": codice,
@@ -71,10 +73,11 @@ async function aggiornaCronologia() {
         let riga = document.createElement('tr');
         let vittoria = partita['vittoria'] === 1 ? 'Vittoria' : partita['vittoria'] === 0 ? 'Pareggio' : 'Sconfitta';
         riga.innerHTML = `
+            <td>${partita['codice']}</td>
             <td>${partita['avversario']}</td>
             <td>${partita['punteggio_avversario']}</td>
             <td>${vittoria}</td>
-            <td><button onclick="rivedi(${partita['codice']})">Rivedi</button></td>
+            <td><button class="button_1" onclick="rivedi(${partita['codice']})">Rivedi</button></td>
         `;
         cronologiaPartite.appendChild(riga);
     }
@@ -110,3 +113,5 @@ for (var i = 0; i < elementi.length; i++) {
         scacchiera.inizio();
     });
 }
+
+document.getElementById('rivediPartita').style.display = 'none';
