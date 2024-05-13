@@ -7,10 +7,6 @@ main{
     height: 100%;
 }
 
-h2 {
-    text-transform: uppercase;
-}
-
 .etichetta {
     font-family: 'Open Sans', sans-serif;
 }
@@ -48,7 +44,6 @@ h2 {
     flex-direction: row;
     align-items: start;
     gap: 1%;
-    
 }
 
 
