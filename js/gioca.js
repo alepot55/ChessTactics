@@ -133,7 +133,6 @@ function continuaMossaComputer(mossa) {
 
         stockfish.postMessage('uci');
         stockfish.postMessage(`setoption name Skill Level value ${Math.ceil(get('eloStockfish') / 4000 * 20)}`);
-        console.log(Math.ceil(get('eloStockfish') / 4000 * 20));
         stockfish.postMessage(`position fen ${scacchieraGiocaComputer.partita.fen()}`);
         stockfish.postMessage(`go depth ${Math.ceil(get('eloStockfish') / 4000 * 20 / 2)}`);
 
@@ -404,18 +403,22 @@ function nuovaPartitaMultiplayer() {
 }
 
 function indietro() {
+    console.log('indietro');
     getScacchieraCorrente().indietro();
 }
 
 function avanti() {
+    console.log('avanti');
     getScacchieraCorrente().avanti();
 }
 
 function ritorna() {
+    console.log('ritorna');
     getScacchieraCorrente().ritorna();
 }
 
 function inizio() {
+    console.log('inizio');
     getScacchieraCorrente().inizio();
 }
 

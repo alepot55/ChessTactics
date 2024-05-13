@@ -240,9 +240,9 @@ class Scacchiera {
         return this.orientamento === this.partita.turn();
     }
 
-    eseguiMossa(mossa) { // Esegue la mossa TODO: da rivedere quando la mossa non è legale in nebbia
+    eseguiMossa(mossa, rit = true) { // Esegue la mossa TODO: da rivedere quando la mossa non è legale in nebbia
 
-        if (!this.possiedo(mossa.slice(0, 2)) && this.mosseIndietro.length > 0) this.ritorna();
+        if (this.rit) this.ritorna();
 
         // RImuoce le selezioni dalle caselle
         this.rimuoviSelezioni();
@@ -572,7 +572,8 @@ class Scacchiera {
     avanti() {
         if (this.mosseIndietro.length === 0) return;
         let mossa = this.mosseIndietro.pop();
-        this.eseguiMossa(mossa['from'] + mossa['to'] + (mossa['promotion'] ? mossa['promotion'] : ''));
+        mossa = mossa['from'] + mossa['to'] + (mossa['promotion'] ? mossa['promotion'] : '');
+        this.eseguiMossa(mossa, false);
         this.aggiorna();
     }
 
