@@ -44,6 +44,12 @@ main{
     flex-direction: row;
     align-items: start;
     gap: 1%;
+
+    transition: opacity 0.6s ease;
+}
+.settore:hover{
+    transition: 0.3s ease;
+    transform: scale(1.1);
 }
 
 
