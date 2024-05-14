@@ -563,10 +563,21 @@ class Scacchiera {
         return null;
     }
 
-    indietro() {
+    mossaIndietro() {
         let mossa = this.partita.undo();
-        if (mossa !== null) this.mosseIndietro.push(mossa);
-        this.aggiorna();
+        if (mossa !== null) {
+            this.mosseIndietro.push(mossa);
+            this.aggiorna();
+            return true;
+        } else {
+            this.aggiorna();
+            return false;
+        }
+    }
+
+    indietro() {
+        this.mossaIndietro();
+        if (this.mossaIndietro()) this.avanti();
     }
 
     avanti() {
@@ -574,7 +585,6 @@ class Scacchiera {
         let mossa = this.mosseIndietro.pop();
         mossa = mossa['from'] + mossa['to'] + (mossa['promotion'] ? mossa['promotion'] : '');
         this.eseguiMossa(mossa, false);
-        this.aggiorna();
     }
 
     ritorna() {

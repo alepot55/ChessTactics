@@ -113,3 +113,6 @@ for (var i = 0; i < elementi.length; i++) {
 }
 
 document.getElementById('rivediPartita').style.display = 'none';
+document.getElementById('chiudi').addEventListener('click', function () {
+    document.getElementById('rivediPartita').style.display = 'none';
+});
