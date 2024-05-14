@@ -92,8 +92,6 @@ tbody tr:hover {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 100%;
-    width: fit-content;
     gap: 10px;
     margin-left: 10px;
 }
