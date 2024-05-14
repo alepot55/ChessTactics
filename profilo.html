@@ -30,7 +30,8 @@
           <a href="gioca.html" class="nav_link"><img src="assets/icone/figma/Sword.svg"><span>Gioca</span></a>
         </li>
         <li class="nav_item">
-          <a href="classifica.html" class="nav_link"><img src="assets/icone/figma/Trophy.svg"><span>Classifica</span></a>
+          <a href="classifica.html" class="nav_link"><img
+              src="assets/icone/figma/Trophy.svg"><span>Classifica</span></a>
         </li>
         <li class="nav_item selezionato">
           <a href="profilo.html" class="nav_link"><img src="assets/icone/figma/User.svg"><span>Profilo</span></a>
@@ -101,15 +102,8 @@
     <button class="button_1" id="bottoneModificaImg" onclick="openPopup()">Cambia immagine</button>
     <div class="popup" id="img-window">
       <h2>selezionare immagine profilo</h2>
-      <img class="popup-img" src="./assets/immaginiProfilo/usr1.jpg" onclick="caricaImmagine('1');">
-      <img class="popup-img" src="./assets/immaginiProfilo/usr2.jpg" onclick="caricaImmagine('2');">
-      <img class="popup-img" src="./assets/immaginiProfilo/usr3.jpg" onclick="caricaImmagine('3');">
-      <img class="popup-img" src="./assets/immaginiProfilo/usr4.jpg" onclick="caricaImmagine('4');">
-      <img class="popup-img" src="./assets/immaginiProfilo/usr5.jpg" onclick="caricaImmagine('5');">
-      <img class="popup-img" src="./assets/immaginiProfilo/usr6.jpg" onclick="caricaImmagine('6');">
-      <img class="popup-img" src="./assets/immaginiProfilo/usr7.jpg" onclick="caricaImmagine('7');">
-      <img class="popup-img" src="./assets/immaginiProfilo/usr8.jpg" onclick="caricaImmagine('8');">
-      <img class="popup-img" src="./assets/immaginiProfilo/usr9.jpg" onclick="caricaImmagine('9');">
+      <div id="immaginiProfilo">
+      </div>
       <p>clicca su una delle immagini per selezionarla</p>
       <button class="button_1" onclick="closePopup()">OK</button>
     </div>

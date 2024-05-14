@@ -98,41 +98,12 @@ async function aggiornaProfilo() {
         let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
 
         if (datiRicevuti['messaggio'] == 'Immagine profilo trovata') {
-            switch (datiRicevuti['ret']) {
-                case '1':
-                    s = './assets/immaginiProfilo/usr1.jpg';
-                    break;
-                case '2':
-                    s = './assets/immaginiProfilo/usr2.jpg';
-                    break;
-                case '3':
-                    s = './assets/immaginiProfilo/usr3.jpg';
-                    break;
-                case '4':
-                    s = './assets/immaginiProfilo/usr4.jpg';
-                    break;
-                case '5':
-                    s = './assets/immaginiProfilo/usr5.jpg';
-                    break;
-                case '6':
-                    s = './assets/immaginiProfilo/usr6.jpg';
-                    break;
-                case '7':
-                    s = './assets/immaginiProfilo/usr7.jpg';
-                    break;
-                case '8':
-                    s = './assets/immaginiProfilo/usr8.jpg';
-                    break;
-                case '9':
-                    s = './assets/immaginiProfilo/usr9.jpg';
-                    break;
-                default:
-                    s = './assets/immaginiProfilo/profilo_default.png';
-            }
+            let i = datiRicevuti['ret'];
+            s = './assets/profili/img' + i + '.png';
         }
     }
     else {
-        var s = './assets/immaginiProfilo/profilo_default.png';
+        var s = './assets/profili/profilo_default.png';
     }
     document.getElementById('immagineProfilo').src = s;
 
@@ -220,3 +191,12 @@ document.getElementById("resetPreferenze").addEventListener('click', function ()
 });
 
 aggiornaProfilo();
+
+// per ogni immagine imgx.png profilo in assets/profili, aggiungi l'img a id='immaginiProfilo', ciascuna con classe popup-img e onclick='caricaImmagine(x)'
+for (let i = 1; i <= 39; i++) {
+    let img = document.createElement('img');
+    img.src = './assets/profili/img' + i + '.png';
+    img.classList.add('popup-img');
+    img.setAttribute('onclick', 'caricaImmagine(' + i + ')');
+    document.getElementById('immaginiProfilo').appendChild(img);
+}
