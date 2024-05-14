@@ -21,7 +21,7 @@ $cred = array(
         "host" => "localhost",
         "dbname" => "dbChessTactics",
         "dbuser" => "postgres",
-        "dbpass" => "password",
+        "dbpass" => "filpostg",
         "port" => 5432
     ),
     "marco" => array(
