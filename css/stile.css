@@ -25,7 +25,7 @@ body {
     justify-content: left;
     flex-wrap: nowrap;
     gap: 20px;
-    height: 98vh;
+    height: 100%;
 }
 
 .comandi {

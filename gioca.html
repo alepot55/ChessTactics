@@ -8,7 +8,7 @@
   <link rel="icon" type="image/x-icon" href="/assets/icone/logo.ico">
   <link rel="stylesheet" type="text/css" href="css/stile.css">
   <link rel="stylesheet" type="text/css" href="css/scacchiera.css">
-
+  <link rel="stylesheet" type="text/css" href="css/gioca.css">
 </head>
 
 <body>
@@ -93,9 +93,21 @@
 
         <div class="partita">
 
-          <p id="tempoAvversario"></p>
-          <div id="scacchieraMultiplayer" class="scacchiera"></div>
-          <p id="tempoUtente"></p>
+          <div class="avversario barra">
+            <div class="info">
+            <img id="imgAvversario" class="imgProfilo">
+            <p id="nomeAvversario"></p>
+            </div>
+            <p id="tempoAvversario"></p>
+          </div>
+           <div id="scacchieraMultiplayer" class="scacchiera"></div>
+          <div class="giocatore barra">
+          <div class="info">
+            <img id="imgGiocatore" class="imgProfilo">
+            <p id="nomeGiocatore"></p>
+            </div>
+            <p id="tempoGiocatore"></p>
+          </div>
         </div>
 
 

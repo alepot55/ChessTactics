@@ -89,23 +89,7 @@ async function aggiornaProfilo() {
     document.getElementById('eliminaProfilo').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('bottoneModificaImg').style.display = utenteLoggato ? 'block' : 'none';
 
-    if (utenteLoggato) {     // inviare dati al server per poter recuperare  l'immagine profilo scelta
-        let datiDaInviare = {
-            username: get('username'),
-            operazione: 'prendiImmagineProfilo'
-        };
-
-        let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
-
-        if (datiRicevuti['messaggio'] == 'Immagine profilo trovata') {
-            let i = datiRicevuti['ret'];
-            s = './assets/profili/img' + i + '.png';
-        }
-    }
-    else {
-        var s = './assets/profili/profilo_default.png';
-    }
-    document.getElementById('immagineProfilo').src = s;
+    document.getElementById('immagineProfilo').src = await fotoProfilo();
 
     document.getElementById('usernameProfilo').innerHTML = get('username');
     document.getElementById('punteggioProfilo').innerHTML = get('punteggio');

@@ -1,0 +1,23 @@
+.barra {
+    background-color: var(--primario);
+    height: 30px;
+    border-bottom: 1px solid #e0e0e0;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+    padding: 0 50px;
+}
+
+.info {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+}
+
+.info img {
+    height: 20px;
+}

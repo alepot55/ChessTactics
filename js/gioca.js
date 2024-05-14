@@ -27,6 +27,14 @@ const messaggioMultiplayer = document.getElementById("messaggioMultiplayer");
 const messaggioSolo = document.getElementById("messaggioSolo");
 const messaggioComputer = document.getElementById("messaggioComputer");
 
+const imgUtente = document.getElementById("imgGiocatore");
+const nomeUtente = document.getElementById("nomeGiocatore");
+const tempoUtente = document.getElementById("tempoGiocatore");
+
+const imgAvversario = document.getElementById("imgAvversario");
+const nomeAvversario = document.getElementById("nomeAvversario");
+const tempoAvversario = document.getElementById("tempoAvversario");
+
 const eloStockfish = document.getElementById("eloStockfish");
 
 // Scacchiere
@@ -56,7 +64,7 @@ function aggiungiMossa(mossa) {
 }
 
 function mostraTempoUtente(tempo) {
-    document.getElementById("tempoUtente").innerText = tempo.toFixed(1);
+    tempoUtente.innerText = tempo.toFixed(1);
     if (tempo < 0) {
         aggiornaStatoMultiplayer('terminata');
         sconfittaPartitaMultiplayer();
@@ -64,7 +72,7 @@ function mostraTempoUtente(tempo) {
 }
 
 function mostraTempoAvversario(tempo) {
-    document.getElementById("tempoAvversario").innerText = tempo.toFixed(1);
+    tempoAvversario.innerText = tempo.toFixed(1);
     if (tempo < 0) {
         aggiornaStatoMultiplayer('terminata');
         vittoriaPartitaMultiplayer();
@@ -206,6 +214,9 @@ async function aspettaGiocatori(protezione) {
         codicePartita = datiRicevuti['codice'];
         coloreUtente = datiRicevuti['colore'];
         partitaInit = datiRicevuti['iniziata'];
+        nomeAvversario.innerText = datiRicevuti['avversario'];
+        mettiImmgaine(datiRicevuti['avversario']);
+        console.log(datiRicevuti);
         aggiornaStatoMultiplayer(partitaInit ? 'iniziata' : 'ricerca');
     }
 
@@ -221,6 +232,8 @@ async function aspettaGiocatori(protezione) {
 
     // Se la partita è iniziata, aggiorna lo stato e la scacchiera
     if (partitaInit || datiRicevuti['iniziata']) {
+        if (datiRicevuti['avversario'] !== get('username')) nomeAvversario.innerText = datiRicevuti['avversario'];
+        mettiImmgaine(datiRicevuti['avversario']);
         aggiornaStatoMultiplayer('iniziata');
         aggiornaScacchieraGioca(idScacchieraCorrente);
         return;
@@ -290,8 +303,18 @@ function pattaPartitaMultiplayer() {
     messaggioMultiplayer.innerText = "Patta!";
 }
 
+async function mettiImmgaine(username = get('username')) {
+    if (username === get('username')) {
+        imgUtente.src = await fotoProfilo(username);
+    } else {
+        imgAvversario.src = await fotoProfilo(username);
+    }
+}
+
 // Aggiorna lo stato della partita Multiplayer
 function aggiornaStatoMultiplayer(stato = 'default') {
+    nomeUtente.innerText = get('username');
+    mettiImmgaine();
     let fine;
     switch (stato) {
         case 'default':
@@ -303,6 +326,7 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             document.getElementById("codiceMultiplayer").value = "";
             buttTerminaPartitaMultiplayer.style.display = "none";
             buttNuovaPartitaMultiplayer.style.display = "block";
+            nomeAvversario.innerText = "";
             break;
         case 'iniziata':
             document.getElementById("messaggioMultiplayer").innerText = "Partita iniziata!";
@@ -349,6 +373,8 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             buttStopRicercaMultiplayer.style.display = "block";
             mostraTempoAvversario(0);
             mostraTempoUtente(0);
+            nomeAvversario.innerText = "In attesa...";
+            imgAvversario.src = "";
             break;
         case 'mioTurno':
             fine = scacchieraGiocaMultiplayer.statoPartita();
@@ -424,7 +450,7 @@ function inizio() {
 
 //Main
 
-window.onload = function() { //Questa funzione serve per impostare al caricamento della pagina la modalità di gioco selezionata in index.html
+window.onload = function () { //Questa funzione serve per impostare al caricamento della pagina la modalità di gioco selezionata in index.html
     // Ottieni il parametro 'selected' dall'URL
     const params = new URLSearchParams(window.location.search);
     const selectedValue = params.get('selected');
@@ -435,7 +461,7 @@ window.onload = function() { //Questa funzione serve per impostare al caricament
         console.log(sezioneCorrente);
         mostraSezioneGioca(selectedValue);
     }
-    else{
+    else {
         mostraSezioneGioca("giocaComputer");
     }
 }

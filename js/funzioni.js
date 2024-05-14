@@ -130,6 +130,26 @@ async function aggiungiPunti(punti) {
     set('punteggio', parseInt(datiRicevuti['punteggio']));
 }
 
+async function fotoProfilo(username = get('username')) {
+    if (username != null) {     // inviare dati al server per poter recuperare  l'immagine profilo scelta
+        let datiDaInviare = {
+            username: username,
+            operazione: 'prendiImmagineProfilo'
+        };
+
+        let datiRicevuti = await inviaDatiAlServer(datiDaInviare);
+
+        if (datiRicevuti['messaggio'] == 'Immagine profilo trovata') {
+            let i = datiRicevuti['ret'];
+            s = './assets/profili/img' + i + '.png';
+        }
+    }
+    else {
+        var s = './assets/profili/profilo_default.png';
+    }
+
+    return s;
+}
 
 if (get("temaPezzi") == null) {
     set("temaPezzi", "simple");

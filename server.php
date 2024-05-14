@@ -256,6 +256,7 @@ function creaPartita($dati) {
         $dati['codice'] = $codice;
         $dati['colore'] = 'b';
         $dati['iniziata'] = true;
+        $dati['avversario'] = $ret["giocatore1"];
         return $dati;
     }
 
@@ -296,7 +297,7 @@ function aspettaGiocatori($dati) {
     } else {
         $dati['iniziata'] = false;
     }
-    $dati['giocatore2'] = $g2;
+    $dati['avversario'] = $g2;
     $dati['incorso'] = $incorso;
 
     return $dati;
@@ -337,7 +338,7 @@ function aspettaMossa($dati) {
     $dati['mossa'] = $mossa;
 
     $incorso = $ret["incorso"];
-    if ($incorso === 'f') {
+    if ($incorso === 'f' && $ret["vittoria"] === null) {
         $dati['annullata'] = true;
     } else {
         $dati['annullata'] = false;
