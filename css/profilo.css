@@ -143,16 +143,17 @@ main{
     margin-left: calc(20% + var(--spessore));
     background: white;
     border-radius: var(--borderRadius);
-    transform: scale(0.1);
+    transform: scale(0);
     text-align: center;
-    color: black;
     padding: 20px;
-    visibility: hidden;
-    transition: transform 0.4s, top 0.4s;
+    transition: 0.3s;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background: light-dark(white, black);
+    color: light-dark(black, white);
+    box-shadow: 0 0 1em hsl(calc(var(--colore) + 30), 53%, 41%);
 }
 
 #immaginiProfilo{
@@ -170,7 +171,6 @@ main{
   }
 
 .open-popup{
-    visibility: visible;
     transform: scale(1);
 }
 
