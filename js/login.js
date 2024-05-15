@@ -177,7 +177,7 @@ document.getElementById("resetPreferenze").addEventListener('click', function ()
 aggiornaProfilo();
 
 // per ogni immagine imgx.png profilo in assets/profili, aggiungi l'img a id='immaginiProfilo', ciascuna con classe popup-img e onclick='caricaImmagine(x)'
-for (let i = 1; i <= 39; i++) {
+for (let i = 1; i <= 38; i++) {
     let img = document.createElement('img');
     img.src = './assets/profili/img' + i + '.png';
     img.classList.add('popup-img');
