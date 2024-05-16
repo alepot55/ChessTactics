@@ -15,3 +15,7 @@ cardMultiplayer.addEventListener("click", function () {
 cardSolo.addEventListener("click", function () {
   redirectToDropdown('giocaSolo');
 });
+
+function redirectToDropdown(value) {
+    window.location.href = 'gioca.html?selected=' + encodeURIComponent(value);
+};
