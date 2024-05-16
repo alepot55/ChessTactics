@@ -67,6 +67,8 @@ body {
     z-index: 1;
     transition: var(--transition);
     overflow: hidden;
+
+    min-height: 0; /*Altezza minima della navbar oltre la quale non segue il ridimensionamento dello schermo*/
 }
 
 .navbar #logo {
@@ -208,6 +210,7 @@ a {
         flex-direction: row;
         padding: 0 var(--spacer);
         align-items: center;
+        min-height: 0;
     }
 
     .navbar #logo {

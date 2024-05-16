@@ -1,10 +1,11 @@
 :root {
-    --altezzaDiv: 70vh;
-    --altezzaCard: 55%;
+    --altezzaDiv: 60vh;
+    --altezzaCard: 65%;
     --larghezzaCard: 100%;
     --maxLarghezzaCardSmallScreen: 360px;
     --maxAltezzaCardSmallScreen: 280px;
 }
+
 
 .title {
     width: fit-content;
@@ -37,6 +38,7 @@
     justify-content: center;
     align-items: flex-end;
     min-width: none;
+    min-height: 412px; /*serve per dare un'altezza minima al div*/
     overflow: hidden;
 }
 
@@ -54,20 +56,19 @@
     width: var(--larghezzaCard);
     min-width: 0; /*Serve per evitare che la navbar si sovrapponga alle card quando lo schermo è piccolo*/
     height: var(--altezzaCard);
-    min-height: 0;
 
     background: var(--primario);
-    border-radius: var(--borderRadius);
+    border-radius: 8%;
     transition: 0.5s;
     padding: 13px;
     margin: 10px;
-
+    
 }
 
 
 .custom-card:hover {
 
-    height: calc(var(--altezzaCard) * 1.35);
+    height: calc(var(--altezzaCard) * 1.2);
 
 }
 
@@ -81,12 +82,12 @@
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     
 }
 
 .custom-card:hover .img-box {
-    transform: translateY(-120px);
+    transform: translateY(-6em);
     scale: 0.8;
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
 }
@@ -105,14 +106,17 @@
     flex-direction: column;
     overflow: hidden;
     transition: 0.5s;
+    min-height: 83px;
+    
 
 }
 
 .custom-card:hover .custom-content {
 
-    transform: translateY(-100px); /*Così c'è l'effetto della scritta che sale*/
+    transform: translateY(-6em); /*Così c'è l'effetto della scritta che sale*/
     transition: transform 0.5s; /*tempo da hidden a visible*/
     overflow: visible;
+    
 
 }
 
@@ -121,12 +125,13 @@
     color: light-dark(black, white);
     text-align: center;
     
+    
 }
 
 .custom-card .custom-content p {
     visibility: hidden;
     color: light-dark(black, white);
-    text-align: center;
+    margin-block-start: 0;
 }
 
 
@@ -149,7 +154,7 @@
 }
 
 
-@media screen and (orientation: portrait) {
+@media screen and (max-width: 768px) {
 
    
 
@@ -192,8 +197,8 @@
         position: relative;
         height: 75%;
         width: 50%;
-        margin-left: -5px;
-        margin-right: 10px;
+        margin-left: -1%;
+        margin-right: 8%;
         
         
     }
@@ -229,8 +234,13 @@
 @media (min-width: 2560px){
 
     main {
-        font-size: x-large;
+        font-size: xx-large;
     }
+    .sceltamodalità{
+
+        height: 50vh;
+    }
+
 }
 
 
