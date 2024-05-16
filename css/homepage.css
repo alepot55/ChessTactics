@@ -1,20 +1,43 @@
 :root {
-    --altezzaDiv: 500px;
+    --altezzaDiv: 70vh;
     --altezzaCard: 55%;
     --larghezzaCard: 100%;
     --maxLarghezzaCardSmallScreen: 360px;
     --maxAltezzaCardSmallScreen: 280px;
 }
 
+.title {
+    width: fit-content;
+}
+
+.title h1 {
+    display: inline-block;
+    margin: 0;
+    font-size: 14vw; /*Per rendere dinamiche le dimensioni della scritta*/
+    line-height: 1;
+    background-image: url(
+'https://media.geeksforgeeks.org/wp-content/uploads/20231218224644/w.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: transparent;
+    background-clip: text;
+
+}
+    
+
+
 
 .sceltamodalità {
+    
     width: 100%;
     height: var(--altezzaDiv);
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     min-width: none;
+    overflow: hidden;
 }
 
 .custom-card {
@@ -27,7 +50,7 @@
     align-items: center;
 
     
-
+    
     width: var(--larghezzaCard);
     min-width: 0; /*Serve per evitare che la navbar si sovrapponga alle card quando lo schermo è piccolo*/
     height: var(--altezzaCard);
@@ -43,7 +66,9 @@
 
 
 .custom-card:hover {
-    height: calc(var(--altezzaCard) * 1.5);
+
+    height: calc(var(--altezzaCard) * 1.35);
+
 }
 
 .custom-card .img-box {
@@ -126,11 +151,19 @@
 
 @media screen and (orientation: portrait) {
 
+   
+
     main {
         display: flex;
         align-items: center;
         flex-direction: column;
         font-size: small;
+    }
+    
+    body {
+        margin-left: calc(var(--spacer) + 2vw);
+        margin-right: calc(var(--spacer) + 8vw);
+        padding-bottom: calc(var(--spessore) + var(--spacer));
     }
 
     .sceltamodalità {
@@ -139,14 +172,18 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: start;
+        overflow: visible;
     
         
     }
 
     .custom-card {
         max-height: var(--maxAltezzaCardSmallScreen);
-        justify-content: center;
+        justify-content: flex-start;
         flex-direction: row;
+        margin: 0;
+        margin-bottom: 10px;
     
     }
 
