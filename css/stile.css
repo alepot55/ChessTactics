@@ -84,6 +84,7 @@ body {
 }
 
 @media screen and (max-width: 1200px) {
+    
     .container {
         flex-direction: column;
         justify-content: center;
@@ -92,8 +93,14 @@ body {
     }
 
     .comandi {
+        display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-content: stretch;
         height: fit-content;
         gap: 0;
     }
+
+   
 }

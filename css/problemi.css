@@ -1,0 +1,90 @@
+.small_screen_title {
+
+    visibility: hidden;
+
+}
+
+.container {
+
+    margin-top: -12vh;
+}
+
+#soluzione {
+
+    visibility: hidden;
+}
+
+.button_1 {
+
+    margin-bottom: 2%;
+}
+
+
+@media screen and (max-width: 1200px) {
+
+
+    .small_screen_title {
+
+        visibility: visible;
+        font-size: 5vmin;
+        text-align: center;
+    }
+
+    .default_screen_title {
+
+        visibility: hidden;
+    }
+
+    .container {
+
+        margin-top: 0;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .comandi {
+
+        gap: 0;
+        margin-top: -20%;
+        flex-direction: column;
+        
+    }
+
+    #descrizione {
+        margin: auto;
+        text-align: center;
+    }
+
+    #soluzione {
+
+        margin: auto;
+        
+    }
+
+    .buttons {
+
+        display: flex;
+        flex-direction: row;
+        margin: auto;
+        
+    }
+
+    .button_1 {
+
+        margin-right: 2%;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+
+    main {
+        
+        font-size: 1.5vmax;
+    }
+
+    .button_1 {
+
+        height: 6vh;
+        font-size: xx-large;
+    }
+}

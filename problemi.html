@@ -8,6 +8,7 @@
   <link rel="icon" type="image/x-icon" href="/assets/icone/logo.ico">
   <link rel="stylesheet" type="text/css" href="css/stile.css">
   <link rel="stylesheet" type="text/css" href="css/scacchiera.css">
+  <link rel="stylesheet" type="text/css" href="css/problemi.css">
 </head>
 
 <body>
@@ -45,16 +46,22 @@
   </header>
 
   <main>
+    <span class="small_screen_title"><h1>Problemi di Scacchi</h1></span>
     <div class=container>
       <div id="scacchieraProblemi" class="scacchiera"></div>
       <div class="comandi">
-        <h2>Problemi di Scacchi</h2>
+        
+        <span class="default_screen_title"><h2>Problemi di Scacchi</h2></span>
+        
         <p id="descrizione">Qui troverai una serie di problemi di scacchi da risolvere. Buona fortuna!</p>
         <p id="soluzione"></p>
 
-        <button id="aggiornaProblema" class="button_1">Inizia</button>
-        <button id="risolviProblema" class="button_1">Suggerimento<img
+        <div class="buttons">
+          <button id="aggiornaProblema" class="button_1">Inizia</button>
+          <button id="risolviProblema" class="button_1">Suggerimento<img 
             src="assets/icone/figma/LightbulbFilament.svg"></button>
+        </div>
+       
       </div>
     </div>
 
