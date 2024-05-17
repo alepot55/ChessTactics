@@ -2,6 +2,7 @@
 const cardComputer = document.getElementById("computer");
 const cardMultiplayer = document.getElementById("multiplayer");
 const cardSolo = document.getElementById("solo");
+const cardProblems = document.getElementById("problems");
 
 // Aggiungi un gestore di eventi di click a ciascun div
 cardComputer.addEventListener("click", function () {
@@ -19,3 +20,7 @@ cardSolo.addEventListener("click", function () {
 function redirectToDropdown(value) {
     window.location.href = 'gioca.html?selected=' + encodeURIComponent(value);
 };
+
+cardProblems.addEventListener('click', function() {
+  window.location.href = 'problemi.html';
+});
