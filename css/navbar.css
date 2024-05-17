@@ -258,3 +258,30 @@ a {
     }
 
 }
+
+@media screen and (min-width: 1920px) {
+
+    .navbar {
+
+        font-size: large;
+    }
+    
+}
+
+@media screen and (min-width: 2560px) {
+    
+    .navbar {
+
+        font-size: x-large;
+    }
+
+}
+
+@media screen and (min-width: 3860px) {
+    
+    .navbar {
+
+        font-size: xx-large;
+    }
+
+}
