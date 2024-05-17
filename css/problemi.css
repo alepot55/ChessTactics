@@ -7,6 +7,13 @@
 .container {
 
     margin-top: -12vh;
+    flex-direction: row;
+}
+
+.container .comandi {
+
+    justify-content: left;
+    margin-left:5%;
 }
 
 #soluzione {
@@ -19,13 +26,8 @@
     margin-bottom: 2%;
 }
 
+@media screen and (max-width: 1200px){
 
-@media screen and (max-width: 1200px) {
-
-    body {
-
-        padding-bottom: calc(var(--spessore) + var(--spacer));
-    }
 
 
     .small_screen_title {
@@ -38,6 +40,7 @@
     .default_screen_title {
 
         visibility: hidden;
+        font-size: 0;
     }
 
     .container {
@@ -45,13 +48,92 @@
         margin-top: 0;
         align-items: center;
         justify-content: flex-start;
+        flex-direction: column;
     }
 
     .comandi {
 
         gap: 0;
-        margin-top: -18%;
         flex-direction: column;
+        align-items: center;
+        font-size: x-large;
+        
+    }
+
+    #descrizione {
+        margin: auto;
+        text-align: center;
+    }
+
+    #soluzione {
+
+        margin: auto;
+        
+    }
+
+    .buttons {
+
+        display: flex;
+        flex-direction: row;
+        margin: auto;
+        margin-top: 2%;
+        
+    }
+
+    .button_1 {
+
+        margin-right: 2%;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+
+
+    main {
+        
+        font-size: 1.5vmax;
+    }
+
+    .button_1 {
+
+        height: 6vh;
+        font-size: xx-large;
+        min-width: 10%;
+
+    }
+}
+
+@media screen and (orientation: portrait) {
+
+
+
+    .small_screen_title {
+
+        visibility: visible;
+        font-size: 5vmin;
+        text-align: center;
+    }
+
+    .default_screen_title {
+
+        visibility: hidden;
+        font-size: 0;
+    }
+
+    .container {
+
+        margin-top: 0;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
+    .comandi {
+
+        gap: 0;
+        flex-direction: column;
+        align-items: center;
+        font-size: x-large;
         
     }
 

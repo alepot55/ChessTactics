@@ -186,7 +186,7 @@ a {
     text-decoration: none;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (orientation: portrait) {
 
     :root {
         --spessore: max(7vh, 60px);
@@ -196,7 +196,7 @@ a {
     body {
         margin-left: calc(var(--spacer) + 8vw);
         margin-right: calc(var(--spacer) + 8vw);
-        padding-bottom: calc(var(--spessore)*10 + var(--spacer)*10);
+        padding-bottom: calc((var(--spessore) + var(--spacer)) * 5);
     }
 
     .navbar {

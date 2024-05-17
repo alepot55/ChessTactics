@@ -220,7 +220,7 @@
 
 
 
-@media screen and (max-width: 768px) {
+@media screen and (orientation: portrait) {
 
    
 
@@ -257,19 +257,18 @@
 
     .custom-card {
         width: 100%;
-        max-height: var(--maxAltezzaCardSmallScreen);
         justify-content: flex-start;
         flex-direction: row;
         margin: 0;
         margin-bottom: 10px;
-    
+        border-radius: 10px;
     }
 
     .custom-card .img-box {
 
-        position: relative;
         height: 75%;
         width: 50%;
+        justify-content: center;
         margin-left: -1%;
         margin-right: 8%;
         
@@ -283,8 +282,11 @@
 
     .custom-card .custom-content {
 
+        display: inline;
         width: 50%;
-        position: relative;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 5%;
         
     }
 
@@ -338,6 +340,15 @@
 
        
         display:inline;
+    }
+
+    .solve_chess_puzzles .puzzles_description h3 {
+        text-align: end;
+    } 
+
+    .solve_chess_puzzles .puzzles_description p {
+    
+        text-align: end;
     }
 
 
