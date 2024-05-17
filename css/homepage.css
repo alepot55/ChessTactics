@@ -237,12 +237,9 @@
         padding-bottom: calc(var(--spessore)*10 + var(--spacer)*10);
     }
 
-    .title {
 
-        margin-left: calc(var(--spacer) + 2vw);
-    }
     .title h1 {
-        font-size: 14vmax;
+        font-size: 10vmax;
         text-align: left;
     }
 

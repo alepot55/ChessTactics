@@ -196,7 +196,7 @@ a {
     body {
         margin-left: calc(var(--spacer) + 8vw);
         margin-right: calc(var(--spacer) + 8vw);
-        padding-bottom: calc(var(--spessore) + var(--spacer));
+        padding-bottom: calc(var(--spessore)*10 + var(--spacer)*10);
     }
 
     .navbar {
