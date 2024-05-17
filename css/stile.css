@@ -25,10 +25,12 @@ body {
 
 .container {
     height: 98vh;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: left;
     gap: 20px;
+    
 }
 
 .comandi {
@@ -87,7 +89,7 @@ body {
     
     .container {
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-evenly;
         flex-wrap: nowrap;
         gap: 0;
     }

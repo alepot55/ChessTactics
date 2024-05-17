@@ -258,7 +258,7 @@ function mostraSezioneGioca(sezione) {
     document.getElementById("giocaMultiplayer").style.display = "none";
 
     // Mostra la sezione selezionata e imposta la sezione corrente
-    document.getElementById(sezione).style.display = "block";
+    document.getElementById(sezione).style.display = "flex";
     sezioneCorrente = sezione;
     idScacchieraCorrente = sezioneCorrente === "giocaComputer" ? "scacchieraComputer" : sezioneCorrente === "giocaSolo" ? "scacchieraSolo" : "scacchieraMultiplayer";
 

@@ -21,3 +21,178 @@
 .info img {
     height: 35px;
 }
+
+
+
+.buttons_control {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.mosse_giocate {
+
+    overflow-y: auto;
+    max-width: calc(var(--dimensioneTavolaLarghezza) / 2);
+    width: 100%;
+    height: var(--dimensioneTavolaAltezza);
+    align-items: center;
+    background: var(--primario);
+    padding: 13px;
+    margin: 10px;
+}
+
+@media screen and (orientation: portrait){
+
+    .container {
+
+        height: 100%;
+        flex-direction: column;
+        
+    }
+
+    .comandi {
+
+        gap: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+    }
+
+    .selezione_modalità {
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+    }
+    
+    .selezione_modalità_testo {
+        width: 50%;
+        text-align: left;
+    }
+
+    .buttons_control {
+
+        display: flex;
+        flex-direction: row;
+    }
+
+    .elorange {
+
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mosse_giocate {
+
+        overflow-y: auto;
+        max-width: calc(var(--dimensioneTavolaLarghezza));
+        width: 100%;
+        height: 50%;
+        align-items: center;
+        background: var(--primario);
+        padding: 13px;
+        margin: 10px;
+    }
+}
+
+@media screen and (max-width: 1200px){
+
+    .container {
+
+        height: 100%;
+        flex-wrap: wrap;
+       
+        
+    }
+
+    .comandi {
+
+        gap: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    
+    }
+
+    .selezione_modalità {
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+    }
+    
+    .selezione_modalità_testo {
+        width: 50%;
+        text-align: left;
+    }
+
+    .buttons_control {
+
+        display: flex;
+        flex-direction: row;
+    }
+
+    .elorange {
+
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mosse_giocate {
+
+        overflow-y: auto;
+        max-width: calc(var(--dimensioneTavolaLarghezza));
+        width: 100%;
+        height: 50%;
+        align-items: center;
+        background: var(--primario);
+        padding: 13px;
+        margin: 10px;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+
+
+    main {
+        
+        font-size: x-large;
+    }
+
+    select {
+        font-size: x-large;
+        width: fit-content;  /* Larghezza del select box */
+    }
+
+    select option {
+        font-size: small;
+    }
+
+    .button_1 {
+
+        height: 6vh;
+        font-size: large;
+        min-width: 10%;
+
+    }
+
+    .elorange {
+        display: flex;
+    }
+}
