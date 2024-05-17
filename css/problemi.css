@@ -22,6 +22,11 @@
 
 @media screen and (max-width: 1200px) {
 
+    body {
+
+        padding-bottom: calc(var(--spessore) + var(--spacer));
+    }
+
 
     .small_screen_title {
 
@@ -45,7 +50,7 @@
     .comandi {
 
         gap: 0;
-        margin-top: -20%;
+        margin-top: -18%;
         flex-direction: column;
         
     }
@@ -66,6 +71,7 @@
         display: flex;
         flex-direction: row;
         margin: auto;
+        margin-top: 2%;
         
     }
 
@@ -86,5 +92,7 @@
 
         height: 6vh;
         font-size: xx-large;
+        min-width: 10%;
+
     }
 }
