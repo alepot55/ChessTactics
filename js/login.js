@@ -160,7 +160,8 @@ document.getElementById('logoutButton').addEventListener('click', (evento) => es
 document.getElementById('eliminaButton').addEventListener('click', (evento) => eliminaProfiloUtente(evento));
 document.getElementById('modificaButton').addEventListener('click', (evento) => modificaProfiloUtente(evento));
 document.getElementById('salvaPreferenze').addEventListener('click', function () {
-    set('temaPezzi', document.getElementById('temaPezzi').value);
+    set('temaPezzi', document.getElementsByClassName('active')[0].dataset.value);
+    //console.log("valore active: ", document.getElementsByClassName('active')[0].dataset.value);
 });
 document.getElementById("colore").oninput = function () {
     set("colore", this.value);
