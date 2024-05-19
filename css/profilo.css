@@ -1,6 +1,28 @@
 main{
-    width: 100%;
-    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+
+    gap: 5%;
+
+    width: fit-content;
+    height: fit-content;
+
+    padding-bottom: 10%;
+}
+
+.grid-item {
+    display: flex;
+    align-items: center;
+}
+
+#img-container{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    right: 10%;
 }
 
 .etichetta {
@@ -15,24 +37,6 @@ main{
     width: fit-content;
 
     border: 4px solid hsl(calc(var(--colore) + 30), 53%, 41%);
-}
-
-
-.flexbox {
-    display: flex;
-    align-items:start;
-    gap: 20%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    flex-grow: 1;
-}
-.flexbox-1 {
-    display: flex;
-    align-items:start;
-    gap: 20%;
-    flex-direction: column;
-    flex-wrap: wrap;
-    flex-grow: 1;
 }
 
 .settore{
@@ -50,8 +54,13 @@ main{
 
 
 #immagineProfilo {
-    width: 20%;
-    height: 20%;
+    width: auto;
+    height: auto;
+    max-width: 60%;
+    max-height: 90%;
+    min-width: 200px;
+    min-height: 200px;
+    aspect-ratio: 1 / 1;
 }
 
 /* -----per il nuovo dropdown menu----- */
@@ -154,6 +163,7 @@ main{
     background: light-dark(white, black);
     color: light-dark(black, white);
     box-shadow: 0 0 1em hsl(calc(var(--colore) + 30), 53%, 41%);
+    z-index: 9999;
 }
 
 #immaginiProfilo{
@@ -205,6 +215,12 @@ main{
     }
     h2 {
         font-size: large;
+    }
+    main{
+        grid-template-columns: 1fr;
+    }
+    #container_vuoto{
+        display: none;
     }
 }
 

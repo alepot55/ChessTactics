@@ -89,6 +89,11 @@ async function aggiornaProfilo() {
     document.getElementById('eliminaProfilo').style.display = utenteLoggato ? 'block' : 'none';
     document.getElementById('bottoneModificaImg').style.display = utenteLoggato ? 'block' : 'none';
 
+    document.getElementById('profilo-container').style.display = utenteLoggato ? 'block' : 'none';
+    document.getElementById('modifica-container').style.display = utenteLoggato ? 'block' : 'none';
+    document.getElementById('elimina-container').style.display = utenteLoggato ? 'block' : 'none';
+    document.getElementById('container_vuoto').style.display = utenteLoggato ? 'block' : 'none';
+
     document.getElementById('immagineProfilo').src = await fotoProfilo();
 
     document.getElementById('usernameProfilo').innerHTML = get('username');

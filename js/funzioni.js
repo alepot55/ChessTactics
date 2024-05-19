@@ -145,7 +145,7 @@ async function fotoProfilo(username = get('username')) {
         }
     }
     else {
-        var s = './assets/profili/profilo_default.png';
+        var s = './assets/profili/imgdef.png';
     }
 
     return s;

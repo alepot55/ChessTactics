@@ -46,31 +46,42 @@
 
 
   <main>
+    <div class="popup" id="img-window">
+      <h2>Seleziona il tuo avatar!</h2>
+      <div id="immaginiProfilo">
+      </div>
+      <button class="button_1" onclick="closePopup()">OK</button>
+    </div>
 
-    <div class="flexbox">
-      
+    <div class="grid-item" id="img-container">
+    
       <img id="immagineProfilo" src="">
-
-
+    
+      <p></p>
+      <button class="button_1" id="bottoneModificaImg" onclick="openPopup()">Cambia immagine</button>
+    
+    </div>
+      
+    <div class="grid-item">  
       <div class="settore" id="preferenzeUtente">
         <h2>Preferenze Utente</h2>
         <div>
           <p>
-            
+      
             <label for="temaPezzi" class="etichetta">Tema pedine:</label>
-            <div class="dropdown" id="temaPezzi" name="temaPezzi">
-              <div class="select">
-                <span class="selected">Default</span>
-                <div class="caret"></div>
-              </div>
-              <ul class="menu">
-                <li class="active" data-value="default" id="id1">Default</li>
-                <li data-value="simple">Simple</li>
-                <li data-value="marshmallow">Marshmallow</li>
-                <li data-value="horsey">Horsey</li>
-              </ul>
+          <div class="dropdown" id="temaPezzi" name="temaPezzi">
+            <div class="select">
+              <span class="selected">Default</span>
+              <div class="caret"></div>
             </div>
-
+            <ul class="menu">
+              <li class="active" data-value="default" id="id1">Default</li>
+              <li data-value="simple">Simple</li>
+              <li data-value="marshmallow">Marshmallow</li>
+              <li data-value="horsey">Horsey</li>
+            </ul>
+          </div>
+      
           </p>
           <p>
             <label for="colore" class="etichetta">Tema scacchiera:</label><br>
@@ -81,22 +92,14 @@
             <button id="resetPreferenze" class="button_1">Reset</button>
           </p>
         </div>
-
+      
       </div>
-
     </div>
-
-    <p></p>
-    <button class="button_1" id="bottoneModificaImg" onclick="openPopup()">Cambia immagine</button>
-    <div class="popup" id="img-window">
-      <h2>Seleziona il tuo avatar!</h2>
-      <div id="immaginiProfilo">
-      </div>
-      <button class="button_1" onclick="closePopup()">OK</button>
-    </div>
+    
 
 
-    <div class="flexbox">
+    <div class="grid-item" id="profilo-container">
+    
       <div class="settore" id="profiloUtente">
         <h2>Profilo Utente</h2>
         <p>Username: <span id="usernameProfilo"></span></p>
@@ -104,38 +107,47 @@
         <button id="logoutButton" class="button_1">Logout</button>
       </div>
 
-      <div class="flexbox-1">
-        <div class="settore" id="modificaProfilo">
-          <h2>Modifica Profilo</h2>
-          <p>
-            <label for="nuovoUsername">Nuovo nome utente</label>
-            <input type="text" class="user-input" id="nuovoUsername" name="nuovoUsername"><br>
-          </p>
-          <p>
-            <label for="nuovaPassword">Nuova password</label>
-            <input type="password" class="user-input" id="nuovaPassword" name="nuovaPassword"><br>
-          </p>
-          <p>
-            <input type="submit" id="modificaButton" value="Modifica" class="button_1">
-          </p>
-          <p id="rispostaModifica"></p>
-        </div>
-
-        <div class="settore" id="eliminaProfilo">
-          <h2>Elimina Profilo</h2>
-          <label for="passwordElimina">Password</label>
-          <input type="password" class="user-input" id="passwordElimina" name="passwordElimina"><br>
-          <p>
-            <input type="submit" id="eliminaButton" value="Elimina" class="button_1">
-          </p>
-          <p id="rispostaElimina"></p>
-        </div>
-      </div>
     </div>
 
+    <div class="grid-item" id="modifica-container">
 
+      <div class="settore" id="modificaProfilo">
+        <h2>Modifica Profilo</h2>
+        <p>
+          <label for="nuovoUsername">Nuovo nome utente</label>
+          <input type="text" class="user-input" id="nuovoUsername" name="nuovoUsername"><br>
+        </p>
+        <p>
+          <label for="nuovaPassword">Nuova password</label>
+          <input type="password" class="user-input" id="nuovaPassword" name="nuovaPassword"><br>
+        </p>
+        <p>
+          <input type="submit" id="modificaButton" value="Modifica" class="button_1">
+        </p>
+        <p id="rispostaModifica"></p>
+      </div>
 
-    <div id="accediProfilo">
+    </div>
+
+    <div class="grid-item" id="container_vuoto"></div>
+
+    <div class="grid-item" id="elimina-container">
+    
+      <div class="settore" id="eliminaProfilo">
+        <h2>Elimina Profilo</h2>
+        <label for="passwordElimina">Password</label>
+        <input type="password" class="user-input" id="passwordElimina" name="passwordElimina"><br>
+        <p>
+          <input type="submit" id="eliminaButton" value="Elimina" class="button_1">
+        </p>
+        <p id="rispostaElimina"></p>
+      </div>
+    
+    </div>
+
+    
+
+    <div class="grid-item" id="accediProfilo">
       <h2>Accedi / Registrati</h2>
       <form id="loginForm">
         <p>
@@ -152,8 +164,8 @@
       </form>
     </div>
 
-
   </main>
+  
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
