@@ -186,7 +186,8 @@ a {
     text-decoration: none;
 }
 
-@media screen and (orientation: portrait) {
+@media screen and (orientation: portrait),
+    screen and (max-height: 600px) {
 
     :root {
         --spessore: max(7vh, 60px);

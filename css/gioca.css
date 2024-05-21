@@ -173,11 +173,11 @@
 
     main {
         
-        font-size: x-large;
+        font-size: large;
     }
 
     select {
-        font-size: x-large;
+        font-size: large;
         width: fit-content;  /* Larghezza del select box */
     }
 
@@ -193,7 +193,4 @@
 
     }
 
-    .elorange {
-        display: flex;
-    }
 }

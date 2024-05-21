@@ -190,7 +190,6 @@ main{
     height: 80px;
 }
 
-/* Per schermi con width >= 1024px */
 @media (min-width: 1024px) {
     .etichetta {
         font-size: large;
@@ -199,7 +198,6 @@ main{
         font-size: xx-large;
     }
 }
-/* Per schermi con width compresa fra 768px e 1023px */
 @media (min-width: 768px) and (max-width: 1023px) {
     .etichetta {
         font-size: medium;
@@ -208,7 +206,6 @@ main{
         font-size: x-large;
     }
 }
-/* Per schermi con width <= 767px */
 @media (max-width: 767px) {
     .etichetta {
         font-size: small;
