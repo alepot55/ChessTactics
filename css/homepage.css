@@ -6,6 +6,9 @@
     --maxAltezzaCardSmallScreen: 280px;
 }
 
+main {
+    padding-top: 120px;
+}
 
 .title {
     width: fit-content;
@@ -20,12 +23,18 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    color: transparent;
+    color: hsl(calc(var(--colore) + 30), 90%, 65%);
     background-clip: text;
-
 }
     
-
+#cavallo {
+    position: absolute;
+    right: -150px;
+    top: -20px;
+    height: 700px;
+    width: auto;
+    filter: hue-rotate(calc(var(--colore)*1deg + 30deg - 267deg));
+}
 
 
 .sceltamodalità {
