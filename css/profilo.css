@@ -50,13 +50,12 @@ main{
 
 
 #immagineProfilo {
-    width: auto;
+    width: 60vw;
     height: auto;
     max-width: 60%;
     max-height: 90%;
     min-width: 200px;
     min-height: 200px;
-    aspect-ratio: 1 / 1;
 }
 
 /* -----per il nuovo dropdown menu----- */
