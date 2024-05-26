@@ -31,7 +31,8 @@
           <a href="gioca.html" class="nav_link"><img src="assets/icone/figma/Sword.svg"><span>Gioca</span></a>
         </li>
         <li class="nav_item">
-          <a href="classifica.html" class="nav_link"><img src="assets/icone/figma/Trophy.svg"><span>Classifica</span></a>
+          <a href="classifica.html" class="nav_link"><img
+              src="assets/icone/figma/Trophy.svg"><span>Classifica</span></a>
         </li>
         <li class="nav_item">
           <a href="profilo.html" class="nav_link"><img src="assets/icone/figma/User.svg"><span>Profilo</span></a>
@@ -50,23 +51,27 @@
         <div id="scacchieraComputer" class="scacchiera"></div>
         <div class="comandi">
           <div class="selezione_modalità">
-            <div class="selezione_modalità_testo"><p>Scegli la modalità di gioco:</p></div>
-            <select class="modalitàGioca" name="modalità">
-              <option value="giocaComputer" selected>Computer</option>
-              <option value="giocaSolo">Solo</option>
-              <option value="giocaMultiplayer">Multiplayer</option>
-          </select><br>
+            <div class="selezione_modalità_testo">
+              <p>Scegli la modalità di gioco:</p>
+            </div>
+            <div class="select-dropdown">
+              <select class="modalitàGioca" name="modalità">
+                <option value="giocaComputer" selected>Computer</option>
+                <option value="giocaSolo">Solo</option>
+                <option value="giocaMultiplayer">Multiplayer</option>
+              </select>
+            </div><br>
           </div>
+          <br>
+          <input type="range" class="user-input" min="1" max="4000" value="50" id="eloStockfish">
+          <label for="eloStockfish">Elo Stockfish: <span id="valoreEloStockfish">50</span></label>
+          <p id="risultatoComputer"></p>
           <div class="buttons_control">
             <button class="button_1 inizio"><img src="assets/icone/figma/CaretCircleDoubleLeft.svg"></button>
             <button class="button_1 indietro"><img src="assets/icone/figma/CaretCircleLeft.svg"></button>
             <button class="button_1 avanti"><img src="assets/icone/figma/CaretCircleRight.svg"></button>
             <button class="button_1 ritorna"><img src="assets/icone/figma/CaretCircleDoubleRight.svg"></button>
           </div>
-          <br>
-            <input type="range" class="user-input" min="1" max="4000" value="50" id="eloStockfish">
-            <label for="eloStockfish">Elo Stockfish: <span id="valoreEloStockfish">50</span></label>
-          <p id="risultatoComputer"></p>
           <button id="nuovaPartitaComputer" class="button_1"> Nuova Partita</button>
           <p id="messaggioComputer"></p>
         </div>
@@ -82,12 +87,16 @@
         <div id="scacchieraSolo" class="scacchiera"></div>
         <div class="comandi">
           <div class="selezione_modalità">
-            <div class="selezione_modalità_testo"><p>Scegli la modalità di gioco:</p></div>
-            <select class="modalitàGioca" name="modalità">
-              <option value="giocaComputer">Computer</option>
-              <option value="giocaSolo" selected>Solo</option>
-              <option value="giocaMultiplayer">Multiplayer</option>
-          </select><br>
+            <div class="selezione_modalità_testo">
+              <p>Scegli la modalità di gioco:</p>
+            </div>
+            <div class="select-dropdown">
+              <select class="modalitàGioca" name="modalità">
+                <option value="giocaComputer">Computer</option>
+                <option value="giocaSolo" selected>Solo</option>
+                <option value="giocaMultiplayer">Multiplayer</option>
+              </select>
+            </div><br>
           </div>
           <p id="risultatoSolo"></p>
           <button id="nuovaPartitaSolo" class="button_1">Nuova Partita</button>
@@ -107,16 +116,16 @@
 
           <div class="avversario barra">
             <div class="info">
-            <img id="imgAvversario" class="imgProfilo">
-            <p id="nomeAvversario"></p>
+              <img id="imgAvversario" class="imgProfilo">
+              <p id="nomeAvversario"></p>
             </div>
             <p id="tempoAvversario"></p>
           </div>
-           <div id="scacchieraMultiplayer" class="scacchiera"></div>
+          <div id="scacchieraMultiplayer" class="scacchiera"></div>
           <div class="giocatore barra">
-          <div class="info">
-            <img id="imgGiocatore" class="imgProfilo">
-            <p id="nomeGiocatore"></p>
+            <div class="info">
+              <img id="imgGiocatore" class="imgProfilo">
+              <p id="nomeGiocatore"></p>
             </div>
             <p id="tempoGiocatore"></p>
           </div>
@@ -125,32 +134,37 @@
 
         <div class="comandi">
           <div class="selezione_modalità">
-            <div class="selezione_modalità_testo"><p>Scegli la modalità di gioco:</p></div>
-            <select class="modalitàGioca" name="modalità">
-              <option value="giocaComputer">Computer</option>
-              <option value="giocaSolo">Solo</option>
-              <option value="giocaMultiplayer" selected>Multiplayer</option>
-            </select><br>
+            <div class="selezione_modalità_testo">
+              <p>Scegli la modalità di gioco:</p>
+            </div>
+            <div class="select-dropdown">
+              <select class="modalitàGioca" name="modalità">
+                <option value="giocaComputer">Computer</option>
+                <option value="giocaSolo">Solo</option>
+                <option value="giocaMultiplayer" selected>Multiplayer</option>
+              </select><br>
+            </div>
           </div>
-          <div class="buttons_control">
-            <button class="button_1 inizio"><img src="assets/icone/figma/CaretCircleDoubleLeft.svg"></button>
-            <button class="button_1 indietro"><img src="assets/icone/figma/CaretCircleLeft.svg"></button>
-            <button class="button_1 avanti"><img src="assets/icone/figma/CaretCircleRight.svg"></button>
-            <button class="button_1 ritorna"><img src="assets/icone/figma/CaretCircleDoubleRight.svg"></button>
-          </div>
-          <div class="selezione_modalità_multiplayer" style="margin: 10px 0;">
+
+          <div class="select-dropdown">
             <select id="modalitàMultiplayer" name="modalitàMultiplayer">
               <option value="normale">Normale</option>
               <option value="pezziNascosti">Pezzi Nascosti</option>
               <option value="nebbia">Nebbia</option>
             </select><br>
           </div>
-         
+
           <div class="codice_partita_multiplayer" style="margin: 10px 0;">
             <input type="text" class="user-input" id="codiceMultiplayer" name="codiceMultiplayer"
-            placeholder="Inserisci il codice partita"><br>
+              placeholder="Inserisci il codice partita"><br>
           </div>
-          
+
+          <div class="buttons_control">
+            <button class="button_1 inizio"><img src="assets/icone/figma/CaretCircleDoubleLeft.svg"></button>
+            <button class="button_1 indietro"><img src="assets/icone/figma/CaretCircleLeft.svg"></button>
+            <button class="button_1 avanti"><img src="assets/icone/figma/CaretCircleRight.svg"></button>
+            <button class="button_1 ritorna"><img src="assets/icone/figma/CaretCircleDoubleRight.svg"></button>
+          </div>
           <button id="nuovaPartitaMultiplayer" class="button_1"><img
               src="assets/icone/figma/MagnifyingGlass.svg"></button>
           <button id="stopRicercaMultiplayer" class="button_1">Annulla</button>
