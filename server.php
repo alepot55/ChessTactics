@@ -243,7 +243,7 @@ function creaPartita($dati) {
     $protezione = $dati['protezione'];
     $dati = array();
 
-    $query = "SELECT * FROM partite WHERE giocatore1 IS NOT NULL and incorso = true";
+    $query = "SELECT * FROM partite WHERE giocatore1 IS NOT NULL AND incorso = true AND protezione = '{$protezione}' ORDER BY codice DESC LIMIT 1";
     $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
     $ret = pg_fetch_assoc($result);
     $codice = $ret["codice"];
@@ -328,6 +328,7 @@ function faiMossa($dati) {
 function aspettaMossa($dati) {
     global $dbconn;
     $codice = intval($dati['codice']);
+    $username = $dati['username'];
     $dati = array();
 
     $query = "SELECT * FROM partite WHERE codice = '{$codice}'";
@@ -338,7 +339,8 @@ function aspettaMossa($dati) {
     $dati['mossa'] = $mossa;
 
     $incorso = $ret["incorso"];
-    if ($incorso === 'f' && $ret["vittoria"] === null) {
+    $numero = ($username === $ret['giocatore1']) ? '1' : '2';
+    if ($incorso === 'f' && $ret["vittoria"] === $numero) {
         $dati['annullata'] = true;
     } else {
         $dati['annullata'] = false;

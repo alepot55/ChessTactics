@@ -184,7 +184,8 @@ async function aspettaMossa(mossa, invia = true) {
     // Invia la richiesta
     let datiRicevuti = await inviaDatiAlServer({
         operazione: 'aspettaMossa',
-        codice: codicePartita
+        codice: codicePartita,
+        username: get('username')
     });
 
     // Se la partita è stata annullata, aggiorna lo stato
@@ -262,11 +263,21 @@ function mostraSezioneGioca(sezione) {
     sezioneCorrente = sezione;
     idScacchieraCorrente = sezioneCorrente === "giocaComputer" ? "scacchieraComputer" : sezioneCorrente === "giocaSolo" ? "scacchieraSolo" : "scacchieraMultiplayer";
 
+    // imposta document.getElementsByClassName("modalitàGioca").value = sezione;
+    elementi = document.getElementsByClassName("modalitàGioca");
+    for (let i = 0; i < elementi.length; i++) {
+        elementi[i].value = sezione;
+    }
+
     // Se la sezione è Multiplayer, aggiorna lo stato senza cambiare la scacchiera
     if (sezioneCorrente === "giocaMultiplayer") return aggiornaStatoMultiplayer('default');
 
     // Aggiorna la scacchiera
     aggiornaScacchieraGioca(idScacchieraCorrente)
+}
+
+function popup(messaggio) {
+    alert(messaggio);
 }
 
 function vittoriaPartitaMultiplayer() {
@@ -279,6 +290,7 @@ function vittoriaPartitaMultiplayer() {
     inviaDatiAlServer(datiDaInviare);
     aggiungiPunti(10);
     messaggioMultiplayer.innerText = "Hai vinto!";
+    popup("Hai vinto!");
 }
 
 function sconfittaPartitaMultiplayer() {
@@ -290,6 +302,7 @@ function sconfittaPartitaMultiplayer() {
     }
     inviaDatiAlServer(datiDaInviare);
     messaggioMultiplayer.innerText = "Hai perso!";
+    popup("Hai perso!");
 }
 
 function pattaPartitaMultiplayer() {
@@ -301,6 +314,7 @@ function pattaPartitaMultiplayer() {
     }
     inviaDatiAlServer(datiDaInviare);
     messaggioMultiplayer.innerText = "Patta!";
+    popup("Patta!");
 }
 
 async function mettiImmgaine(username = get('username')) {
@@ -319,7 +333,7 @@ function aggiornaStatoMultiplayer(stato = 'default') {
     switch (stato) {
         case 'default':
             aggiornaScacchieraGioca(idScacchieraCorrente, '');
-            document.getElementById("messaggioMultiplayer").innerText = "Benvenuto nella sezione Multiplayer! Clicca su 'Nuova Partita' per iniziare! Puoi giocare con un avversario casuale o con un amico inserendo un codice!";
+            document.getElementById("messaggioMultiplayer").innerText = "Benvenuto nella sezione Multiplayer! Puoi giocare con un avversario casuale o con un amico inserendo un codice!";
             partitaInit = false;
             coloreUtente = null;
             buttStopRicercaMultiplayer.style.display = "none";
@@ -458,7 +472,6 @@ window.onload = function () { //Questa funzione serve per impostare al caricamen
     // Se c'è un valore, selezionalo nel menu a tendina
     if (selectedValue) {
         document.getElementsByClassName("modalitàGioca").value = selectedValue;
-        console.log(sezioneCorrente);
         mostraSezioneGioca(selectedValue);
     }
     else {

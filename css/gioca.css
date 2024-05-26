@@ -28,7 +28,7 @@
 
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    gap: 10px;
 }
 
 
@@ -40,8 +40,9 @@
     height: var(--dimensioneTavolaAltezza);
     align-items: center;
     background: var(--primario);
-    padding: 13px;
+    padding: 10px 24px;
     margin: 10px;
+    border-radius: 10px;
 }
 
 @media screen and (orientation: portrait){
@@ -51,6 +52,7 @@
         height: 100%;
         flex-direction: column;
         align-content: center;
+
         
     }
 
@@ -76,12 +78,6 @@
     .selezione_modalità_testo {
         width: 50%;
         text-align: left;
-    }
-
-    .buttons_control {
-
-        display: flex;
-        flex-direction: row;
     }
 
     .elorange {
@@ -109,11 +105,9 @@
 @media screen and (max-width: 1200px){
 
     .container {
-
         height: 100%;
-        flex-wrap: wrap;
-       
-        
+        flex-direction: column;
+        align-content: center;
     }
 
     .comandi {
@@ -138,12 +132,6 @@
     .selezione_modalità_testo {
         width: 50%;
         text-align: left;
-    }
-
-    .buttons_control {
-
-        display: flex;
-        flex-direction: row;
     }
 
     .elorange {

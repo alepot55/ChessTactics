@@ -74,6 +74,7 @@ async function inviaDatiAlServer(dati, evento = null) {
     // Se la risposta è ok, restituisci i dati ricevuti
     if (risposta.ok) {
         let datiRicevuti = await risposta.json();
+        console.log(datiRicevuti);
         return datiRicevuti;
     }
 }

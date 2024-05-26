@@ -33,6 +33,16 @@ body {
     
 }
 
+.user-input{
+    font-size: 120%;
+    padding: 5px;
+    border-radius: var(--borderRadius);
+    flex-grow: 1;
+    width: fit-content;
+
+    border: 4px solid hsl(calc(var(--colore) + 30), 53%, 41%);
+}
+
 .comandi {
     right: 2%;
     display: flex;

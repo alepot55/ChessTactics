@@ -178,6 +178,16 @@ document.getElementById("resetPreferenze").addEventListener('click', function ()
     root.style.setProperty('--colore', get('colore'));
     document.getElementById('temaPezzi').value = 'simple';
     document.getElementById('colore').value = get('colore');
+    document.getElementById('temaPezziSelected').innerText = 'Simple';
+    // poni attivo il tema simple
+    let options = document.querySelectorAll('.menu li');
+    options.forEach(option => {
+        option.classList.remove('active');
+        if (option.dataset.value == 'simple') {
+            option.classList.add('active');
+        }
+    });
+    set('temaPezzi', document.getElementsByClassName('active')[0].dataset.value);
 });
 
 aggiornaProfilo();

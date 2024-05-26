@@ -64,14 +64,14 @@
       
     <div class="grid-item">  
       <div class="settore" id="preferenzeUtente">
-        <h2>Preferenze Utente</h2>
         <div>
+          <h2>Preferenze Utente</h2>
           <p>
       
             <label for="temaPezzi" class="etichetta">Tema pedine:</label>
           <div class="dropdown" id="temaPezzi" name="temaPezzi">
             <div class="select">
-              <span class="selected">Default</span>
+              <span class="selected" id="temaPezziSelected">Default</span>
               <div class="caret"></div>
             </div>
             <ul class="menu">
@@ -87,7 +87,7 @@
             <label for="colore" class="etichetta">Tema scacchiera:</label><br>
             <input type="range" id="colore" min="0" max="360" />
           </p>
-          <p>
+          <p class="orizzontale">
             <button id="salvaPreferenze" class="button_1">Applica</button><br>
             <button id="resetPreferenze" class="button_1">Reset</button>
           </p>

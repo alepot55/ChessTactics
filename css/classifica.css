@@ -19,7 +19,19 @@
     gap: 10px;
     margin-top: 20px;
     overflow: scroll;
-    
+}
+
+#partite {
+    /* le tue altre proprietà... */
+
+    /* Nascondi la scrollbar per Chrome, Safari e Opera */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Nascondi la scrollbar per IE, Edge e Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .container {
@@ -95,6 +107,7 @@ tbody tr:hover {
     padding: 1em;
     width: fit-content;
     background: light-dark(hsl(calc(var(--colore) + 30), 24%, 93%), hsl(var(--colore), 19%, 25%));
+    max-width: 95%;
 }
 
 .revContainer h2 {
@@ -137,7 +150,10 @@ tbody tr:hover {
     transform: translateY(-300px) translateX(300px);
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 630px) {
+    :root {
+        --dimensioneTavolaAltezza: 300px;
+    }
     #partite {
         position: absolute;
     }

@@ -64,7 +64,7 @@
             <button class="button_1 ritorna"><img src="assets/icone/figma/CaretCircleDoubleRight.svg"></button>
           </div>
           <br>
-            <input type="range" min="1" max="4000" value="50" id="eloStockfish">
+            <input type="range" class="user-input" min="1" max="4000" value="50" id="eloStockfish">
             <label for="eloStockfish">Elo Stockfish: <span id="valoreEloStockfish">50</span></label>
           <p id="risultatoComputer"></p>
           <button id="nuovaPartitaComputer" class="button_1"> Nuova Partita</button>
@@ -138,7 +138,7 @@
             <button class="button_1 avanti"><img src="assets/icone/figma/CaretCircleRight.svg"></button>
             <button class="button_1 ritorna"><img src="assets/icone/figma/CaretCircleDoubleRight.svg"></button>
           </div>
-          <div class="selezione_modalità_multiplayer">
+          <div class="selezione_modalità_multiplayer" style="margin: 10px 0;">
             <select id="modalitàMultiplayer" name="modalitàMultiplayer">
               <option value="normale">Normale</option>
               <option value="pezziNascosti">Pezzi Nascosti</option>
@@ -146,8 +146,8 @@
             </select><br>
           </div>
          
-          <div class="codice_partita_multiplayer">
-            <input type="text" id="codiceMultiplayer" name="codiceMultiplayer"
+          <div class="codice_partita_multiplayer" style="margin: 10px 0;">
+            <input type="text" class="user-input" id="codiceMultiplayer" name="codiceMultiplayer"
             placeholder="Inserisci il codice partita"><br>
           </div>
           

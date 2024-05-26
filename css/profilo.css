@@ -11,6 +11,12 @@ main{
     padding-bottom: 10%;
 }
 
+.orizzontale {
+    display: flex;
+    align-items: center; 
+    gap: 5%;
+}
+
 .grid-item {
     display: flex;
     align-items: center;
@@ -27,16 +33,6 @@ main{
 
 .etichetta {
     font-family: 'Open Sans', sans-serif;
-}
-
-.user-input{
-    font-size: 120%;
-    padding: 5px;
-    border-radius: var(--borderRadius);
-    flex-grow: 1;
-    width: fit-content;
-
-    border: 4px solid hsl(calc(var(--colore) + 30), 53%, 41%);
 }
 
 .settore{
@@ -74,6 +70,7 @@ main{
 }
 
 .select{
+    width: 190px;
     background: hsl(calc(var(--colore) + 30), 53%, 41%);
     display: flex;
     justify-content: space-between;
@@ -83,6 +80,7 @@ main{
     padding: 8px 16px;
     cursor: pointer;
     transition: background 0.3s;
+    color: white;
 }
 .select-clicked{
     border: 2px solid white;
@@ -214,7 +212,12 @@ main{
         font-size: large;
     }
     main{
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 20px;
+        padding-bottom: calc(10% + var(--spessore));
+
     }
     #container_vuoto{
         display: none;
