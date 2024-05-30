@@ -239,17 +239,19 @@ main {
         flex-direction: column;
         font-size: small;
     }
-    
-    body {
-        margin-left: calc(var(--spacer) + 2vw);
-        margin-right: calc(var(--spacer) + 8vw);
-        padding-bottom: calc(var(--spessore)*10 + var(--spacer)*10);
-    }
-
 
     .title h1 {
         font-size: 10vmax;
         text-align: left;
+    }
+
+    #cavallo {
+        position: fixed;
+        right: -150px;
+        top: -20px;
+        height: 700px;
+        width: auto;
+        filter: hue-rotate(calc(var(--colore)*1deg + 30deg - 267deg));
     }
 
     .sceltamodalità {
@@ -260,14 +262,15 @@ main {
         justify-content: center;
         align-items: start;
         overflow: visible;
+        width: 100%;
     
         
     }
 
     .custom-card {
-        width: 100%;
-        justify-content: flex-start;
+        width: unset;
         flex-direction: row;
+        
         margin: 0;
         margin-bottom: 10px;
         border-radius: 10px;
@@ -326,7 +329,7 @@ main {
 
     .solve_chess_puzzles {
 
-        width: 100%;
+        width: unset;
         justify-content: flex-start;
         align-items: center;
         flex-direction: row;

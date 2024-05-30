@@ -195,8 +195,9 @@ a {
     }
 
     body {
-        margin-left: calc(var(--spacer) + 8vw);
-        margin-right: calc(var(--spacer) + 8vw);
+        left: 0;
+        margin-left: calc(var(--spacer) + 5vw);
+        margin-right: calc(var(--spacer) + 5vw);
         padding-bottom: calc((var(--spessore) + var(--spacer)) * 5);
     }
 
@@ -205,7 +206,7 @@ a {
         top: auto;
         bottom: var(--spacer);
         height: var(--spessore);
-        width: auto;
+        width: unset;
         left: var(--spacer);
         right: var(--spacer);
         flex-direction: row;
@@ -260,29 +261,3 @@ a {
 
 }
 
-@media screen and (min-width: 1920px) {
-
-    .navbar {
-
-        font-size: large;
-    }
-    
-}
-
-@media screen and (min-width: 2560px) {
-    
-    .navbar {
-
-        font-size: x-large;
-    }
-
-}
-
-@media screen and (min-width: 3860px) {
-    
-    .navbar {
-
-        font-size: xx-large;
-    }
-
-}
