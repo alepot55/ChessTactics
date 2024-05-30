@@ -163,6 +163,7 @@ main {
     min-width: none;
     min-height: 412px; /*serve per dare un'altezza minima al div*/
     overflow: hidden;
+    padding-bottom: 2%;
 }
 
 .solve_chess_puzzles {
@@ -223,6 +224,66 @@ main {
 .solve_chess_puzzles .puzzles_description p {
 
     text-align: center;
+}
+
+.chi_siamo {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:100%;
+    text-align: center;
+
+}
+
+.chi_siamo_container {
+
+    width: 100%;
+    height: var(--altezzaDiv);
+    display: flex;
+    flex-direction: row;
+   
+    justify-content: center;
+    align-items: flex-start;
+    min-width: none;
+    /*min-height: 412px; /*serve per dare un'altezza minima al div*/
+    overflow: hidden;
+    padding-bottom: 2%;
+}
+
+.chi_siamo_container .credits_card {
+    
+    
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: var(--larghezzaCard);
+    min-width: 0; /*Serve per evitare che la navbar si sovrapponga alle card quando lo schermo è piccolo*/
+    height: var(--altezzaCard);
+
+    background: var(--primario);
+    border-radius: 8%;
+    padding: 13px;
+    margin: 10px;
+}
+
+.credits_card .img-box {
+    
+    height: 75%;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.credits_card .img-box img {
+    
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 
@@ -324,6 +385,7 @@ main {
         justify-content: flex-start;
         align-items: flex-start;
         overflow: visible;
+        min-height: 0; /*serve per dare un'altezza minima al div*/
 
     }
 
@@ -334,7 +396,6 @@ main {
         align-items: center;
         flex-direction: row;
         margin: 0;
-        margin-bottom: 10px;
         border-radius: 10px;
         
     }
@@ -364,6 +425,38 @@ main {
     }
 
 
+    .chi_siamo {
+
+        padding-bottom: 100px;
+    }
+
+    .chi_siamo_container {
+
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: visible;
+        width: 50%;
+    }
+
+    .chi_siamo_container .credits_card {
+
+        width: unset;
+        text-align: center;
+    }
+
+    .credits_card .img-box img {
+    
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+
+
 }
 
 @media (min-width: 2560px){
@@ -374,6 +467,22 @@ main {
     .sceltamodalità{
 
         height: 50vh;
+    }
+
+    #cavallo {
+
+        position: absolute;
+        right: -200px;
+        top: -20px;
+        height: 90%;
+        width: auto;
+    }
+
+    .credits_card .img-box img {
+    
+        width: 600px;
+        height: 600px;
+        
     }
 
 }
