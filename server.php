@@ -167,7 +167,9 @@ function modifica($dati) {
     } else if (!passwordValida($nuovaPassword)) {
         $dati['messaggio'] = "La password deve contenere almeno 8 caratteri e un numero";
     } else {
-        $query = "UPDATE utenti SET username = '{$nuovoUsername}', pswd = '{$nuovaPassword}' WHERE username = '{$username}'";
+        $query = "UPDATE utenti SET username = '{$nuovoUsername}', pswd = '{$nuovaPassword}' WHERE username = '{$username}';
+                    UPDATE partite SET giocatore1 = '{$nuovoUsername}' WHERE giocatore1 = '{$username}';
+                    UPDATE partite SET giocatore2 = '{$nuovoUsername}' WHERE giocatore2 = '{$username}'";
         $result = pg_query($dbconn, $query) or die("Query failed: " . pg_last_error());
 
         $dati['messaggio'] = "Modifica effettuata";
