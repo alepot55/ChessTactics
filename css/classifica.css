@@ -14,6 +14,14 @@ body {
     height: 100%;
     width: 100%;
 }
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
 
 #partite {
     gap: 10px;
@@ -32,6 +40,10 @@ body {
 }
 
 #partite #tabella {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 100%;
 }
 
@@ -151,9 +163,9 @@ tbody tr:hover {
 
 @media screen and (max-width: 630px) {
     :root {
-        --dimensioneTavolaAltezza: 300px;
-    }
-    #partite {
-        position: absolute;
+        --dimensioneTavolaAltezza: 250px;
+    } 
+    .chiudi {
+        transform: translateY(-170px) translateX(170px);
     }
 }
