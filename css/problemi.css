@@ -1,5 +1,5 @@
 .small_screen_title {
-
+    position: absolute;
     visibility: hidden;
     font-size: 4vmin;
     text-align: center;
@@ -8,7 +8,6 @@
 
 .container {
 
-    margin-top: -12vh;
     flex-direction: row;
 }
 
@@ -36,7 +35,7 @@
 
 
     .small_screen_title {
-
+        position: relative;
         visibility: visible;
     }
 
@@ -110,7 +109,7 @@
     
 
     .small_screen_title {
-
+        position: relative;
         visibility: visible;
     }
 
