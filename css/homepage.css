@@ -299,6 +299,7 @@ main {
         align-items: center;
         flex-direction: column;
         font-size: small;
+        padding-top: 0;
     }
 
     .title h1 {

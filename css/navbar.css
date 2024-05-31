@@ -198,7 +198,7 @@ a {
         left: 0;
         margin-left: calc(var(--spacer) + 5vw);
         margin-right: calc(var(--spacer) + 5vw);
-        padding-bottom: calc((var(--spessore) + var(--spacer)) * 5);
+        /*padding-bottom: calc((var(--spessore) + var(--spacer)) * 5);*/
     }
 
     .navbar {

@@ -47,6 +47,11 @@
 
 @media screen and (orientation: portrait){
 
+    main{
+
+        padding-bottom: 100px;
+    }
+
     .container {
 
         height: 100%;
@@ -103,6 +108,7 @@
         background: var(--primario);
         padding: 13px;
         margin: 10px;
+        margin-bottom: 800px;
     }
 }
 
