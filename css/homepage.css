@@ -19,8 +19,6 @@ main {
     margin: 0;
     font-size: 14vw; /*Per rendere dinamiche le dimensioni della scritta*/
     line-height: 1;
-    background-image: url('https://media.geeksforgeeks.org/wp-content/uploads/20231218224644/w.jpg');
-    background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     color: hsl(calc(var(--colore) + 30), 90%, 65%);
