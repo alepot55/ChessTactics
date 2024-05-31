@@ -7,8 +7,6 @@
 }
 
 .container {
-    height: fit-content;
-
     flex-direction: row;
 }
 
@@ -47,7 +45,7 @@
     }
 
     .container {
-
+        height: fit-content;
         margin-top: 0;
         align-items: center;
         justify-content: flex-start;
@@ -121,7 +119,7 @@
     }
 
     .container {
-
+        height: fit-content;
         margin-top: 0;
         align-items: center;
         justify-content: flex-start;
