@@ -43,7 +43,6 @@ $dbconn = pg_connect("host={$credenziali['host']} dbname={$credenziali['dbname']
 
 // Funzione per verificare che la password abbia almeno 8 caratteri e contenga almeno un numero
 function passwordValida($password) {
-    return true; // poi da togliere
     return strlen($password) >= 8 && preg_match('/[0-9]/', $password);
 }
 
