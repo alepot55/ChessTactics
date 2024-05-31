@@ -378,6 +378,8 @@ function aggiornaStatoMultiplayer(stato = 'default') {
             buttStopRicercaMultiplayer.style.display = "none";
             buttTerminaPartitaMultiplayer.style.display = "none";
             buttNuovaPartitaMultiplayer.style.display = "block";
+            nomeAvversario.innerText = "";
+            tempoAvversario.innerText = "";
             break;
         case 'ricerca':
             aggiornaScacchieraGioca(idScacchieraCorrente, '');
