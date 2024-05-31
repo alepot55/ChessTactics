@@ -30,6 +30,9 @@
 
 @media screen and (max-width: 1200px) {
 
+    main {
+        padding-bottom: 100px;
+    }
 
 
     .small_screen_title {
@@ -104,7 +107,7 @@
 
 @media screen and (orientation: portrait) {
 
-
+    
 
     .small_screen_title {
 
